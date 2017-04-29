@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -21,6 +22,7 @@ import com.slp.songwiki.R;
 import com.slp.songwiki.adapter.ArtistAdapter;
 import com.slp.songwiki.model.Artist;
 import com.slp.songwiki.ui.activity.ArtistActivity;
+import com.slp.songwiki.ui.activity.ArtistSearchResultsActivity;
 import com.slp.songwiki.utilities.SongWikiUtils;
 
 import org.json.JSONException;
@@ -48,12 +50,34 @@ public class TopArtistsFragment extends Fragment implements SongWikiFragmentable
         loaderManager = getActivity().getSupportLoaderManager();
         loaderManager.initLoader(TOP_ARTISTS, null, this);
         rvArtists = (RecyclerView) rootView.findViewById(R.id.rv_artists);
+        setHasOptionsMenu(true);
         return rootView;
     }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.artist_menu, menu);
+        MenuItem menuItem=  menu.findItem(R.id.search);
+        searchView = (SearchView) menuItem.getActionView();
+        searchView.setMaxWidth(Integer.MAX_VALUE);
+        searchView.setQueryHint(getString(R.string.artist_title));
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener(){
 
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                ((ArtistAdapter)rvArtists.getAdapter()).getFilter().filter(query);
+                Intent intent = new Intent(getActivity(), ArtistSearchResultsActivity.class);
+                intent.putExtra("artist",query);
+                startActivity(intent);
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                ((ArtistAdapter)rvArtists.getAdapter()).getFilter().filter(newText);
+                return true;
+            }
+        });
         super.onCreateOptionsMenu(menu, inflater);
     }
 
@@ -87,7 +111,6 @@ public class TopArtistsFragment extends Fragment implements SongWikiFragmentable
     public void onLoadFinished(Loader<List<Artist>> loader, List<Artist> artists) {
 
         initializeRecyclerView(artists);
-        Log.i("onLoadFinished: ", artists.toString());
 
     }
 
