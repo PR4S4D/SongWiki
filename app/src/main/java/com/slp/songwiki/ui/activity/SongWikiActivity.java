@@ -74,15 +74,16 @@ public class SongWikiActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.action_settings) {
+        if (id == R.id.favourite_artists) {
+            startActivity(new Intent(this,FavouriteArtistActivity.class));
             return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
-    
-  
-
-
-
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_song_wiki,menu);
+        return true;
+    }
 }

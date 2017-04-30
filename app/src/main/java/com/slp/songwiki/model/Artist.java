@@ -15,6 +15,15 @@ public class Artist implements Parcelable {
     private String summary;
     private String content;
 
+    public Artist(String name, long listeners, String imageLink, String publishedOn, String summary, String content) {
+        this.name = name;
+        this.listeners = listeners;
+        this.imageLink = imageLink;
+        this.publishedOn = publishedOn;
+        this.summary = summary;
+        this.content = content;
+    }
+
     public Artist() {
 
     }
@@ -109,5 +118,18 @@ public class Artist implements Parcelable {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+
+    @Override
+    public String toString() {
+        return "Artist{" +
+                "name='" + name + '\'' +
+                ", listeners=" + listeners +
+                ", imageLink='" + imageLink + '\'' +
+                ", publishedOn='" + publishedOn + '\'' +
+                ", summary='" + summary + '\'' +
+                ", content='" + content + '\'' +
+                '}';
     }
 }

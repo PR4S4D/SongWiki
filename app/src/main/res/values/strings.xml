@@ -9,5 +9,6 @@
     <string name="track_title">TRACKS</string>
     <string name="album_title">ALBUM</string>
     <string name="rihanna">Rihanna</string>
+    <string name="favourite_artists">Favourite Artists</string>
 
 </resources>

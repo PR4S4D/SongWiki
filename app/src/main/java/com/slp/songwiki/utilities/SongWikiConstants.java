@@ -11,4 +11,6 @@ public interface SongWikiConstants {
     String SEARCH_ARTIST_END_POINT = "http://ws.audioscrobbler.com/2.0/?method=artist.search&api_key="+LAST_FM_API_KEY+"&limit=10&format=json&artist=";
     String ARTISTS = "artists";
     int IMAGE_SIZE = 3;
+    String JPG_EXTENSION = ".jpg";
+    String LOCAL_IMAGE_BASE_URL = "file:///storage/emulated/0/";
 }

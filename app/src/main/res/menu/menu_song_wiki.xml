@@ -2,8 +2,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.slp.songwiki.ui.activity.SongWikiActivity" >
-    <item android:id="@+id/action_settings"
-        android:title="@string/action_settings"
+    <item android:id="@+id/favourite_artists"
+        android:title="@string/favourite_artists"
         android:orderInCategory="100"
         app:showAsAction="never" />
 </menu>

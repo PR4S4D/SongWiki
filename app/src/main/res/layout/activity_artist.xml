@@ -5,6 +5,12 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="com.slp.songwiki.ui.activity.ArtistActivity">
+    <Button
+        android:id ="@+id/add_to_favourite"
+        android:text="add to fav"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="addToFavourites"/>
 
     <ImageView
         android:id="@+id/artist_image"

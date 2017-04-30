@@ -1,15 +1,25 @@
 package com.slp.songwiki.ui.activity;
 
+import android.Manifest;
+import android.content.ContentValues;
+import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.SearchView;
+import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.slp.songwiki.R;
+import com.slp.songwiki.data.FavouriteArtistContract;
 import com.slp.songwiki.model.Artist;
 import com.slp.songwiki.utilities.SongWikiUtils;
 import com.squareup.picasso.Picasso;
@@ -21,7 +31,7 @@ import java.io.IOException;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class ArtistActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<String>,SearchView.OnQueryTextListener  {
+public class ArtistActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<String>, SearchView.OnQueryTextListener {
 
     private Artist artist;
     @Bind(R.id.artist_image)
@@ -95,5 +105,40 @@ public class ArtistActivity extends AppCompatActivity implements LoaderManager.L
         //friendListAdapter.getFilter().filter(newText);
 
         return true;
+    }
+
+    public void addToFavourites(View view) {
+        checkPermissions();
+        if (isWritePermissionGranted()) {
+
+
+            if (SongWikiUtils.isFavourite(getApplicationContext(), artist.getName())) {
+                Toast.makeText(this, "It's already a fav", Toast.LENGTH_SHORT).show();
+            } else {
+                Log.i("addToFavourites: ", artist.getName());
+                ContentValues artistContent = SongWikiUtils.getArtistContent(artist);
+                Uri uri = getContentResolver().insert(FavouriteArtistContract.ArtistEntry.CONTENT_URI, artistContent);
+                if (uri == null) {
+                    Log.i("Insert failed", artistContent.toString());
+                } else {
+                    SongWikiUtils.saveImage(artist, getApplicationContext());
+                    Toast.makeText(this, "made favourite", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }else{
+            Toast.makeText(this, "write permission not granted ", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void checkPermissions() {
+        if (!isWritePermissionGranted())
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                    3);
+    }
+
+    private boolean isWritePermissionGranted() {
+        int permissionCheck = ContextCompat.checkSelfPermission(this,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        return permissionCheck == PackageManager.PERMISSION_GRANTED;
     }
 }
