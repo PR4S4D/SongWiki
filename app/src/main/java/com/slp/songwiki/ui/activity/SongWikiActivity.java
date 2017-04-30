@@ -1,6 +1,7 @@
 package com.slp.songwiki.ui.activity;
 
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -21,6 +22,8 @@ import android.view.ViewGroup;
   
 import android.widget.TextView;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.slp.songwiki.R;
 import com.slp.songwiki.adapter.ArtistAdapter;
 import com.slp.songwiki.adapter.SongWikiPagerAdapter;
@@ -30,6 +33,7 @@ public class SongWikiActivity extends AppCompatActivity {
     private SongWikiPagerAdapter pagerAdapter;
     private ViewPager mViewPager;
     private SearchView searchView;
+    private AdView adView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,48 +50,33 @@ public class SongWikiActivity extends AppCompatActivity {
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
+        adView = (AdView) findViewById(R.id.banner_ad);
 
+
+        showBannerAd();
     }
 
-
-  /*  @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.artist_menu, menu);
-        MenuItem menuItem=  menu.findItem(R.id.search);
-        searchView = (SearchView) menuItem.getActionView();
-        searchView.setMaxWidth(Integer.MAX_VALUE);
-        *//*searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener(){
-
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                ((ArtistAdapter)rvArtists.getAdapter()).getFilter().filter(query);
-                Intent intent = new Intent(getActivity(), ArtistSearchResultsActivity.class);
-                intent.putExtra("artist",query);
-                startActivity(intent);
-                return true;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                ((ArtistAdapter)rvArtists.getAdapter()).getFilter().filter(newText);
-                return true;
-            }
-        });*//*
-        return true;
+    private void showBannerAd() {
+        adView.loadAd(getAdRequest());
     }
-*/
+
+    @NonNull
+    private AdRequest getAdRequest() {
+        return new AdRequest.Builder().build();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        adView.loadAd(getAdRequest());
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
