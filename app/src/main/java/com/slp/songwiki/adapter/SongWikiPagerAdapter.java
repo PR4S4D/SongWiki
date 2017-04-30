@@ -4,10 +4,8 @@ import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.text.TextUtilsCompat;
 
 import com.slp.songwiki.R;
-import com.slp.songwiki.ui.fragment.TopAlbumsFragment;
 import com.slp.songwiki.ui.fragment.TopArtistsFragment;
 import com.slp.songwiki.ui.fragment.SongWikiFragmentable;
 import com.slp.songwiki.ui.fragment.TopTracksFragment;
@@ -33,9 +31,6 @@ public class SongWikiPagerAdapter extends FragmentPagerAdapter {
             case 1:
                 currentFragment = new TopArtistsFragment();
                 break;
-            case 2:
-                currentFragment = new TopAlbumsFragment();
-                break;
 
         }
 
@@ -52,15 +47,12 @@ public class SongWikiPagerAdapter extends FragmentPagerAdapter {
             case 1:
                 pageTitle = context.getString(R.string.artist_title);
                 break;
-            case 2:
-                pageTitle = context.getString(R.string.album_title);
-            break;
         }
         return pageTitle;
     }
 
     @Override
     public int getCount() {
-        return 3;
+        return 2;
     }
 }
