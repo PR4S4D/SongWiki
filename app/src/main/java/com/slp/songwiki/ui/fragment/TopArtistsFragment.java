@@ -23,7 +23,7 @@ import com.slp.songwiki.adapter.ArtistAdapter;
 import com.slp.songwiki.model.Artist;
 import com.slp.songwiki.ui.activity.ArtistActivity;
 import com.slp.songwiki.ui.activity.ArtistSearchResultsActivity;
-import com.slp.songwiki.utilities.SongWikiUtils;
+import com.slp.songwiki.utilities.ArtistUtils;
 
 import org.json.JSONException;
 
@@ -89,19 +89,30 @@ public class TopArtistsFragment extends Fragment implements SongWikiFragmentable
 
             @Override
             protected void onStartLoading() {
-                forceLoad();
+                if (null != artists) {
+                    deliverResult(artists);
+                } else {
+
+                    forceLoad();
+                }
             }
 
             @Override
             public List<Artist> loadInBackground() {
                 try {
-                    artists = SongWikiUtils.getTopChartArtists();
+                    artists = ArtistUtils.getTopChartArtists();
                     Log.i("loadInBackground: ", artists.toString());
                 } catch (IOException | JSONException e) {
                     e.printStackTrace();
                 }
 
                 return artists;
+            }
+
+            @Override
+            public void deliverResult(List<Artist> data) {
+                  artists = data;
+                super.deliverResult(data);
             }
         };
     }

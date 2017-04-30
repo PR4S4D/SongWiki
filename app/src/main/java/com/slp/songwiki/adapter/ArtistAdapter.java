@@ -25,7 +25,7 @@ public class ArtistAdapter extends RecyclerView.Adapter<ArtistAdapter.ArtistView
 
 
     private List<Artist> artists;
-    private List<Artist> artistList;
+    private List<Artist> artistsOld;
     final private ListItemClickListener onClickListener;
 
 
@@ -46,7 +46,7 @@ public class ArtistAdapter extends RecyclerView.Adapter<ArtistAdapter.ArtistView
             protected FilterResults performFiltering(CharSequence constraint) {
                 List<Artist> filteredResults = null;
                 if (constraint.length() == 0) {
-                    filteredResults = artistList;
+                    filteredResults = artistsOld;
                 } else {
                     filteredResults = getFilteredResults(constraint.toString().toLowerCase());
                 }
@@ -76,7 +76,7 @@ public class ArtistAdapter extends RecyclerView.Adapter<ArtistAdapter.ArtistView
 
     public ArtistAdapter(List<Artist> artists, ListItemClickListener onClickListener) {
         this.artists = artists;
-        this.artistList = artists;
+        this.artistsOld = artists;
         this.onClickListener = onClickListener;
     }
 
@@ -89,9 +89,9 @@ public class ArtistAdapter extends RecyclerView.Adapter<ArtistAdapter.ArtistView
 
     }
 
-    public Artist getItem(int position){
-        if(null != artists)
-            return  artists.get(position);
+    public Artist getItem(int position) {
+        if (null != artists)
+            return artists.get(position);
         return null;
     }
 
@@ -99,7 +99,7 @@ public class ArtistAdapter extends RecyclerView.Adapter<ArtistAdapter.ArtistView
     public void onBindViewHolder(ArtistAdapter.ArtistViewHolder holder, int position) {
         holder.artistName.setText(artists.get(position).getName());
         String imageLink = artists.get(position).getImageLink();
-        if(!TextUtils.isEmpty(imageLink))
+        if (!TextUtils.isEmpty(imageLink))
             Picasso.with(holder.artistImage.getContext()).load(imageLink).into(holder.artistImage);
 
     }
@@ -107,12 +107,12 @@ public class ArtistAdapter extends RecyclerView.Adapter<ArtistAdapter.ArtistView
     public void filter(String text) {
 
         artists.clear();
-        if(text.isEmpty()){
+        if (text.isEmpty()) {
             artists.addAll(artists);
-        } else{
+        } else {
             text = text.toLowerCase();
-            for(Artist item: artists){
-                if(item.getName().toLowerCase().contains(text) || item.getName().toLowerCase().contains(text)){
+            for (Artist item : artists) {
+                if (item.getName().toLowerCase().contains(text) || item.getName().toLowerCase().contains(text)) {
                     artists.add(item);
                 }
             }

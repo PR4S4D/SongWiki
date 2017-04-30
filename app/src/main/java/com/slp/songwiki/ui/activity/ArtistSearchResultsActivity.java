@@ -11,7 +11,7 @@ import android.util.Log;
 import com.slp.songwiki.R;
 import com.slp.songwiki.adapter.ArtistAdapter;
 import com.slp.songwiki.model.Artist;
-import com.slp.songwiki.utilities.SongWikiUtils;
+import com.slp.songwiki.utilities.ArtistUtils;
 
 import org.json.JSONException;
 
@@ -55,7 +55,7 @@ public class ArtistSearchResultsActivity  extends AppCompatActivity implements A
             String artist = params[0];
             List<Artist> artistResult = null;
             try {
-                artistResult = SongWikiUtils.getArtistResult(artist);
+                artistResult = ArtistUtils.getArtistResult(artist);
                 Log.i("doInBackground: ", String.valueOf(artistResult));
 
             } catch (IOException | JSONException e) {

@@ -33,18 +33,13 @@ import javax.crypto.AEADBadTagException;
  * Created by lshivaram on 4/30/2017.
  */
 
-public class SongWikiUtils implements SongWikiConstants {
+public class ArtistUtils implements SongWikiConstants {
     public static List<Artist> getTopChartArtists() throws IOException, JSONException {
 
-        String topArtistDetails = NetworkUtils.getResponseFromHttpUrl(new URL(TOP_ARTISTS_END_POINT));
+        String topArtistDetails = NetworkUtils.getResponseFromHttpUrl(LastFmUtils.getTopArtistUrl());
         JSONObject topArtistJsonObject = new JSONObject(topArtistDetails);
         JSONObject artists = topArtistJsonObject.getJSONObject(ARTISTS);
         JSONArray artistArray = (JSONArray) artists.get("artist");
-
-        String name;
-        long listeners;
-        String imageLink;
-
         return getArtists(artistArray);
     }
 
@@ -59,7 +54,7 @@ public class SongWikiUtils implements SongWikiConstants {
             if (null != artist) {
                 name = (String) artist.get("name");
                 listeners = Long.valueOf((String) artist.get("listeners"));
-                imageLink = getArtistImage((JSONArray) artist.get("image"));
+                imageLink = LastFmUtils.getImage((JSONArray) artist.get("image"));
                 artists.add(new Artist(name, listeners, imageLink));
             }
         }
@@ -81,6 +76,7 @@ public class SongWikiUtils implements SongWikiConstants {
         return topChartArtist;
     }
 
+    @Deprecated
     public static List<Artist> getTopChartArtist() throws IOException, JSONException {
         List<Artist> artists =
                 new ArrayList<>();
@@ -107,21 +103,27 @@ public class SongWikiUtils implements SongWikiConstants {
             JSONObject jsonObject = new JSONObject(artistDetails);
             JSONObject artistObject = jsonObject.getJSONObject("artist");
             artist.setName(artistObject.getString("name"));
-            artist.setImageLink(getArtistImage(artistObject.getJSONArray("image")));
+            artist.setImageLink(LastFmUtils.getImage(artistObject.getJSONArray("image")));
         }
         return artist;
     }
 
+    public static boolean isArtistInfoAvailable(Artist artist) {
+        return  null != artist.getImageLink();
+    }
+
     public static void setArtistDetails(Artist artist) throws IOException, JSONException {
         if (null != artist) {
-            String name = getEncodedString(artist.getName());
-            URL url = new URL(ARTIST_INFO_END_POINT + name);
-            String artistDetails = NetworkUtils.getResponseFromHttpUrl(url);
+
+            //String name = getEncodedString(artist.getName());
+            String artistDetails = NetworkUtils.getResponseFromHttpUrl(LastFmUtils.getArtistInfoUrl(artist.getName()));
 
             if (null != artistDetails) {
                 JSONObject jsonObject = new JSONObject(artistDetails);
                 JSONObject artistObject = jsonObject.getJSONObject("artist");
-
+                if(!isArtistInfoAvailable(artist)){
+                    artist.setImageLink(LastFmUtils.getImage(artistObject.getJSONArray("image")));
+                }
                 JSONObject artistBio = artistObject.getJSONObject("bio");
                 artist.setPublishedOn(artistBio.getString("published"));
                 artist.setSummary(artistBio.getString("summary"));
@@ -129,20 +131,9 @@ public class SongWikiUtils implements SongWikiConstants {
         }
     }
 
-    private static String getArtistImage(JSONArray imageArray) throws JSONException {
-        if (null != imageArray) {
-            JSONObject imageObj = (JSONObject) imageArray.get(IMAGE_SIZE);
-            if (null != imageObj) {
-                return imageObj.getString("#text");
-            }
-
-
-        }
-        return null;
-    }
 
     public static List<Artist> getArtistResult(String artist) throws IOException, JSONException {
-        artist = getEncodedString(artist);
+        //artist = getEncodedString(artist);
         URL url = new URL(SEARCH_ARTIST_END_POINT + artist);
         String resultsJson = NetworkUtils.getResponseFromHttpUrl(url);
         JSONObject json = new JSONObject(resultsJson);

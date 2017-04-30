@@ -6,7 +6,7 @@ import android.os.Bundle;
 
 import com.slp.songwiki.R;
 import com.slp.songwiki.model.Artist;
-import com.slp.songwiki.utilities.SongWikiUtils;
+import com.slp.songwiki.utilities.ArtistUtils;
 
 import java.util.List;
 
@@ -24,7 +24,7 @@ public class FavouriteArtistActivity extends AppCompatActivity {
         @Override
         protected List<Artist> doInBackground(String... params) {
 
-            return SongWikiUtils.getFavouriteArtists(getApplicationContext());
+            return ArtistUtils.getFavouriteArtists(getApplicationContext());
         }
 
         @Override

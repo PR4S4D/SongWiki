@@ -39,7 +39,9 @@
             android:name=".data.FavouriteArtistProvider"
             android:authorities="com.slp.songwiki" />
 
-        <activity android:name=".ui.activity.FavouriteArtistActivity"></activity>
+        <activity android:name=".ui.activity.FavouriteArtistActivity" />
+        <activity android:name=".ui.activity.TrackSearchResultsActivty" />
+        <activity android:name=".ui.activity.TrackActivity"></activity>
     </application>
 
 </manifest>

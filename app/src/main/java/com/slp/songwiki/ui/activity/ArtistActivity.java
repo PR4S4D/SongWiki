@@ -21,7 +21,7 @@ import android.widget.Toast;
 import com.slp.songwiki.R;
 import com.slp.songwiki.data.FavouriteArtistContract;
 import com.slp.songwiki.model.Artist;
-import com.slp.songwiki.utilities.SongWikiUtils;
+import com.slp.songwiki.utilities.ArtistUtils;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
@@ -45,6 +45,7 @@ public class ArtistActivity extends AppCompatActivity implements LoaderManager.L
     @Bind(R.id.publish_date)
     TextView publishDate;
 
+    private boolean basicInfoSet = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,11 +53,14 @@ public class ArtistActivity extends AppCompatActivity implements LoaderManager.L
         setContentView(R.layout.activity_artist);
         ButterKnife.bind(this);
         artist = getIntent().getParcelableExtra("artist");
-        showArtistDetails();
+        if (ArtistUtils.isArtistInfoAvailable(artist))
+            showArtistDetails();
         getSupportLoaderManager().initLoader(12, null, this);
     }
 
+
     private void showArtistDetails() {
+        basicInfoSet = true;
         Picasso.with(this).load(artist.getImageLink()).into(artistImage);
         listeners.setText(String.valueOf(artist.getListeners()));
         artistName.setText(artist.getName());
@@ -74,7 +78,7 @@ public class ArtistActivity extends AppCompatActivity implements LoaderManager.L
             @Override
             public String loadInBackground() {
                 try {
-                    SongWikiUtils.setArtistDetails(artist);
+                    ArtistUtils.setArtistDetails(artist);
 
                 } catch (IOException | JSONException e) {
                     e.printStackTrace();
@@ -86,6 +90,8 @@ public class ArtistActivity extends AppCompatActivity implements LoaderManager.L
 
     @Override
     public void onLoadFinished(Loader<String> loader, String data) {
+        if(!basicInfoSet)
+            showArtistDetails();
         summary.setText(artist.getSummary());
         publishDate.setText(artist.getPublishedOn());
     }
@@ -112,20 +118,20 @@ public class ArtistActivity extends AppCompatActivity implements LoaderManager.L
         if (isWritePermissionGranted()) {
 
 
-            if (SongWikiUtils.isFavourite(getApplicationContext(), artist.getName())) {
+            if (ArtistUtils.isFavourite(getApplicationContext(), artist.getName())) {
                 Toast.makeText(this, "It's already a fav", Toast.LENGTH_SHORT).show();
             } else {
                 Log.i("addToFavourites: ", artist.getName());
-                ContentValues artistContent = SongWikiUtils.getArtistContent(artist);
+                ContentValues artistContent = ArtistUtils.getArtistContent(artist);
                 Uri uri = getContentResolver().insert(FavouriteArtistContract.ArtistEntry.CONTENT_URI, artistContent);
                 if (uri == null) {
                     Log.i("Insert failed", artistContent.toString());
                 } else {
-                    SongWikiUtils.saveImage(artist, getApplicationContext());
+                    ArtistUtils.saveImage(artist, getApplicationContext());
                     Toast.makeText(this, "made favourite", Toast.LENGTH_SHORT).show();
                 }
             }
-        }else{
+        } else {
             Toast.makeText(this, "write permission not granted ", Toast.LENGTH_SHORT).show();
         }
     }
