@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "769665892349",
+    "firebase_url": "https://songwiki-f9e5e.firebaseio.com",
+    "project_id": "songwiki-f9e5e",
+    "storage_bucket": "songwiki-f9e5e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:769665892349:android:d654106e3ec297dd",
+        "android_client_info": {
+          "package_name": "com.slp.songwiki"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "769665892349-t9e10qtja8hk8jhbl2lu0707ttl5cv94.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.slp.songwiki",
+            "certificate_hash": "e805533a02db094421bb74c27f868043de69feaa"
+          }
+        },
+        {
+          "client_id": "769665892349-9j67lpt1akkq90kkgpdnp4m4col6qjed.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDmM8TS1LJbkNZsrhBsO3a9FdooLKvFWfw"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "769665892349-9j67lpt1akkq90kkgpdnp4m4col6qjed.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

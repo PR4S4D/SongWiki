@@ -99,6 +99,7 @@ public class ArtistAdapter extends RecyclerView.Adapter<ArtistAdapter.ArtistView
     public void onBindViewHolder(ArtistAdapter.ArtistViewHolder holder, int position) {
         holder.artistName.setText(artists.get(position).getName());
         String imageLink = artists.get(position).getImageLink();
+        holder.artistImage.setTransitionName(artists.get(position).getName());
         if (!TextUtils.isEmpty(imageLink))
             Picasso.with(holder.artistImage.getContext()).load(imageLink).into(holder.artistImage);
 
@@ -128,6 +129,14 @@ public class ArtistAdapter extends RecyclerView.Adapter<ArtistAdapter.ArtistView
     }
 
     public class ArtistViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        public ImageView getArtistImage() {
+            return artistImage;
+        }
+
+        public TextView getArtistName() {
+            return artistName;
+        }
+
         ImageView artistImage;
         TextView artistName;
 

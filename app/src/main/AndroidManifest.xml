@@ -14,6 +14,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <service
+            android:name=".widget.ArtistWidgetService"
+            android:permission="android.permission.BIND_REMOTEVIEWS" />
         <meta-data
             android:name="android.app.searchable"
             android:resource="@xml/searchable" />
@@ -41,7 +44,17 @@
 
         <activity android:name=".ui.activity.FavouriteArtistActivity" />
         <activity android:name=".ui.activity.TrackSearchResultsActivty" />
-        <activity android:name=".ui.activity.TrackActivity"></activity>
+        <activity android:name=".ui.activity.TrackActivity" />
+
+        <receiver android:name=".widget.ArtistWidget">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/artist_widget_info" />
+        </receiver>
     </application>
 
 </manifest>

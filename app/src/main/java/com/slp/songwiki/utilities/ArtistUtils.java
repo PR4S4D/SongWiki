@@ -123,6 +123,7 @@ public class ArtistUtils implements SongWikiConstants {
                 JSONObject artistObject = jsonObject.getJSONObject("artist");
                 if(!isArtistInfoAvailable(artist)){
                     artist.setImageLink(LastFmUtils.getImage(artistObject.getJSONArray("image")));
+                    artist.setListeners(Long.valueOf((String) artistObject.getJSONObject("stats").getString("listeners")));
                 }
                 JSONObject artistBio = artistObject.getJSONObject("bio");
                 artist.setPublishedOn(artistBio.getString("published"));

@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.ContentValues;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
@@ -12,6 +13,7 @@ import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.SearchView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -44,6 +46,10 @@ public class ArtistActivity extends AppCompatActivity implements LoaderManager.L
     TextView summary;
     @Bind(R.id.publish_date)
     TextView publishDate;
+    @Bind(R.id.toolbar)
+    Toolbar toolbar;
+    @Bind(R.id.collapsing_tool_bar)
+    CollapsingToolbarLayout collapsingToolbarLayout;
 
     private boolean basicInfoSet = false;
 
@@ -52,7 +58,11 @@ public class ArtistActivity extends AppCompatActivity implements LoaderManager.L
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_artist);
         ButterKnife.bind(this);
+
+
         artist = getIntent().getParcelableExtra("artist");
+        collapsingToolbarLayout.setTitle(artist.getName());
+        toolbar.setTitle(artist.getName());
         if (ArtistUtils.isArtistInfoAvailable(artist))
             showArtistDetails();
         getSupportLoaderManager().initLoader(12, null, this);
@@ -63,6 +73,7 @@ public class ArtistActivity extends AppCompatActivity implements LoaderManager.L
         basicInfoSet = true;
         Picasso.with(this).load(artist.getImageLink()).into(artistImage);
         listeners.setText(String.valueOf(artist.getListeners()));
+        artistImage.setTransitionName(artist.getName());
         artistName.setText(artist.getName());
     }
 
@@ -90,7 +101,7 @@ public class ArtistActivity extends AppCompatActivity implements LoaderManager.L
 
     @Override
     public void onLoadFinished(Loader<String> loader, String data) {
-        if(!basicInfoSet)
+        if (!basicInfoSet)
             showArtistDetails();
         summary.setText(artist.getSummary());
         publishDate.setText(artist.getPublishedOn());

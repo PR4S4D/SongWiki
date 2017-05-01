@@ -1,5 +1,6 @@
 package com.slp.songwiki.ui.fragment;
 
+import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -7,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
+import android.util.Pair;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
@@ -18,6 +20,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
+import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
+import com.slp.songwiki.BuildConfig;
 import com.slp.songwiki.R;
 import com.slp.songwiki.adapter.ArtistAdapter;
 import com.slp.songwiki.model.Artist;
@@ -41,6 +47,8 @@ public class TopArtistsFragment extends Fragment implements SongWikiFragmentable
     private List<Artist> topArtists;
     private RecyclerView rvArtists;
     private SearchView searchView;
+    private FirebaseAnalytics firebaseAnalytics;
+    private FirebaseRemoteConfig mFBConfig;
 
     @Nullable
     @Override
@@ -50,31 +58,41 @@ public class TopArtistsFragment extends Fragment implements SongWikiFragmentable
         loaderManager = getActivity().getSupportLoaderManager();
         loaderManager.initLoader(TOP_ARTISTS, null, this);
         rvArtists = (RecyclerView) rootView.findViewById(R.id.rv_artists);
+        setupFB();
         setHasOptionsMenu(true);
         return rootView;
+    }
+
+    private void setupFB() {
+        mFBConfig = FirebaseRemoteConfig.getInstance();
+        firebaseAnalytics = FirebaseAnalytics.getInstance(getActivity());
+        FirebaseRemoteConfigSettings configSettings = new FirebaseRemoteConfigSettings.Builder()
+                .setDeveloperModeEnabled(BuildConfig.DEBUG)
+                .build();
+        mFBConfig.setConfigSettings(configSettings);
     }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.artist_menu, menu);
-        MenuItem menuItem=  menu.findItem(R.id.search);
+        MenuItem menuItem = menu.findItem(R.id.search);
         searchView = (SearchView) menuItem.getActionView();
         searchView.setMaxWidth(Integer.MAX_VALUE);
         searchView.setQueryHint(getString(R.string.artist_title));
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener(){
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 
             @Override
             public boolean onQueryTextSubmit(String query) {
-                ((ArtistAdapter)rvArtists.getAdapter()).getFilter().filter(query);
+                ((ArtistAdapter) rvArtists.getAdapter()).getFilter().filter(query);
                 Intent intent = new Intent(getActivity(), ArtistSearchResultsActivity.class);
-                intent.putExtra("artist",query);
+                intent.putExtra("artist", query);
                 startActivity(intent);
                 return true;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                ((ArtistAdapter)rvArtists.getAdapter()).getFilter().filter(newText);
+                ((ArtistAdapter) rvArtists.getAdapter()).getFilter().filter(newText);
                 return true;
             }
         });
@@ -111,7 +129,7 @@ public class TopArtistsFragment extends Fragment implements SongWikiFragmentable
 
             @Override
             public void deliverResult(List<Artist> data) {
-                  artists = data;
+                artists = data;
                 super.deliverResult(data);
             }
         };
@@ -147,8 +165,15 @@ public class TopArtistsFragment extends Fragment implements SongWikiFragmentable
         if (null != topArtists) {
             Intent artistIntent = new Intent(getActivity(), ArtistActivity.class);
             Artist clickedArtist = ((ArtistAdapter) rvArtists.getAdapter()).getItem(clickedItemIndex);
+            ArtistAdapter.ArtistViewHolder viewHolder = (ArtistAdapter.ArtistViewHolder) rvArtists.findViewHolderForAdapterPosition(clickedItemIndex);
+            Pair[] pairs = new Pair[1];
+            pairs[0] = new Pair<>(viewHolder.getArtistImage(),viewHolder.getArtistName().getText());
+            ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(getActivity(),pairs);
             artistIntent.putExtra("artist", clickedArtist);
-            startActivity(artistIntent);
+            Bundle params = new Bundle();
+            params.putString("artist", clickedArtist.getName());
+            firebaseAnalytics.logEvent("artist",params);
+            startActivity(artistIntent,options.toBundle());
 
         }
     }
