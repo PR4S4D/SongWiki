@@ -7,6 +7,9 @@ import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
@@ -15,14 +18,19 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.slp.songwiki.R;
+import com.slp.songwiki.adapter.TagAdapter;
+import com.slp.songwiki.adapter.TrackAdapter;
 import com.slp.songwiki.model.Artist;
 import com.slp.songwiki.model.Track;
+import com.slp.songwiki.utilities.LastFmUtils;
 import com.slp.songwiki.utilities.TrackUtils;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -31,6 +39,7 @@ public class TrackActivity extends AppCompatActivity implements LoaderManager.Lo
 
     private static final int TRACK_LOADER = 456;
     private Track track;
+    private List<Track> similarTracks;
     @Bind(R.id.track_title)
     TextView title;
     @Bind(R.id.track_image)
@@ -41,6 +50,8 @@ public class TrackActivity extends AppCompatActivity implements LoaderManager.Lo
     TextView album;
     @Bind(R.id.summary)
     TextView summary;
+    @Bind(R.id.rv_tags)
+    RecyclerView rvTags;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +60,11 @@ public class TrackActivity extends AppCompatActivity implements LoaderManager.Lo
         ButterKnife.bind(this);
         track = getIntent().getParcelableExtra("track");
         setTrackInfo();
+        try {
+            Log.i("similar Artist", String.valueOf(LastFmUtils.getSimilarTracksUrl(track)));
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
         getSupportLoaderManager().initLoader(TRACK_LOADER, null, this);
 
     }
@@ -72,6 +88,7 @@ public class TrackActivity extends AppCompatActivity implements LoaderManager.Lo
             public Void loadInBackground() {
                 try {
                     TrackUtils.addTrackInfo(track);
+                    similarTracks = TrackUtils.getSimilarTracks(track);
                 } catch (IOException | JSONException e) {
                     e.printStackTrace();
                 }
@@ -92,7 +109,15 @@ public class TrackActivity extends AppCompatActivity implements LoaderManager.Lo
             summary.setClickable(true);
         }
         album.setText(track.getAlbum());
-        Log.i("onLoadFinished: ", track.getTags().toString());
+        showTags();
+        Log.i("onLoadFinished: ", similarTracks.toString());
+    }
+
+    private void showTags() {
+        rvTags.setAdapter(new TagAdapter(track.getTags()));
+        //int gridSize = 1;
+        rvTags.setLayoutManager(new LinearLayoutManager(getApplicationContext(),LinearLayoutManager.HORIZONTAL,false));
+        rvTags.setHasFixedSize(true);
     }
 
     @Override

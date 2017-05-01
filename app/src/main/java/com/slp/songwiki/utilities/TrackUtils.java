@@ -39,7 +39,8 @@ public class TrackUtils {
             JSONObject trackInfo = (JSONObject) jsonArray.get(i);
             trackTitle = trackInfo.getString("name");
             artist = trackInfo.getJSONObject("artist").getString("name");
-            listeners = Long.valueOf(trackInfo.getString("listeners"));
+            if (trackInfo.has("listeners"))
+                listeners = Long.valueOf(trackInfo.getString("listeners"));
             imageLink = LastFmUtils.getImage(trackInfo.getJSONArray("image"));
             tracks.add(new Track(trackTitle, artist, listeners, imageLink));
         }
@@ -62,27 +63,22 @@ public class TrackUtils {
             track.setSummary(trackWiki.getString("summary"));
         }
 
-        if(trackInfo.has("toptags")){
+        if (trackInfo.has("toptags")) {
             track.setTags(getTopTags(trackInfo.getJSONObject("toptags").getJSONArray("tag")));
         }
     }
 
     private static List<String> getTopTags(JSONArray tagArray) throws JSONException {
         List<String> tags = new ArrayList<>();
-        if(null!=tags)
-        for(int i=0;i<tagArray.length();i++){
-            tags.add(tagArray.getJSONObject(i).getString("name"));
-        }
+        if (null != tags)
+            for (int i = 0; i < tagArray.length(); i++) {
+                tags.add(tagArray.getJSONObject(i).getString("name"));
+            }
         return tags;
     }
 
     public static List<Track> getTrackResult(String track) throws IOException, JSONException {
-        Log.i( "getTrackResult: ",LastFmUtils.getSearchTrackUrl(track).toString());
-        String resultsJson = NetworkUtils.getResponseFromHttpUrl(LastFmUtils.getSearchTrackUrl(track));
-        JSONObject json = new JSONObject(resultsJson);
-        JSONObject resultJson = json.getJSONObject("results");
-        JSONArray trackArray = resultJson.getJSONObject("trackmatches").getJSONArray("track");
-        return getTracksFromMatches(trackArray);
+        return null;
     }
 
     private static List<Track> getTracksFromMatches(JSONArray trackArray) throws JSONException {
@@ -100,5 +96,12 @@ public class TrackUtils {
             tracks.add(new Track(trackTitle, artist, listeners, imageLink));
         }
         return tracks;
+    }
+
+    public static List<Track> getSimilarTracks(Track track) throws IOException, JSONException {
+        String response = NetworkUtils.getResponseFromHttpUrl(LastFmUtils.getSimilarTracksUrl(track));
+        JSONObject jsonResponse = new JSONObject(response);
+        JSONArray similarTracks = jsonResponse.getJSONObject("similartracks").getJSONArray("track");
+        return getTracks(similarTracks);
     }
 }

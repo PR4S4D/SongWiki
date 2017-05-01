@@ -9,6 +9,8 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.util.Pair;
+import android.view.View;
+import android.widget.ProgressBar;
 
 import com.slp.songwiki.R;
 import com.slp.songwiki.adapter.TrackAdapter;
@@ -26,6 +28,8 @@ import butterknife.ButterKnife;
 public class TrackSearchResultsActivity extends AppCompatActivity implements TrackAdapter.TrackItemClickListener {
     @Bind(R.id.rv_tracks)
     RecyclerView rvTracks;
+    @Bind(R.id.track_search_loader)
+    ProgressBar trackSearchLoader;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,8 +41,13 @@ public class TrackSearchResultsActivity extends AppCompatActivity implements Tra
     }
 
    private class SearchTask extends AsyncTask<String, Void, List<Track>> {
+       @Override
+       protected void onPreExecute() {
+           trackSearchLoader.setVisibility(View.VISIBLE);
+           super.onPreExecute();
+       }
 
-        @Override
+       @Override
         protected List<Track> doInBackground(String... params) {
             String track = params[0];
             List<Track> trackResult = null;
@@ -54,10 +63,12 @@ public class TrackSearchResultsActivity extends AppCompatActivity implements Tra
 
         @Override
         protected void onPostExecute(List<Track> tracks) {
+
             rvTracks.setAdapter(new TrackAdapter(tracks, TrackSearchResultsActivity.this));
-            int gridSize = 2;
+            int gridSize = 1;
             rvTracks.setLayoutManager(new GridLayoutManager(TrackSearchResultsActivity.this, gridSize));
             rvTracks.setHasFixedSize(true);
+            trackSearchLoader.setVisibility(View.GONE);
             super.onPostExecute(tracks);
         }
     }

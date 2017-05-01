@@ -19,6 +19,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
@@ -37,6 +38,9 @@ import org.json.JSONException;
 import java.io.IOException;
 import java.util.List;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+
 /**
  * Created by lshivaram on 4/30/2017.
  */
@@ -46,7 +50,10 @@ public class TopArtistsFragment extends Fragment implements SongWikiFragmentable
     private View rootView;
     private LoaderManager loaderManager;
     private List<Artist> topArtists;
-    private RecyclerView rvArtists;
+    @Bind(R.id.rv_artists)
+    RecyclerView rvArtists;
+    @Bind(R.id.artist_loader)
+    ProgressBar artistLoader;
     private SearchView searchView;
     private FirebaseAnalytics firebaseAnalytics;
     private FirebaseRemoteConfig mFBConfig;
@@ -54,11 +61,13 @@ public class TopArtistsFragment extends Fragment implements SongWikiFragmentable
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
+        Log.i("onCreateView: ", String.valueOf(topArtists));
         super.onCreateView(inflater, container, savedInstanceState);
-        rootView = inflater.inflate(R.layout.fragment_artist_top, container, false);
+        if (null == rootView)
+            rootView = inflater.inflate(R.layout.fragment_artist_top, container, false);
+        ButterKnife.bind(this, rootView);
         loaderManager = getActivity().getSupportLoaderManager();
         loaderManager.initLoader(TOP_ARTISTS, null, this);
-        rvArtists = (RecyclerView) rootView.findViewById(R.id.rv_artists);
         setupFB();
         setHasOptionsMenu(true);
         return rootView;
@@ -111,6 +120,7 @@ public class TopArtistsFragment extends Fragment implements SongWikiFragmentable
                 if (null != artists) {
                     deliverResult(artists);
                 } else {
+                    artistLoader.setVisibility(View.VISIBLE);
 
                     forceLoad();
                 }
@@ -139,13 +149,14 @@ public class TopArtistsFragment extends Fragment implements SongWikiFragmentable
 
     @Override
     public void onLoadFinished(Loader<List<Artist>> loader, List<Artist> artists) {
-
+        artistLoader.setVisibility(View.GONE);
         initializeRecyclerView(artists);
 
     }
 
     @Override
     public void onLoaderReset(Loader<List<Artist>> loader) {
+        topArtists = null;
 
     }
 
@@ -168,13 +179,13 @@ public class TopArtistsFragment extends Fragment implements SongWikiFragmentable
             Artist clickedArtist = ((ArtistAdapter) rvArtists.getAdapter()).getItem(clickedItemIndex);
             ArtistAdapter.ArtistViewHolder viewHolder = (ArtistAdapter.ArtistViewHolder) rvArtists.findViewHolderForAdapterPosition(clickedItemIndex);
             Pair[] pairs = new Pair[1];
-            pairs[0] = new Pair<>(viewHolder.getArtistImage(),viewHolder.getArtistName().getText());
-            ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(getActivity(),pairs);
+            pairs[0] = new Pair<>(viewHolder.getArtistImage(), viewHolder.getArtistName().getText());
+            ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(getActivity(), pairs);
             artistIntent.putExtra("artist", clickedArtist);
             Bundle params = new Bundle();
             params.putString("artist", clickedArtist.getName());
-            firebaseAnalytics.logEvent("artist",params);
-            startActivity(artistIntent,options.toBundle());
+            firebaseAnalytics.logEvent("artist", params);
+            startActivity(artistIntent, options.toBundle());
 
         }
     }

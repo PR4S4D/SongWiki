@@ -19,6 +19,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import com.slp.songwiki.R;
 import com.slp.songwiki.adapter.TrackAdapter;
@@ -32,6 +33,9 @@ import org.json.JSONException;
 import java.io.IOException;
 import java.util.List;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+
 import static android.content.ContentValues.TAG;
 
 /**
@@ -42,7 +46,10 @@ public class TopTracksFragment extends Fragment implements SongWikiFragmentable,
     private View rootView;
     private LoaderManager loaderManager;
     private List<Track> topTracks;
-    private RecyclerView rvTracks;
+    @Bind(R.id.rv_tracks)
+    RecyclerView rvTracks;
+    @Bind(R.id.track_loader)
+    ProgressBar trackLoader;
     private static final int TOP_TRACKS = 345;
     private SearchView searchView;
 
@@ -51,7 +58,8 @@ public class TopTracksFragment extends Fragment implements SongWikiFragmentable,
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         rootView = inflater.inflate(R.layout.fragment_track_top, container, false);
-        rvTracks = (RecyclerView) rootView.findViewById(R.id.rv_tracks);
+        ButterKnife.bind(this,rootView);
+
         loaderManager = getActivity().getSupportLoaderManager();
         loaderManager.initLoader(TOP_TRACKS, null, this);
         setHasOptionsMenu(true);
@@ -61,24 +69,24 @@ public class TopTracksFragment extends Fragment implements SongWikiFragmentable,
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.track_menu, menu);
-        MenuItem menuItem=  menu.findItem(R.id.search_track);
+        MenuItem menuItem = menu.findItem(R.id.search_track);
         searchView = (SearchView) menuItem.getActionView();
         searchView.setMaxWidth(Integer.MAX_VALUE);
         searchView.setQueryHint(getString(R.string.track_title));
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener(){
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 
             @Override
             public boolean onQueryTextSubmit(String query) {
-                ((TrackAdapter)rvTracks.getAdapter()).getFilter().filter(query);
+                ((TrackAdapter) rvTracks.getAdapter()).getFilter().filter(query);
                 Intent intent = new Intent(getActivity(), TrackSearchResultsActivity.class);
-                intent.putExtra("track",query);
+                intent.putExtra("track", query);
                 startActivity(intent);
                 return true;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                ((TrackAdapter)rvTracks.getAdapter()).getFilter().filter(newText);
+                ((TrackAdapter) rvTracks.getAdapter()).getFilter().filter(newText);
                 return true;
             }
         });
@@ -95,6 +103,7 @@ public class TopTracksFragment extends Fragment implements SongWikiFragmentable,
                 if (null != tracks) {
                     deliverResult(tracks);
                 } else {
+                    trackLoader.setVisibility(View.VISIBLE);
 
                     forceLoad();
                 }
@@ -104,7 +113,7 @@ public class TopTracksFragment extends Fragment implements SongWikiFragmentable,
             public List<Track> loadInBackground() {
                 try {
                     tracks = TrackUtils.getTopChartTracks();
-                } catch (IOException | JSONException e){
+                } catch (IOException | JSONException e) {
                     e.printStackTrace();
                 }
                 return tracks;
@@ -120,7 +129,8 @@ public class TopTracksFragment extends Fragment implements SongWikiFragmentable,
 
     @Override
     public void onLoadFinished(Loader<List<Track>> loader, List<Track> data) {
-        Log.i(TAG, "onLoadFinished: finishedloadingtracks "+data);
+        Log.i(TAG, "onLoadFinished: finishedloadingtracks " + data);
+        trackLoader.setVisibility(View.GONE);
         initializeRecyclerView(data);
     }
 
@@ -142,15 +152,15 @@ public class TopTracksFragment extends Fragment implements SongWikiFragmentable,
 
     @Override
     public void onTrackItemClick(int position) {
-        if(null!=topTracks){
-            Intent trackIntent = new Intent(getActivity(),TrackActivity.class);
-            Track clickedTrack = ((TrackAdapter)rvTracks.getAdapter()).getItem(position);
+        if (null != topTracks) {
+            Intent trackIntent = new Intent(getActivity(), TrackActivity.class);
+            Track clickedTrack = ((TrackAdapter) rvTracks.getAdapter()).getItem(position);
             TrackAdapter.TrackViewHolder viewHolder = (TrackAdapter.TrackViewHolder) rvTracks.findViewHolderForAdapterPosition(position);
             Pair[] pairs = new Pair[1];
-            pairs[0] = new Pair<>(viewHolder.getTrackImage(),viewHolder.getArtist().getText());
-            ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(getActivity(),pairs);
-            trackIntent.putExtra("track",clickedTrack);
-            startActivity(trackIntent,options.toBundle());
+            pairs[0] = new Pair<>(viewHolder.getTrackImage(), viewHolder.getArtist().getText());
+            ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(getActivity(), pairs);
+            trackIntent.putExtra("track", clickedTrack);
+            startActivity(trackIntent, options.toBundle());
         }
 
     }

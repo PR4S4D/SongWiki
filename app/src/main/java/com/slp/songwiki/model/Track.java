@@ -15,6 +15,7 @@ public class Track implements Parcelable {
     private String album;
     private long duration;
     private long listeners;
+    private long playcount;
     private String content;
     private String imageLink;
     private String summary;
@@ -37,6 +38,14 @@ public class Track implements Parcelable {
 
     public void setTags(List<String> tags) {
         this.tags = tags;
+    }
+
+    public long getPlaycount() {
+        return playcount;
+    }
+
+    public void setPlaycount(long playcount) {
+        this.playcount = playcount;
     }
 
     public String getTitle() {
@@ -110,6 +119,7 @@ public class Track implements Parcelable {
         album = in.readString();
         duration = in.readLong();
         listeners = in.readLong();
+        playcount = in.readLong();
         content = in.readString();
         imageLink = in.readString();
         summary = in.readString();
@@ -133,6 +143,7 @@ public class Track implements Parcelable {
         dest.writeString(album);
         dest.writeLong(duration);
         dest.writeLong(listeners);
+        dest.writeLong(playcount);
         dest.writeString(content);
         dest.writeString(imageLink);
         dest.writeString(summary);

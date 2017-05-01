@@ -23,7 +23,7 @@ import java.util.List;
  * Created by lshivaram on 5/1/2017.
  */
 
-public class TrackAdapter extends RecyclerView.Adapter<TrackAdapter.TrackViewHolder> implements Filterable{
+public class TrackAdapter extends RecyclerView.Adapter<TrackAdapter.TrackViewHolder> implements Filterable {
 
     final private TrackItemClickListener onClickListener;
     private List<Track> tracks;
@@ -102,15 +102,17 @@ public class TrackAdapter extends RecyclerView.Adapter<TrackAdapter.TrackViewHol
             holder.trackTitle.setText(currentTrack.getTitle());
             holder.artist.setText(currentTrack.getArtist());
             holder.getTrackImage().setTransitionName(currentTrack.getArtist());
-            if(! TextUtils.isEmpty( currentTrack.getImageLink()))
-            Picasso.with(holder.trackImage.getContext()).load(currentTrack.getImageLink()).into(holder.trackImage);
+            if (!TextUtils.isEmpty(currentTrack.getImageLink()))
+                Picasso.with(holder.trackImage.getContext()).load(currentTrack.getImageLink()).into(holder.trackImage);
 
         }
     }
 
     @Override
     public int getItemCount() {
-        return tracks.size();
+        if (null != tracks)
+            return tracks.size();
+        return 0;
     }
 
     public class TrackViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {

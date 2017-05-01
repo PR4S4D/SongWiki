@@ -10,6 +10,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.util.Pair;
+import android.view.View;
+import android.widget.ProgressBar;
 
 import com.slp.songwiki.R;
 import com.slp.songwiki.adapter.ArtistAdapter;
@@ -24,6 +26,8 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
+import static android.view.View.GONE;
+
 /**
  * Created by lshivaram on 4/30/2017.
  */
@@ -32,6 +36,8 @@ public class ArtistSearchResultsActivity extends AppCompatActivity implements Ar
 
     @Bind(R.id.rv_artists)
     RecyclerView rvArtists;
+    @Bind(R.id.artist_search_loader)
+    ProgressBar artistSearchLoader;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +65,12 @@ public class ArtistSearchResultsActivity extends AppCompatActivity implements Ar
     class SearchTask extends AsyncTask<String, Void, List<Artist>> {
 
         @Override
+        protected void onPreExecute() {
+            artistSearchLoader.setVisibility(View.VISIBLE);
+            super.onPreExecute();
+        }
+
+        @Override
         protected List<Artist> doInBackground(String... params) {
             String artist = params[0];
             List<Artist> artistResult = null;
@@ -80,6 +92,8 @@ public class ArtistSearchResultsActivity extends AppCompatActivity implements Ar
           /*rvArtists.setLayoutManager(new
                   GridLayoutManager(getApplicationContext(), 1,GridLayoutManager.HORIZONTAL, false));*/
             rvArtists.setHasFixedSize(true);
+            artistSearchLoader.setVisibility(GONE);
+
             super.onPostExecute(artists);
         }
     }

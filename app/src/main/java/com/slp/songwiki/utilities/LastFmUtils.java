@@ -2,6 +2,8 @@ package com.slp.songwiki.utilities;
 
 import android.net.Uri;
 
+import com.slp.songwiki.model.Track;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -67,6 +69,13 @@ public class LastFmUtils implements SongWikiConstants {
 
     public static URL getSearchTrackUrl(String track) throws MalformedURLException {
         Uri.Builder builder = Uri.parse(SEARCH_TRACK_BASE_URL).buildUpon().appendQueryParameter("track", track);
+        appendAPIKey(builder);
+        return new URL(builder.build().toString());
+    }
+
+    public static URL getSimilarTracksUrl(Track track) throws MalformedURLException {
+        Uri.Builder builder = Uri.parse(SIMILAR_TRACKS_BASE_URL).buildUpon().appendQueryParameter("track", track.getTitle())
+                .appendQueryParameter("artist",track.getArtist());
         appendAPIKey(builder);
         return new URL(builder.build().toString());
     }

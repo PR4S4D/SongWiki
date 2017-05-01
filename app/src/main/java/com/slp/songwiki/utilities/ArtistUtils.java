@@ -38,7 +38,7 @@ public class ArtistUtils implements SongWikiConstants {
 
         String topArtistDetails = NetworkUtils.getResponseFromHttpUrl(LastFmUtils.getTopArtistUrl());
         JSONObject topArtistJsonObject = new JSONObject(topArtistDetails);
-        JSONObject artists = topArtistJsonObject.getJSONObject(ARTISTS);
+        JSONObject artists = topArtistJsonObject.getJSONObject("topartists");
         JSONArray artistArray = (JSONArray) artists.get("artist");
         return getArtists(artistArray);
     }
