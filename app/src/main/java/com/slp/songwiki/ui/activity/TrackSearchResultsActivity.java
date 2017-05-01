@@ -11,6 +11,7 @@ import android.util.Log;
 import android.util.Pair;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.slp.songwiki.R;
 import com.slp.songwiki.adapter.TrackAdapter;
@@ -30,6 +31,9 @@ public class TrackSearchResultsActivity extends AppCompatActivity implements Tra
     RecyclerView rvTracks;
     @Bind(R.id.track_search_loader)
     ProgressBar trackSearchLoader;
+    @Bind(R.id.error)
+    TextView error;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,16 +42,17 @@ public class TrackSearchResultsActivity extends AppCompatActivity implements Tra
         ButterKnife.bind(this);
         String searchQuery = getIntent().getStringExtra("track");
         new SearchTask().execute(searchQuery);
+
     }
 
-   private class SearchTask extends AsyncTask<String, Void, List<Track>> {
-       @Override
-       protected void onPreExecute() {
-           trackSearchLoader.setVisibility(View.VISIBLE);
-           super.onPreExecute();
-       }
+    private class SearchTask extends AsyncTask<String, Void, List<Track>> {
+        @Override
+        protected void onPreExecute() {
+            trackSearchLoader.setVisibility(View.VISIBLE);
+            super.onPreExecute();
+        }
 
-       @Override
+        @Override
         protected List<Track> doInBackground(String... params) {
             String track = params[0];
             List<Track> trackResult = null;
@@ -63,12 +68,19 @@ public class TrackSearchResultsActivity extends AppCompatActivity implements Tra
 
         @Override
         protected void onPostExecute(List<Track> tracks) {
+            if (null != tracks) {
 
-            rvTracks.setAdapter(new TrackAdapter(tracks, TrackSearchResultsActivity.this));
-            int gridSize = 1;
-            rvTracks.setLayoutManager(new GridLayoutManager(TrackSearchResultsActivity.this, gridSize));
-            rvTracks.setHasFixedSize(true);
-            trackSearchLoader.setVisibility(View.GONE);
+
+                rvTracks.setAdapter(new TrackAdapter(tracks, TrackSearchResultsActivity.this));
+                int gridSize = 1;
+                rvTracks.setLayoutManager(new GridLayoutManager(TrackSearchResultsActivity.this, gridSize));
+                rvTracks.setHasFixedSize(true);
+                trackSearchLoader.setVisibility(View.GONE);
+            } else {
+                trackSearchLoader.setVisibility(View.GONE);
+                error.setVisibility(View.VISIBLE);
+            }
+
             super.onPostExecute(tracks);
         }
     }

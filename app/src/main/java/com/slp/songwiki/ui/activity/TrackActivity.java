@@ -14,7 +14,9 @@ import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.slp.songwiki.R;
@@ -52,6 +54,8 @@ public class TrackActivity extends AppCompatActivity implements LoaderManager.Lo
     TextView summary;
     @Bind(R.id.rv_tags)
     RecyclerView rvTags;
+    @Bind(R.id.loading_frame)
+    FrameLayout loadingFrame;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +85,7 @@ public class TrackActivity extends AppCompatActivity implements LoaderManager.Lo
         return new AsyncTaskLoader<Void>(getApplicationContext()) {
             @Override
             protected void onStartLoading() {
+                loadingFrame.setVisibility(View.VISIBLE);
                 forceLoad();
             }
 
@@ -99,6 +104,7 @@ public class TrackActivity extends AppCompatActivity implements LoaderManager.Lo
 
     @Override
     public void onLoadFinished(Loader<Void> loader, Void data) {
+        loadingFrame.setVisibility(View.GONE);
         if (null != track.getSummary()) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 summary.setText(Html.fromHtml(track.getSummary(), Html.FROM_HTML_MODE_COMPACT));
@@ -108,6 +114,7 @@ public class TrackActivity extends AppCompatActivity implements LoaderManager.Lo
             summary.setMovementMethod (LinkMovementMethod.getInstance());
             summary.setClickable(true);
         }
+
         album.setText(track.getAlbum());
         showTags();
         Log.i("onLoadFinished: ", similarTracks.toString());

@@ -12,6 +12,7 @@ import android.util.Log;
 import android.util.Pair;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.slp.songwiki.R;
 import com.slp.songwiki.adapter.ArtistAdapter;
@@ -38,6 +39,8 @@ public class ArtistSearchResultsActivity extends AppCompatActivity implements Ar
     RecyclerView rvArtists;
     @Bind(R.id.artist_search_loader)
     ProgressBar artistSearchLoader;
+    @Bind(R.id.error)
+    TextView error;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,13 +89,19 @@ public class ArtistSearchResultsActivity extends AppCompatActivity implements Ar
 
         @Override
         protected void onPostExecute(List<Artist> artists) {
-            rvArtists.setAdapter(new ArtistAdapter(artists, ArtistSearchResultsActivity.this));
-            int gridSize = 2;
-            rvArtists.setLayoutManager(new GridLayoutManager(ArtistSearchResultsActivity.this, gridSize));
+            if(null!=artists){
+                rvArtists.setAdapter(new ArtistAdapter(artists, ArtistSearchResultsActivity.this));
+                int gridSize = 2;
+                rvArtists.setLayoutManager(new GridLayoutManager(ArtistSearchResultsActivity.this, gridSize));
           /*rvArtists.setLayoutManager(new
                   GridLayoutManager(getApplicationContext(), 1,GridLayoutManager.HORIZONTAL, false));*/
-            rvArtists.setHasFixedSize(true);
-            artistSearchLoader.setVisibility(GONE);
+                rvArtists.setHasFixedSize(true);
+                artistSearchLoader.setVisibility(GONE);
+            }else{
+                artistSearchLoader.setVisibility(GONE);
+                error.setVisibility(View.VISIBLE);
+            }
+
 
             super.onPostExecute(artists);
         }

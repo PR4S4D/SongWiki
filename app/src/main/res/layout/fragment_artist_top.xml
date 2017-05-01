@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools">
     <ProgressBar
         android:id="@+id/artist_loader"
         style="@style/Widget.AppCompat.ProgressBar"
@@ -14,5 +15,7 @@
         android:id="@+id/rv_artists"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
+
+    <include layout="@layout/error" />
 
 </FrameLayout>

@@ -14,5 +14,7 @@
     <string name="appwidget_text">EXAMPLE</string>
     <string name="add_widget">Add widget</string>
     <string name="img">img</string>
+    <string name="no_network">No Network Connectivity!</string>
+    <string name="no_data">No Data!</string>
 
 </resources>

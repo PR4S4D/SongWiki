@@ -20,12 +20,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.slp.songwiki.R;
 import com.slp.songwiki.adapter.TrackAdapter;
 import com.slp.songwiki.model.Track;
 import com.slp.songwiki.ui.activity.TrackActivity;
 import com.slp.songwiki.ui.activity.TrackSearchResultsActivity;
+import com.slp.songwiki.utilities.NetworkUtils;
 import com.slp.songwiki.utilities.TrackUtils;
 
 import org.json.JSONException;
@@ -50,6 +52,8 @@ public class TopTracksFragment extends Fragment implements SongWikiFragmentable,
     RecyclerView rvTracks;
     @Bind(R.id.track_loader)
     ProgressBar trackLoader;
+    @Bind(R.id.error)
+    TextView error;
     private static final int TOP_TRACKS = 345;
     private SearchView searchView;
 
@@ -58,11 +62,17 @@ public class TopTracksFragment extends Fragment implements SongWikiFragmentable,
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         rootView = inflater.inflate(R.layout.fragment_track_top, container, false);
-        ButterKnife.bind(this,rootView);
+        ButterKnife.bind(this, rootView);
+        if (NetworkUtils.isNetworkAvailable(getActivity())) {
+            error.setVisibility(View.GONE);
 
-        loaderManager = getActivity().getSupportLoaderManager();
-        loaderManager.initLoader(TOP_TRACKS, null, this);
-        setHasOptionsMenu(true);
+            loaderManager = getActivity().getSupportLoaderManager();
+            loaderManager.initLoader(TOP_TRACKS, null, this);
+            setHasOptionsMenu(true);
+        } else {
+            Log.i(TAG, "onCreateView: "+"no network");
+            error.setVisibility(View.VISIBLE);
+        }
         return rootView;
     }
 

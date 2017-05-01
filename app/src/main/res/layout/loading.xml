@@ -1,24 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:visibility="visible"
+    android:id="@+id/loading_frame"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools">
-
+    tools:showIn="@layout/activity_track">
 
     <ProgressBar
         android:id="@+id/track_loader"
         style="@style/Widget.AppCompat.ProgressBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical|center_horizontal"
-        android:visibility="gone" />
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rv_tracks"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-
-    <include layout="@layout/error" />
-
-
+        android:layout_gravity="center_vertical|center_horizontal" />
 </FrameLayout>

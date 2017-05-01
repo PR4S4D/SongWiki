@@ -10,8 +10,9 @@
     <ImageView
         android:id="@+id/track_image"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="256dp"
         tools:src="@drawable/artist" />
+
 
     <TextView
         android:id="@+id/track_title"
@@ -19,6 +20,7 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         tools:text="Umbrella" />
+
 
     <TextView
         android:id="@+id/artist"
@@ -28,6 +30,8 @@
         android:onClick="goToArtist"
         android:textSize="20sp"
         tools:text="Rihanna" />
+
+    <include layout="@layout/loading" />
 
     <TextView
         android:id="@+id/album"

@@ -20,6 +20,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
@@ -32,6 +33,7 @@ import com.slp.songwiki.ui.activity.ArtistActivity;
 import com.slp.songwiki.ui.activity.ArtistSearchResultsActivity;
 import com.slp.songwiki.ui.activity.TrackSearchResultsActivity;
 import com.slp.songwiki.utilities.ArtistUtils;
+import com.slp.songwiki.utilities.NetworkUtils;
 
 import org.json.JSONException;
 
@@ -54,6 +56,8 @@ public class TopArtistsFragment extends Fragment implements SongWikiFragmentable
     RecyclerView rvArtists;
     @Bind(R.id.artist_loader)
     ProgressBar artistLoader;
+    @Bind(R.id.error)
+    TextView error;
     private SearchView searchView;
     private FirebaseAnalytics firebaseAnalytics;
     private FirebaseRemoteConfig mFBConfig;
@@ -66,10 +70,16 @@ public class TopArtistsFragment extends Fragment implements SongWikiFragmentable
         if (null == rootView)
             rootView = inflater.inflate(R.layout.fragment_artist_top, container, false);
         ButterKnife.bind(this, rootView);
-        loaderManager = getActivity().getSupportLoaderManager();
-        loaderManager.initLoader(TOP_ARTISTS, null, this);
-        setupFB();
-        setHasOptionsMenu(true);
+        if(NetworkUtils.isNetworkAvailable(getActivity())){
+            error.setVisibility(View.GONE);
+            loaderManager = getActivity().getSupportLoaderManager();
+            loaderManager.initLoader(TOP_ARTISTS, null, this);
+            setupFB();
+            setHasOptionsMenu(true);
+        }else{
+            error.setVisibility(View.VISIBLE);
+        }
+
         return rootView;
     }
 

@@ -19,6 +19,7 @@ import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -54,6 +55,8 @@ public class ArtistActivity extends AppCompatActivity implements LoaderManager.L
     Toolbar toolbar;
     @Bind(R.id.collapsing_tool_bar)
     CollapsingToolbarLayout collapsingToolbarLayout;
+    @Bind(R.id.loading_frame)
+    FrameLayout loadingFrame;
 
     private boolean basicInfoSet = false;
 
@@ -108,6 +111,7 @@ public class ArtistActivity extends AppCompatActivity implements LoaderManager.L
         return new AsyncTaskLoader<String>(getApplicationContext()) {
             @Override
             protected void onStartLoading() {
+                loadingFrame.setVisibility(View.VISIBLE);
                 forceLoad();
             }
 
@@ -126,6 +130,7 @@ public class ArtistActivity extends AppCompatActivity implements LoaderManager.L
 
     @Override
     public void onLoadFinished(Loader<String> loader, String data) {
+        loadingFrame.setVisibility(View.GONE);
         if (!basicInfoSet)
             showArtistBasicInfo();
         showArtistAdvancedInfo();
