@@ -135,8 +135,8 @@ public class ArtistUtils implements SongWikiConstants {
 
     public static List<Artist> getArtistResult(String artist) throws IOException, JSONException {
         //artist = getEncodedString(artist);
-        URL url = new URL(SEARCH_ARTIST_END_POINT + artist);
-        String resultsJson = NetworkUtils.getResponseFromHttpUrl(url);
+      //  URL url = new URL(SEARCH_ARTIST_END_POINT + artist);
+        String resultsJson = NetworkUtils.getResponseFromHttpUrl(LastFmUtils.getSearchArtistUrl(artist));
         JSONObject json = new JSONObject(resultsJson);
         JSONObject resultJson = json.getJSONObject("results");
         JSONArray artistArray = resultJson.getJSONObject("artistmatches").getJSONArray("artist");
@@ -150,6 +150,7 @@ public class ArtistUtils implements SongWikiConstants {
         cv.put(FavouriteArtistContract.ArtistEntry.LISTENERS, artist.getListeners());
         cv.put(FavouriteArtistContract.ArtistEntry.PUBLISHED_ON, artist.getPublishedOn());
         cv.put(FavouriteArtistContract.ArtistEntry.CONTENT, artist.getContent());
+        cv.put(FavouriteArtistContract.ArtistEntry.SUMMARY,artist.getSummary());
 
         return cv;
     }
@@ -210,11 +211,12 @@ public class ArtistUtils implements SongWikiConstants {
         int imageLink = cursor.getColumnIndex(FavouriteArtistContract.ArtistEntry.IMAGE_LINK);
         int publishedOn = cursor.getColumnIndex(FavouriteArtistContract.ArtistEntry.PUBLISHED_ON);
         int content = cursor.getColumnIndex(FavouriteArtistContract.ArtistEntry.CONTENT);
+        int summary = cursor.getColumnIndex(FavouriteArtistContract.ArtistEntry.SUMMARY);
         if (cursor.moveToFirst()) {
 
 
             do {
-                Artist artist = new Artist(cursor.getString(name), cursor.getLong(listeners), cursor.getString(imageLink), cursor.getString(publishedOn), null, cursor.getColumnName(content));
+                Artist artist = new Artist(cursor.getString(name), cursor.getLong(listeners), cursor.getString(imageLink), cursor.getString(publishedOn), cursor.getString(summary), cursor.getColumnName(content));
                 Log.i("Artist", artist.toString());
                 artists.add(artist);
             } while (cursor.moveToNext());

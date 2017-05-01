@@ -3,6 +3,9 @@ package com.slp.songwiki.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by lshivaram on 4/30/2017.
  */
@@ -15,6 +18,7 @@ public class Track implements Parcelable {
     private String content;
     private String imageLink;
     private String summary;
+    private List<String> tags;
 
     public Track(String title, String artist, long listeners, String imageLink) {
         this.title = title;
@@ -25,6 +29,14 @@ public class Track implements Parcelable {
 
     public Track() {
 
+    }
+
+    public List<String> getTags() {
+        return tags;
+    }
+
+    public void setTags(List<String> tags) {
+        this.tags = tags;
     }
 
     public String getTitle() {
@@ -101,6 +113,12 @@ public class Track implements Parcelable {
         content = in.readString();
         imageLink = in.readString();
         summary = in.readString();
+        if (in.readByte() == 0x01) {
+            tags = new ArrayList<String>();
+            in.readList(tags, String.class.getClassLoader());
+        } else {
+            tags = null;
+        }
     }
 
     @Override
@@ -118,6 +136,12 @@ public class Track implements Parcelable {
         dest.writeString(content);
         dest.writeString(imageLink);
         dest.writeString(summary);
+        if (tags == null) {
+            dest.writeByte((byte) (0x00));
+        } else {
+            dest.writeByte((byte) (0x01));
+            dest.writeList(tags);
+        }
     }
 
     @SuppressWarnings("unused")

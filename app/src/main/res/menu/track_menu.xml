@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <item
-        android:id="@+id/search"
+        android:id="@+id/search_track"
         android:icon="@android:drawable/ic_menu_search"
         android:title="@string/track_title"
         app:actionViewClass="android.support.v7.widget.SearchView"

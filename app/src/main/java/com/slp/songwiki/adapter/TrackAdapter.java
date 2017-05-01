@@ -2,6 +2,7 @@ package com.slp.songwiki.adapter;
 
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 
 import com.slp.songwiki.R;
 import com.slp.songwiki.model.Track;
+import com.slp.songwiki.utilities.TrackUtils;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -38,6 +40,11 @@ public class TrackAdapter extends RecyclerView.Adapter<TrackAdapter.TrackViewHol
         void onTrackItemClick(int position);
     }
 
+    public Track getItem(int position) {
+        if (null != tracks)
+            return tracks.get(position);
+        return null;
+    }
 
     @Override
     public Filter getFilter() {
@@ -94,6 +101,8 @@ public class TrackAdapter extends RecyclerView.Adapter<TrackAdapter.TrackViewHol
             Track currentTrack = tracks.get(position);
             holder.trackTitle.setText(currentTrack.getTitle());
             holder.artist.setText(currentTrack.getArtist());
+            holder.getTrackImage().setTransitionName(currentTrack.getArtist());
+            if(! TextUtils.isEmpty( currentTrack.getImageLink()))
             Picasso.with(holder.trackImage.getContext()).load(currentTrack.getImageLink()).into(holder.trackImage);
 
         }
@@ -108,7 +117,21 @@ public class TrackAdapter extends RecyclerView.Adapter<TrackAdapter.TrackViewHol
         private CardView trackCardView;
         private TextView trackTitle;
         private TextView artist;
+
+        public TextView getArtist() {
+            return artist;
+        }
+
         private ImageView trackImage;
+
+        public TextView getTrackTitle() {
+            return trackTitle;
+        }
+
+        public ImageView getTrackImage() {
+            return trackImage;
+        }
+
 
         public TrackViewHolder(View itemView) {
             super(itemView);

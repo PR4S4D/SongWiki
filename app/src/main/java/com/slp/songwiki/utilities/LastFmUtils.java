@@ -58,4 +58,16 @@ public class LastFmUtils implements SongWikiConstants {
     private static void appendAPIKey(Uri.Builder builder) {
          builder.appendQueryParameter(API_KEY,LAST_FM_API_KEY);
     }
+
+    public static URL getSearchArtistUrl(String artist) throws MalformedURLException {
+        Uri.Builder builder = Uri.parse(SEARCH_ARTIST_BASE_URL).buildUpon().appendQueryParameter("artist", artist);
+        appendAPIKey(builder);
+        return new URL(builder.build().toString());
+    }
+
+    public static URL getSearchTrackUrl(String track) throws MalformedURLException {
+        Uri.Builder builder = Uri.parse(SEARCH_TRACK_BASE_URL).buildUpon().appendQueryParameter("track", track);
+        appendAPIKey(builder);
+        return new URL(builder.build().toString());
+    }
 }

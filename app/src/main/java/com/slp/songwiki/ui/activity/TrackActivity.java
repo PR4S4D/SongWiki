@@ -1,11 +1,15 @@
 package com.slp.songwiki.ui.activity;
 
 import android.content.Intent;
+import android.os.Build;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Html;
+import android.text.method.LinkMovementMethod;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -45,11 +49,12 @@ public class TrackActivity extends AppCompatActivity implements LoaderManager.Lo
         ButterKnife.bind(this);
         track = getIntent().getParcelableExtra("track");
         setTrackInfo();
-        getSupportLoaderManager().initLoader(TRACK_LOADER,null,this);
+        getSupportLoaderManager().initLoader(TRACK_LOADER, null, this);
 
     }
 
     private void setTrackInfo() {
+        trackImage.setTransitionName(track.getArtist());
         Picasso.with(this).load(track.getImageLink()).into(trackImage);
         title.setText(track.getTitle());
         artist.setText(track.getArtist());
@@ -77,8 +82,17 @@ public class TrackActivity extends AppCompatActivity implements LoaderManager.Lo
 
     @Override
     public void onLoadFinished(Loader<Void> loader, Void data) {
-        summary.setText(track.getSummary());
+        if (null != track.getSummary()) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                summary.setText(Html.fromHtml(track.getSummary(), Html.FROM_HTML_MODE_COMPACT));
+            } else {
+                summary.setText(Html.fromHtml(track.getSummary()));
+            }
+            summary.setMovementMethod (LinkMovementMethod.getInstance());
+            summary.setClickable(true);
+        }
         album.setText(track.getAlbum());
+        Log.i("onLoadFinished: ", track.getTags().toString());
     }
 
     @Override
@@ -87,10 +101,10 @@ public class TrackActivity extends AppCompatActivity implements LoaderManager.Lo
     }
 
     public void goToArtist(View view) {
-        Intent intent = new Intent(this,ArtistActivity.class);
+        Intent intent = new Intent(this, ArtistActivity.class);
         Artist artist = new Artist();
         artist.setName(track.getArtist());
-        intent.putExtra("artist",artist);
+        intent.putExtra("artist", artist);
         startActivity(intent);
     }
 }

@@ -18,11 +18,11 @@
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
             app:collapsedTitleTextAppearance="@style/collapsingToolBar"
             app:expandedTitleTextAppearance="@style/collapsingToolBar"
-
             app:expandedTitleMarginStart="48dp"
             app:expandedTitleMarginEnd="64dp"
             app:layout_collapseMode="parallax"
             >
+
 
             <ImageView
                 android:id="@+id/artist_image"
@@ -54,12 +54,17 @@
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical">
 
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="add to fav"
+                android:onClick="addToFavourites"/>
             <TextView
                 android:id="@+id/artist_name"
                 android:layout_width="match_parent"

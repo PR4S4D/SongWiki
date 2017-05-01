@@ -31,7 +31,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.activity.ArtistActivity" />
+        <activity android:name=".ui.activity.ArtistActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".ui.activity.ArtistSearchResultsActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -43,7 +44,7 @@
             android:authorities="com.slp.songwiki" />
 
         <activity android:name=".ui.activity.FavouriteArtistActivity" />
-        <activity android:name=".ui.activity.TrackSearchResultsActivty" />
+        <activity android:name=".ui.activity.TrackSearchResultsActivity" />
         <activity android:name=".ui.activity.TrackActivity" />
 
         <receiver android:name=".widget.ArtistWidget">

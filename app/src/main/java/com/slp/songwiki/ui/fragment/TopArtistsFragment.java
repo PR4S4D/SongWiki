@@ -29,6 +29,7 @@ import com.slp.songwiki.adapter.ArtistAdapter;
 import com.slp.songwiki.model.Artist;
 import com.slp.songwiki.ui.activity.ArtistActivity;
 import com.slp.songwiki.ui.activity.ArtistSearchResultsActivity;
+import com.slp.songwiki.ui.activity.TrackSearchResultsActivity;
 import com.slp.songwiki.utilities.ArtistUtils;
 
 import org.json.JSONException;
@@ -75,7 +76,7 @@ public class TopArtistsFragment extends Fragment implements SongWikiFragmentable
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.artist_menu, menu);
-        MenuItem menuItem = menu.findItem(R.id.search);
+        MenuItem menuItem = menu.findItem(R.id.search_artist);
         searchView = (SearchView) menuItem.getActionView();
         searchView.setMaxWidth(Integer.MAX_VALUE);
         searchView.setQueryHint(getString(R.string.artist_title));
