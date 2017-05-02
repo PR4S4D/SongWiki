@@ -5,7 +5,7 @@ package com.slp.songwiki.utilities;
  */
 
 public interface SongWikiConstants {
-    String LAST_FM_API_KEY = "";
+    String LAST_FM_API_KEY = "590c44628f39b7cb72d850d9d03709a8";
     String ARTIST_INFO_END_POINT = "http://ws.audioscrobbler.com/2.0/?method=artist.getinfo&format=json&api_key="+LAST_FM_API_KEY+"&artist=";
     String ARTIST_INFO_BASE_URL = "http://ws.audioscrobbler.com/2.0/?method=artist.getinfo&format=json";
     String TRACK_INFO_BASE__URL = "http://ws.audioscrobbler.com/2.0/?method=track.getInfo&format=json";
