@@ -78,7 +78,12 @@ public class TrackUtils {
     }
 
     public static List<Track> getTrackResult(String track) throws IOException, JSONException {
-        return null;
+        Log.i( "getTrackResult: ",LastFmUtils.getSearchTrackUrl(track).toString());
+        String resultsJson = NetworkUtils.getResponseFromHttpUrl(LastFmUtils.getSearchTrackUrl(track));
+        JSONObject json = new JSONObject(resultsJson);
+        JSONObject resultJson = json.getJSONObject("results");
+        JSONArray trackArray = resultJson.getJSONObject("trackmatches").getJSONArray("track");
+        return getTracksFromMatches(trackArray);
     }
 
     private static List<Track> getTracksFromMatches(JSONArray trackArray) throws JSONException {

@@ -61,7 +61,7 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <include android:layout="@layout/loading" />
+            <include layout="@layout/loading" />
 
 
             <Button

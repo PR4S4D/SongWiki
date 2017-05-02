@@ -69,7 +69,7 @@ public class TrackSearchResultsActivity extends AppCompatActivity implements Tra
         @Override
         protected void onPostExecute(List<Track> tracks) {
             if (null != tracks) {
-
+                error.setVisibility(View.GONE);
 
                 rvTracks.setAdapter(new TrackAdapter(tracks, TrackSearchResultsActivity.this));
                 int gridSize = 1;

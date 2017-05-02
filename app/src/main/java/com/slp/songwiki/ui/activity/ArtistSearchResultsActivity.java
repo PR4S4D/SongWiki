@@ -90,6 +90,7 @@ public class ArtistSearchResultsActivity extends AppCompatActivity implements Ar
         @Override
         protected void onPostExecute(List<Artist> artists) {
             if(null!=artists){
+                error.setVisibility(View.GONE);
                 rvArtists.setAdapter(new ArtistAdapter(artists, ArtistSearchResultsActivity.this));
                 int gridSize = 2;
                 rvArtists.setLayoutManager(new GridLayoutManager(ArtistSearchResultsActivity.this, gridSize));

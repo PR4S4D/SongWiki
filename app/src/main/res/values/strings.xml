@@ -16,5 +16,8 @@
     <string name="img">img</string>
     <string name="no_network">No Network Connectivity!</string>
     <string name="no_data">No Data!</string>
+    <string name="summary">Taylor Swift (born December 13, 1989 in Wyomissing, Pennsylvania) is an American country pop singer-songwriter and actress. Swift is a 10-time Grammy winner with a total of 23 nominations (Feb 2016). \n\nIn 2006, she released her debut single \"Tim McGraw\", then her self-titled debut album, which was subsequently certified multi-platinum by the Recording Industry Association of America.\n\nIn November 2008, Swift released her second album, Fearless, which featured a number of more pop oriented songs such as \"You Belong With Me\" and \"Love Story\"</string>
+    <string name="summary_head">Summary</string>
+    <string name="content_head">Content</string>
 
 </resources>

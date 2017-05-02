@@ -22,7 +22,7 @@ public interface SongWikiConstants {
     String JPG_EXTENSION = ".jpg";
     String LOCAL_IMAGE_BASE_URL = "file:///storage/emulated/0/";
     int TRACK_LIMIT =30;
-    int ARTIST_LIMIT = 10;
+    int ARTIST_LIMIT = 20;
     String LIMIT = "limit";
     String API_KEY = "api_key";
 }
