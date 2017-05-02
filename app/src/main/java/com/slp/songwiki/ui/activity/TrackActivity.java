@@ -1,5 +1,6 @@
 package com.slp.songwiki.ui.activity;
 
+import android.app.ActivityOptions;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -19,6 +20,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
+import android.util.Pair;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
@@ -45,7 +47,7 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class TrackActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Void>, View.OnClickListener {
+public class TrackActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Void>, View.OnClickListener, TrackAdapter.TrackItemClickListener {
 
     private static final int TRACK_LOADER = 456;
     private Track track;
@@ -64,8 +66,12 @@ public class TrackActivity extends AppCompatActivity implements LoaderManager.Lo
     FrameLayout loadingFrame;
     @Bind(R.id.toolbar)
     Toolbar toolbar;
+    @Bind(R.id.rv_similar_tracks)
+    RecyclerView rvTracks;
     @Bind(R.id.artist_card)
     CardView artistCard;
+    @Bind(R.id.similar_tracks_label)
+    TextView similarTracksLabel;
     private Palette.PaletteAsyncListener paletteListener;
 
     @Override
@@ -158,7 +164,8 @@ public class TrackActivity extends AppCompatActivity implements LoaderManager.Lo
             public Void loadInBackground() {
                 try {
                     TrackUtils.addTrackInfo(track);
-                    // similarTracks = TrackUtils.getSimilarTracks(track);
+                    similarTracks = TrackUtils.getSimilarTracks(track);
+
                 } catch (IOException | JSONException e) {
                     e.printStackTrace();
                 }
@@ -167,9 +174,22 @@ public class TrackActivity extends AppCompatActivity implements LoaderManager.Lo
         };
     }
 
+    private void initializeRecyclerView() {
+        if (null != similarTracks) {
+            similarTracksLabel.setVisibility(View.VISIBLE);
+            rvTracks.setAdapter(new TrackAdapter(similarTracks, this));
+            int gridSize = 1;
+            rvTracks.setLayoutManager(new GridLayoutManager(this, 1));
+            rvTracks.setHasFixedSize(true);
+        }
+    }
+
+
+
     @Override
     public void onLoadFinished(Loader<Void> loader, Void data) {
         loadingFrame.setVisibility(View.GONE);
+        initializeRecyclerView();
         if (null != track.getSummary()) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 summary.setText(Html.fromHtml(track.getSummary(), Html.FROM_HTML_MODE_COMPACT));
@@ -207,4 +227,18 @@ public class TrackActivity extends AppCompatActivity implements LoaderManager.Lo
     public void onClick(View v) {
 
     }
-}
+
+    @Override
+    public void onTrackItemClick(int position) {
+        if (null != similarTracks) {
+            Intent trackIntent = new Intent(this, TrackActivity.class);
+            Track clickedTrack = ((TrackAdapter) rvTracks.getAdapter()).getItem(position);
+            TrackAdapter.TrackViewHolder viewHolder = (TrackAdapter.TrackViewHolder) rvTracks.findViewHolderForAdapterPosition(position);
+            Pair[] pairs = new Pair[1];
+            pairs[0] = new Pair<>(viewHolder.getTrackImage(), viewHolder.getArtist().getText());
+            ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(this, pairs);
+            trackIntent.putExtra("track", clickedTrack);
+            startActivity(trackIntent, options.toBundle());
+        }
+
+}}

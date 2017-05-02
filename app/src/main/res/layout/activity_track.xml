@@ -103,6 +103,20 @@
 
            <include layout="@layout/summary"/>
 
+            <TextView
+                android:id="@+id/similar_tracks_label"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="8sp"
+                android:textSize="24sp"
+                android:visibility="gone"
+                android:text="@string/similarTracks"/>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_similar_tracks"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
 
         </LinearLayout>
 

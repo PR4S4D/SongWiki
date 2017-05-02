@@ -20,5 +20,6 @@
     <string name="summary_head">Summary</string>
     <string name="content_head">Content</string>
     <string name="go_to_artist">Go to artist</string>
+    <string name="similarTracks">Similar Tracks</string>
 
 </resources>
