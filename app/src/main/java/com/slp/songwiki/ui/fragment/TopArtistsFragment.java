@@ -193,8 +193,8 @@ public class TopArtistsFragment extends Fragment implements SongWikiFragmentable
             ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(getActivity(), pairs);
             artistIntent.putExtra("artist", clickedArtist);
             Bundle params = new Bundle();
-            params.putString("artist", clickedArtist.getName());
-            firebaseAnalytics.logEvent("artist", params);
+            params.putString(FirebaseAnalytics.Param.ITEM_NAME, clickedArtist.getName());
+            firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, params);
             startActivity(artistIntent, options.toBundle());
 
         }

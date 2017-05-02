@@ -45,7 +45,8 @@
 
         <activity android:name=".ui.activity.FavouriteArtistActivity" />
         <activity android:name=".ui.activity.TrackSearchResultsActivity" />
-        <activity android:name=".ui.activity.TrackActivity" />
+        <activity android:name=".ui.activity.TrackActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
 
         <receiver android:name=".widget.ArtistWidget">
             <intent-filter>
