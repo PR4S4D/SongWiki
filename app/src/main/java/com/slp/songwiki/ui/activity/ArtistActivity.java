@@ -1,7 +1,9 @@
 package com.slp.songwiki.ui.activity;
 
 import android.Manifest;
+import android.app.ActivityOptions;
 import android.content.ContentValues;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
@@ -13,18 +15,24 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
+import android.util.Pair;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.slp.songwiki.R;
+import com.slp.songwiki.adapter.ArtistAdapter;
 import com.slp.songwiki.data.FavouriteArtistContract;
 import com.slp.songwiki.model.Artist;
 import com.slp.songwiki.utilities.ArtistUtils;
@@ -34,13 +42,15 @@ import com.squareup.picasso.Picasso;
 import org.json.JSONException;
 
 import java.io.IOException;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class ArtistActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<String>, SearchView.OnQueryTextListener {
+public class ArtistActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<String>, SearchView.OnQueryTextListener, ArtistAdapter.ListItemClickListener {
 
     private Artist artist;
+    private List<Artist> similarArtists;
     @Bind(R.id.artist_image)
     ImageView artistImage;
     @Bind(R.id.listeners)
@@ -57,6 +67,11 @@ public class ArtistActivity extends AppCompatActivity implements LoaderManager.L
     CollapsingToolbarLayout collapsingToolbarLayout;
     @Bind(R.id.loading_frame)
     FrameLayout loadingFrame;
+    @Bind(R.id.rv_similar_artists)
+    RecyclerView rvSimilarArtists;
+    @Bind(R.id.similar_artists_label)
+    TextView similarArtistsLabel;
+
 
     private boolean basicInfoSet = false;
 
@@ -72,12 +87,12 @@ public class ArtistActivity extends AppCompatActivity implements LoaderManager.L
     }
 
     private void showArtistInfo() {
-        if (ArtistUtils.isArtistInfoAvailable(artist))
+        if (ArtistUtils.isArtistImageSet(artist))
             showArtistBasicInfo();
-        if(getIntent().getBooleanExtra("isFavourite",false) && ! NetworkUtils.isNetworkAvailable(this)){
+        if (getIntent().getBooleanExtra("isFavourite", false) && !NetworkUtils.isNetworkAvailable(this)) {
             showArtistBasicInfo();
             showArtistAdvancedInfo();
-        }else{
+        } else {
 
             getSupportLoaderManager().initLoader(12, null, this);
         }
@@ -87,7 +102,7 @@ public class ArtistActivity extends AppCompatActivity implements LoaderManager.L
     private void showArtistBasicInfo() {
         basicInfoSet = true;
         Picasso.with(this).load(artist.getImageLink()).into(artistImage);
-        listeners.setText(String.valueOf(artist.getListeners()));
+
         artistImage.setTransitionName(artist.getName());
         artistName.setText(artist.getName());
     }
@@ -99,9 +114,10 @@ public class ArtistActivity extends AppCompatActivity implements LoaderManager.L
             } else {
                 summary.setText(Html.fromHtml(artist.getSummary()));
             }
-            summary.setMovementMethod (LinkMovementMethod.getInstance());
+            summary.setMovementMethod(LinkMovementMethod.getInstance());
             summary.setClickable(true);
         }
+        listeners.setText(String.valueOf(artist.getListeners()));
         publishDate.setText(artist.getPublishedOn());
     }
 
@@ -130,10 +146,24 @@ public class ArtistActivity extends AppCompatActivity implements LoaderManager.L
 
     @Override
     public void onLoadFinished(Loader<String> loader, String data) {
+        Log.i("onLoadFinished: ", artist.toString());
         loadingFrame.setVisibility(View.GONE);
         if (!basicInfoSet)
             showArtistBasicInfo();
         showArtistAdvancedInfo();
+        showSimilarArtists();
+    }
+
+    private void showSimilarArtists() {
+        if (artist.getSimilarArtists() != null && artist.getSimilarArtists().size() > 0) {
+            similarArtists = artist.getSimilarArtists();
+            rvSimilarArtists.setAdapter(new ArtistAdapter(similarArtists, this));
+            // int gridSize = 2;
+            LinearLayoutManager layout = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+            layout.setInitialPrefetchItemCount(2);
+            rvSimilarArtists.setLayoutManager(layout);
+            rvSimilarArtists.setHasFixedSize(true);
+        }
     }
 
 
@@ -187,5 +217,21 @@ public class ArtistActivity extends AppCompatActivity implements LoaderManager.L
         int permissionCheck = ContextCompat.checkSelfPermission(this,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE);
         return permissionCheck == PackageManager.PERMISSION_GRANTED;
+    }
+
+    @Override
+    public void onListItemClick(int clickedItemIndex) {
+        if (null != similarArtists) {
+            Intent artistIntent = new Intent(this, ArtistActivity.class);
+            Artist clickedArtist = ((ArtistAdapter) rvSimilarArtists.getAdapter()).getItem(clickedItemIndex);
+            ArtistAdapter.ArtistViewHolder viewHolder = (ArtistAdapter.ArtistViewHolder) rvSimilarArtists.findViewHolderForAdapterPosition(clickedItemIndex);
+            Pair[] pairs = new Pair[1];
+            pairs[0] = new Pair<>(viewHolder.getArtistImage(), viewHolder.getArtistName().getText());
+            ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(this, pairs);
+            artistIntent.putExtra("artist", clickedArtist);
+            startActivity(artistIntent, options.toBundle());
+
+        }
+
     }
 }

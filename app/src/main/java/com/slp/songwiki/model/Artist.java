@@ -3,6 +3,9 @@ package com.slp.songwiki.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by lshivaram on 4/30/2017.
  */
@@ -14,63 +17,7 @@ public class Artist implements Parcelable {
     private String publishedOn;
     private String summary;
     private String content;
-
-    public Artist(String name, long listeners, String imageLink, String publishedOn, String summary, String content) {
-        this.name = name;
-        this.listeners = listeners;
-        this.imageLink = imageLink;
-        this.publishedOn = publishedOn;
-        this.summary = summary;
-        this.content = content;
-    }
-
-    public Artist() {
-
-    }
-
-    public Artist(String name, long listeners, String imageLink) {
-        this.name = name;
-        this.listeners = listeners;
-        this.imageLink = imageLink;
-    }
-
-
-    protected Artist(Parcel in) {
-        name = in.readString();
-        listeners = in.readLong();
-        imageLink = in.readString();
-        publishedOn = in.readString();
-        summary = in.readString();
-        content = in.readString();
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(name);
-        dest.writeLong(listeners);
-        dest.writeString(imageLink);
-        dest.writeString(publishedOn);
-        dest.writeString(summary);
-        dest.writeString(content);
-    }
-
-    @SuppressWarnings("unused")
-    public static final Parcelable.Creator<Artist> CREATOR = new Parcelable.Creator<Artist>() {
-        @Override
-        public Artist createFromParcel(Parcel in) {
-            return new Artist(in);
-        }
-
-        @Override
-        public Artist[] newArray(int size) {
-            return new Artist[size];
-        }
-    };
+    private List<Artist> similarArtists;
 
     public String getName() {
         return name;
@@ -120,6 +67,9 @@ public class Artist implements Parcelable {
         this.content = content;
     }
 
+    public List<Artist> getSimilarArtists() {
+        return similarArtists;
+    }
 
     @Override
     public String toString() {
@@ -130,6 +80,79 @@ public class Artist implements Parcelable {
                 ", publishedOn='" + publishedOn + '\'' +
                 ", summary='" + summary + '\'' +
                 ", content='" + content + '\'' +
+                ", similarArtists=" + similarArtists +
                 '}';
     }
+
+    public void setSimilarArtists(List<Artist> similarArtists) {
+        this.similarArtists = similarArtists;
+    }
+
+    public Artist(String name, long listeners, String imageLink, String publishedOn, String summary, String content) {
+        this.name = name;
+        this.listeners = listeners;
+        this.imageLink = imageLink;
+        this.publishedOn = publishedOn;
+        this.summary = summary;
+
+        this.content = content;
+    }
+
+    public Artist() {
+
+    }
+
+    public Artist(String name, String imageLink) {
+        this.name = name;
+        this.imageLink = imageLink;
+    }
+
+    protected Artist(Parcel in) {
+        name = in.readString();
+        listeners = in.readLong();
+        imageLink = in.readString();
+        publishedOn = in.readString();
+        summary = in.readString();
+        content = in.readString();
+        if (in.readByte() == 0x01) {
+            similarArtists = new ArrayList<Artist>();
+            in.readList(similarArtists, Artist.class.getClassLoader());
+        } else {
+            similarArtists = null;
+        }
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(name);
+        dest.writeLong(listeners);
+        dest.writeString(imageLink);
+        dest.writeString(publishedOn);
+        dest.writeString(summary);
+        dest.writeString(content);
+        if (similarArtists == null) {
+            dest.writeByte((byte) (0x00));
+        } else {
+            dest.writeByte((byte) (0x01));
+            dest.writeList(similarArtists);
+        }
+    }
+
+    @SuppressWarnings("unused")
+    public static final Parcelable.Creator<Artist> CREATOR = new Parcelable.Creator<Artist>() {
+        @Override
+        public Artist createFromParcel(Parcel in) {
+            return new Artist(in);
+        }
+
+        @Override
+        public Artist[] newArray(int size) {
+            return new Artist[size];
+        }
+    };
 }

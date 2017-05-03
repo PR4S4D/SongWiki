@@ -27,8 +27,6 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.crypto.AEADBadTagException;
-
 /**
  * Created by lshivaram on 4/30/2017.
  */
@@ -46,16 +44,17 @@ public class ArtistUtils implements SongWikiConstants {
     @NonNull
     private static List<Artist> getArtists(JSONArray artistArray) throws JSONException {
         String name;
-        long listeners;
+        //long listeners = null;
         String imageLink;
         List<Artist> artists = new ArrayList<>();
         for (int i = 0; i < artistArray.length(); i++) {
             JSONObject artist = (JSONObject) artistArray.get(i);
             if (null != artist) {
                 name = (String) artist.get("name");
-                listeners = Long.valueOf((String) artist.get("listeners"));
+                /*if(artist.has("listeners"))
+                listeners = Long.valueOf((String) artist.get("listeners"));*/
                 imageLink = LastFmUtils.getImage((JSONArray) artist.get("image"));
-                artists.add(new Artist(name, listeners, imageLink));
+                artists.add(new Artist(name,  imageLink));
             }
         }
         return artists;
@@ -108,7 +107,7 @@ public class ArtistUtils implements SongWikiConstants {
         return artist;
     }
 
-    public static boolean isArtistInfoAvailable(Artist artist) {
+    public static boolean isArtistImageSet(Artist artist) {
         return  null != artist.getImageLink();
     }
 
@@ -121,11 +120,16 @@ public class ArtistUtils implements SongWikiConstants {
             if (null != artistDetails) {
                 JSONObject jsonObject = new JSONObject(artistDetails);
                 JSONObject artistObject = jsonObject.getJSONObject("artist");
-                if(!isArtistInfoAvailable(artist)){
+                if(!isArtistImageSet(artist)){
                     artist.setImageLink(LastFmUtils.getImage(artistObject.getJSONArray("image")));
-                    artist.setListeners(Long.valueOf((String) artistObject.getJSONObject("stats").getString("listeners")));
                 }
+                artist.setListeners(Long.valueOf((String) artistObject.getJSONObject("stats").getString("listeners")));
                 JSONObject artistBio = artistObject.getJSONObject("bio");
+                if(artistObject.has("similar")) {
+                    List<Artist> similarArtists = getArtists(artistObject.getJSONObject("similar").getJSONArray("artist"));
+                    artist.setSimilarArtists(similarArtists);
+                }
+
                 artist.setPublishedOn(artistBio.getString("published"));
                 artist.setSummary(artistBio.getString("summary"));
             }
