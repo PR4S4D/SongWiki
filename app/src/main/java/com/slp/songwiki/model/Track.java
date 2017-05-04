@@ -20,6 +20,7 @@ public class Track implements Parcelable {
     private String imageLink;
     private String summary;
     private List<String> tags;
+    private String trackLink;
 
     public Track(String title, String artist, long listeners, String imageLink) {
         this.title = title;
@@ -28,9 +29,27 @@ public class Track implements Parcelable {
         this.imageLink = imageLink;
     }
 
+    public Track(String title, String artist, long listeners, String imageLink, String trackLink) {
+        this.title = title;
+        this.artist = artist;
+        this.listeners = listeners;
+        this.imageLink = imageLink;
+        this.trackLink = trackLink;
+    }
+
     public Track() {
 
     }
+
+
+    public String getTrackLink() {
+        return trackLink;
+    }
+
+    public void setTrackLink(String trackLink) {
+        this.trackLink = trackLink;
+    }
+
 
     public List<String> getTags() {
         return tags;
@@ -112,7 +131,6 @@ public class Track implements Parcelable {
         this.summary = summary;
     }
 
-
     protected Track(Parcel in) {
         title = in.readString();
         artist = in.readString();
@@ -129,6 +147,7 @@ public class Track implements Parcelable {
         } else {
             tags = null;
         }
+        trackLink = in.readString();
     }
 
     @Override
@@ -153,6 +172,7 @@ public class Track implements Parcelable {
             dest.writeByte((byte) (0x01));
             dest.writeList(tags);
         }
+        dest.writeString(trackLink);
     }
 
     @SuppressWarnings("unused")
@@ -167,6 +187,7 @@ public class Track implements Parcelable {
             return new Track[size];
         }
     };
+
 
     @Override
     public String toString() {

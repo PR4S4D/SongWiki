@@ -35,12 +35,14 @@ public class TrackUtils {
         String artist = null;
         long listeners = 0;
         String imageLink = null;
+        String trackLink = null;
         for (int i = 0; i < jsonArray.length(); i++) {
             JSONObject trackInfo = (JSONObject) jsonArray.get(i);
             trackTitle = trackInfo.getString("name");
             artist = trackInfo.getJSONObject("artist").getString("name");
             if (trackInfo.has("listeners"))
                 listeners = Long.valueOf(trackInfo.getString("listeners"));
+
             imageLink = LastFmUtils.getImage(trackInfo.getJSONArray("image"));
             tracks.add(new Track(trackTitle, artist, listeners, imageLink));
         }
@@ -51,6 +53,7 @@ public class TrackUtils {
         String response = NetworkUtils.getResponseFromHttpUrl(LastFmUtils.getTrackInfoUrl(track.getArtist(), track.getTitle()));
         JSONObject jsonObject = new JSONObject(response);
         JSONObject trackInfo = jsonObject.getJSONObject("track");
+        track.setTrackLink( trackInfo.getString("url"));
         if (trackInfo.has("album")) {
 
             JSONObject albumJson = trackInfo.getJSONObject("album");
@@ -61,6 +64,7 @@ public class TrackUtils {
         if (trackInfo.has("wiki")) {
             JSONObject trackWiki = trackInfo.getJSONObject("wiki");
             track.setSummary(trackWiki.getString("summary"));
+            track.setContent(trackWiki.getString("content"));
         }
 
         if (trackInfo.has("toptags")) {

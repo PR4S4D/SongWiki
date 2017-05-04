@@ -17,7 +17,16 @@ public class Artist implements Parcelable {
     private String publishedOn;
     private String summary;
     private String content;
+    private String artistLink;
     private List<Artist> similarArtists;
+
+    public String getArtistLink() {
+        return artistLink;
+    }
+
+    public void setArtistLink(String artistLink) {
+        this.artistLink = artistLink;
+    }
 
     public String getName() {
         return name;
@@ -102,9 +111,10 @@ public class Artist implements Parcelable {
 
     }
 
-    public Artist(String name, String imageLink) {
+    public Artist(String name, String imageLink, String artistLink) {
         this.name = name;
         this.imageLink = imageLink;
+        this.artistLink = artistLink;
     }
 
     protected Artist(Parcel in) {
@@ -114,6 +124,7 @@ public class Artist implements Parcelable {
         publishedOn = in.readString();
         summary = in.readString();
         content = in.readString();
+        artistLink = in.readString();
         if (in.readByte() == 0x01) {
             similarArtists = new ArrayList<Artist>();
             in.readList(similarArtists, Artist.class.getClassLoader());
@@ -135,6 +146,7 @@ public class Artist implements Parcelable {
         dest.writeString(publishedOn);
         dest.writeString(summary);
         dest.writeString(content);
+        dest.writeString(artistLink);
         if (similarArtists == null) {
             dest.writeByte((byte) (0x00));
         } else {

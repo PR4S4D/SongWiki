@@ -45,7 +45,8 @@ public class ArtistUtils implements SongWikiConstants {
     private static List<Artist> getArtists(JSONArray artistArray) throws JSONException {
         String name;
         //long listeners = null;
-        String imageLink;
+        String imageLink = "";
+        String artistLink = "";
         List<Artist> artists = new ArrayList<>();
         for (int i = 0; i < artistArray.length(); i++) {
             JSONObject artist = (JSONObject) artistArray.get(i);
@@ -53,8 +54,10 @@ public class ArtistUtils implements SongWikiConstants {
                 name = (String) artist.get("name");
                 /*if(artist.has("listeners"))
                 listeners = Long.valueOf((String) artist.get("listeners"));*/
+                artistLink = artist.getString("url");
                 imageLink = LastFmUtils.getImage((JSONArray) artist.get("image"));
-                artists.add(new Artist(name,  imageLink));
+                artists.add(new Artist(name, imageLink, artistLink));
+
             }
         }
         return artists;
@@ -74,6 +77,7 @@ public class ArtistUtils implements SongWikiConstants {
         }
         return topChartArtist;
     }
+
 
     @Deprecated
     public static List<Artist> getTopChartArtist() throws IOException, JSONException {
@@ -103,12 +107,13 @@ public class ArtistUtils implements SongWikiConstants {
             JSONObject artistObject = jsonObject.getJSONObject("artist");
             artist.setName(artistObject.getString("name"));
             artist.setImageLink(LastFmUtils.getImage(artistObject.getJSONArray("image")));
+
         }
         return artist;
     }
 
     public static boolean isArtistImageSet(Artist artist) {
-        return  null != artist.getImageLink();
+        return null != artist.getImageLink();
     }
 
     public static void setArtistDetails(Artist artist) throws IOException, JSONException {
@@ -120,18 +125,22 @@ public class ArtistUtils implements SongWikiConstants {
             if (null != artistDetails) {
                 JSONObject jsonObject = new JSONObject(artistDetails);
                 JSONObject artistObject = jsonObject.getJSONObject("artist");
-                if(!isArtistImageSet(artist)){
+                if (!isArtistImageSet(artist)) {
                     artist.setImageLink(LastFmUtils.getImage(artistObject.getJSONArray("image")));
                 }
                 artist.setListeners(Long.valueOf((String) artistObject.getJSONObject("stats").getString("listeners")));
                 JSONObject artistBio = artistObject.getJSONObject("bio");
-                if(artistObject.has("similar")) {
+
+                if (artistObject.has("similar")) {
                     List<Artist> similarArtists = getArtists(artistObject.getJSONObject("similar").getJSONArray("artist"));
                     artist.setSimilarArtists(similarArtists);
                 }
 
                 artist.setPublishedOn(artistBio.getString("published"));
                 artist.setSummary(artistBio.getString("summary"));
+                artist.setContent(artistBio.getString("content"));
+                if (null == artist.getArtistLink())
+                    artist.setArtistLink(artistObject.getString("url"));
             }
         }
     }
@@ -139,7 +148,7 @@ public class ArtistUtils implements SongWikiConstants {
 
     public static List<Artist> getArtistResult(String artist) throws IOException, JSONException {
         //artist = getEncodedString(artist);
-      //  URL url = new URL(SEARCH_ARTIST_END_POINT + artist);
+        //  URL url = new URL(SEARCH_ARTIST_END_POINT + artist);
         String resultsJson = NetworkUtils.getResponseFromHttpUrl(LastFmUtils.getSearchArtistUrl(artist));
         JSONObject json = new JSONObject(resultsJson);
         JSONObject resultJson = json.getJSONObject("results");
@@ -154,7 +163,7 @@ public class ArtistUtils implements SongWikiConstants {
         cv.put(FavouriteArtistContract.ArtistEntry.LISTENERS, artist.getListeners());
         cv.put(FavouriteArtistContract.ArtistEntry.PUBLISHED_ON, artist.getPublishedOn());
         cv.put(FavouriteArtistContract.ArtistEntry.CONTENT, artist.getContent());
-        cv.put(FavouriteArtistContract.ArtistEntry.SUMMARY,artist.getSummary());
+        cv.put(FavouriteArtistContract.ArtistEntry.SUMMARY, artist.getSummary());
 
         return cv;
     }

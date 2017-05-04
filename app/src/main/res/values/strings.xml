@@ -22,5 +22,6 @@
     <string name="go_to_artist">Go to artist</string>
     <string name="similar_tracks">Similar Tracks</string>
     <string name="similar_artists">SImilar Artists</string>
+    <string name="share">share</string>
 
 </resources>

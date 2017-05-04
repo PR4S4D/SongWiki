@@ -7,6 +7,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.LoaderManager;
+import android.support.v4.app.ShareCompat;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
@@ -21,6 +22,8 @@ import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.util.Pair;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
@@ -82,6 +85,7 @@ public class TrackActivity extends AppCompatActivity implements LoaderManager.Lo
         track = getIntent().getParcelableExtra("track");
         collapsingToolbarLayout.setTitle(track.getTitle());
         toolbar.setTitle(track.getTitle());
+        setSupportActionBar(toolbar);
         setTrackInfo();
         try {
             Log.i("similar Artist", String.valueOf(LastFmUtils.getSimilarTracksUrl(track)));
@@ -148,6 +152,24 @@ public class TrackActivity extends AppCompatActivity implements LoaderManager.Lo
 
             }
         };
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.share_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.share) {
+            startActivity(Intent.createChooser(ShareCompat.IntentBuilder.from(this)
+                    .setType("text/plain")
+                    .setText(track.getTrackLink())
+                    .getIntent(), track.getTitle()));
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

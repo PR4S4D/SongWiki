@@ -7,11 +7,13 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
+import android.provider.CalendarContract;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.LoaderManager;
+import android.support.v4.app.ShareCompat;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.Loader;
@@ -24,9 +26,12 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
+import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.util.Pair;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -78,6 +83,8 @@ public class ArtistActivity extends AppCompatActivity implements LoaderManager.L
     FloatingActionButton favFab;
     @Bind(R.id.artist_info)
     NestedScrollView artistInfo;
+    @Bind(R.id.content)
+    TextView content;
 
 
     private boolean basicInfoSet = false;
@@ -90,6 +97,7 @@ public class ArtistActivity extends AppCompatActivity implements LoaderManager.L
         artist = getIntent().getParcelableExtra("artist");
         collapsingToolbarLayout.setTitle(artist.getName());
         toolbar.setTitle(artist.getName());
+        setSupportActionBar(toolbar);
         showArtistInfo();
         setFavouriteIcon();
     }
@@ -125,11 +133,9 @@ public class ArtistActivity extends AppCompatActivity implements LoaderManager.L
 
     private void showArtistAdvancedInfo() {
         if (null != artist.getSummary()) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                summary.setText(Html.fromHtml(artist.getSummary(), Html.FROM_HTML_MODE_COMPACT));
-            } else {
-                summary.setText(Html.fromHtml(artist.getSummary()));
-            }
+            summary.setText(getTextFromHtml(artist.getSummary()));
+            content.setText(getTextFromHtml(artist.getContent()));
+
             summary.setMovementMethod(LinkMovementMethod.getInstance());
             summary.setClickable(true);
         }
@@ -137,13 +143,39 @@ public class ArtistActivity extends AppCompatActivity implements LoaderManager.L
         publishDate.setText(artist.getPublishedOn());
     }
 
+    private Spanned getTextFromHtml(String htmlContent) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            return Html.fromHtml(htmlContent, Html.FROM_HTML_MODE_COMPACT);
+        } else {
+            return Html.fromHtml(htmlContent);
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.share_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.share) {
+            startActivity(Intent.createChooser(ShareCompat.IntentBuilder.from(this)
+                    .setType("text/plain")
+                    .setText(artist.getArtistLink())
+                    .getIntent(), artist.getName()));
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
 
     @Override
     public Loader<String> onCreateLoader(int id, Bundle args) {
         return new AsyncTaskLoader<String>(getApplicationContext()) {
             @Override
             protected void onStartLoading() {
-                loadingFrame.setVisibility(View.VISIBLE);
+                if (null == artist.getSummary())
+                    loadingFrame.setVisibility(View.VISIBLE);
                 forceLoad();
             }
 
@@ -168,6 +200,7 @@ public class ArtistActivity extends AppCompatActivity implements LoaderManager.L
             showArtistBasicInfo();
         showArtistAdvancedInfo();
         showSimilarArtists();
+        Log.i("onLoadFinished: ", String.valueOf(artist.getArtistLink()));
     }
 
     private void showSimilarArtists() {
