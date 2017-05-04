@@ -62,8 +62,6 @@ public class TrackActivity extends AppCompatActivity implements LoaderManager.Lo
     ImageView trackImage;
     @Bind(R.id.artist)
     TextView artist;
-    @Bind(R.id.summary)
-    TextView summary;
     @Bind(R.id.rv_tags)
     RecyclerView rvTags;
     @Bind(R.id.collapsing_tool_bar)
@@ -230,11 +228,9 @@ public class TrackActivity extends AppCompatActivity implements LoaderManager.Lo
     public void onLoadFinished(Loader<Void> loader, Void data) {
         loadingFrame.setVisibility(View.GONE);
         initializeRecyclerView();
-        if (null != track.getSummary()) {
-            summary.setText(getTextFromHtml(track.getSummary()));
+        if (null != track.getContent()) {
             content.setText(getTextFromHtml(track.getContent()));
 
-            makeLinkClickable(summary);
             makeLinkClickable(content);
         }
 

@@ -2,6 +2,7 @@ package com.slp.songwiki.adapter;
 
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.CardView;
@@ -18,6 +19,7 @@ import android.widget.TextView;
 
 import com.slp.songwiki.R;
 import com.slp.songwiki.model.Artist;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
@@ -94,6 +96,7 @@ public class ArtistAdapter extends RecyclerView.Adapter<ArtistAdapter.ArtistView
         int artistLayout = R.layout.artist_item;
         LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
         View view = inflater.inflate(artistLayout, viewGroup, false);
+        Picasso.with(viewGroup.getContext()).setLoggingEnabled(true);
         return new ArtistViewHolder(view);
 
     }
@@ -105,18 +108,43 @@ public class ArtistAdapter extends RecyclerView.Adapter<ArtistAdapter.ArtistView
     }
 
     @Override
-    public void onBindViewHolder(ArtistAdapter.ArtistViewHolder holder, int position) {
+    public void onBindViewHolder(final ArtistAdapter.ArtistViewHolder holder, int position) {
         holder.artistName.setText(artists.get(position).getName());
         String imageLink = artists.get(position).getImageLink();
         holder.artistImage.setTransitionName(artists.get(position).getName());
-        Log.i(TAG, "onBindViewHolder: "+imageLink);
-        if(TextUtils.isEmpty(imageLink)){
+        Log.i(TAG, "onBindViewHolder: " + imageLink);
+        if (TextUtils.isEmpty(imageLink)) {
 
-            Picasso.with(holder.artistImage.getContext()).load(R.drawable.artist).into(getImageTarget(holder));
-        }else{
+            Picasso.with(holder.artistImage.getContext()).load(R.drawable.artist).into(holder.artistImage);
+        } else {
 
-            Picasso.with(holder.artistImage.getContext()).load(imageLink).placeholder(R.drawable.artist).into(getImageTarget(holder));
+            Picasso.with(holder.artistImage.getContext()).load(imageLink).placeholder(R.drawable.artist).into(holder.artistImage, new Callback() {
+                @Override
+                public void onSuccess() {
+                    Bitmap bitmap = ((BitmapDrawable) holder.artistImage.getDrawable()).getBitmap();
+                    Palette palette = Palette.from(bitmap).generate();
+                    int defaultColor = Color.GRAY;
+                    int darkMutedColor = palette.getDarkMutedColor(defaultColor);
+                    int lightMutedColor = palette.getLightMutedColor(defaultColor);
+                    Palette.Swatch vibrant = palette.getVibrantSwatch();
+                    if (vibrant != null) {
+                        Log.i(TAG, "onGenerated: vibrant is not null" + holder.artistName.getText());
+                        holder.artistCard.setCardBackgroundColor(vibrant.getRgb());
+                        holder.artistName.setTextColor(vibrant.getTitleTextColor());
+                    } else {
+                        Log.i(TAG, "onGenerated: vibrant is null" + holder.artistName.getText());
+                        holder.artistCard.setCardBackgroundColor(lightMutedColor);
+                        holder.artistName.setTextColor(darkMutedColor);
+                    }
+                }
+
+                @Override
+                public void onError() {
+
+                }
+            });
         }
+
 
     }
 
@@ -143,53 +171,6 @@ public class ArtistAdapter extends RecyclerView.Adapter<ArtistAdapter.ArtistView
         return 0;
     }
 
-    private Target getImageTarget(final ArtistViewHolder holder) {
-        return new Target() {
-            @Override
-            public void onBitmapLoaded(final Bitmap bitmap, Picasso.LoadedFrom from) {
-                Palette.from(bitmap).generate(new Palette.PaletteAsyncListener() {
-
-
-                    @Override
-                    public void onGenerated(Palette palette) {
-                        holder.artistImage.setImageBitmap(bitmap);
-                        int defaultColor = Color.GRAY;
-                        int darkMutedColor = palette.getDarkMutedColor(defaultColor);
-                        int lightMutedColor = palette.getLightMutedColor(defaultColor);
-                        Palette.Swatch vibrant = palette.getVibrantSwatch();
-                        if (vibrant != null) {
-                            Log.i(TAG, "onGenerated: vibrant is not null"+holder.artistName.getText());
-                            holder.artistCard.setCardBackgroundColor(vibrant.getRgb());
-                            holder.artistName.setTextColor(vibrant.getTitleTextColor());
-                        } else {
-                            Log.i(TAG, "onGenerated: vibrant is null"+holder.artistName.getText());
-                            holder.artistCard.setCardBackgroundColor(lightMutedColor);
-                            holder.artistName.setTextColor(darkMutedColor);
-                        }
-
-                       new Runnable() {
-                            public void run() {
-                                ArtistAdapter.this.notifyDataSetChanged();
-                            }
-                        };
-
-                    }
-                });
-            }
-
-
-            @Override
-            public void onBitmapFailed(Drawable errorDrawable) {
-                Log.e(TAG, "onBitmapFailed: image loading failed");
-            }
-
-
-            @Override
-            public void onPrepareLoad(Drawable placeHolderDrawable) {
-
-            }
-        };
-    }
 
     public class ArtistViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public ImageView getArtistImage() {

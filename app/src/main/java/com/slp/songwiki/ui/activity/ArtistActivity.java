@@ -176,7 +176,7 @@ public class ArtistActivity extends AppCompatActivity implements LoaderManager.L
     }
 
     private void showArtistAdvancedInfo() {
-        if (null != artist.getSummary()) {
+        if (null != artist.getContent()) {
             content.setText(getTextFromHtml(artist.getContent()));
             makeLinkClickable(content);
         }
@@ -260,7 +260,7 @@ public class ArtistActivity extends AppCompatActivity implements LoaderManager.L
         return new AsyncTaskLoader<String>(getApplicationContext()) {
             @Override
             protected void onStartLoading() {
-                if (null == artist.getSummary())
+                if (null == artist.getContent())
                     loadingFrame.setVisibility(View.VISIBLE);
                 forceLoad();
             }

@@ -66,8 +66,6 @@
             <include layout="@layout/loading" />
 
 
-            <include layout="@layout/summary" />
-
             <include layout="@layout/content" />
 
             <android.support.v7.widget.RecyclerView
