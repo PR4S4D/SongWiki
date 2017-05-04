@@ -139,8 +139,8 @@ public class ArtistActivity extends AppCompatActivity implements LoaderManager.L
             summary.setText(getTextFromHtml(artist.getSummary()));
             content.setText(getTextFromHtml(artist.getContent()));
 
-            summary.setMovementMethod(LinkMovementMethod.getInstance());
-            summary.setClickable(true);
+            makeLinkClickable(summary);
+            makeLinkClickable(content);
         }
         listeners.setText(String.valueOf(artist.getListeners()));
         publishDate.setText(artist.getPublishedOn());
@@ -158,6 +158,11 @@ public class ArtistActivity extends AppCompatActivity implements LoaderManager.L
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.share_menu, menu);
         return true;
+    }
+
+    private void makeLinkClickable(TextView textView) {
+        textView.setMovementMethod(LinkMovementMethod.getInstance());
+        textView.setClickable(true);
     }
 
     @Override

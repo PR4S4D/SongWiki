@@ -8,6 +8,6 @@
     android:layout_height="match_parent"
     android:gravity="center"
     android:textAppearance="@android:style/TextAppearance.Medium"
-    android:visibility="visible"
+    android:visibility="gone"
     android:text="@string/no_data"
     tools:showIn="@layout/fragment_track_top" />

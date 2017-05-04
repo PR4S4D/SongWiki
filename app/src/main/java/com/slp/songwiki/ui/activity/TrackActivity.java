@@ -3,6 +3,7 @@ package com.slp.songwiki.ui.activity;
 import android.app.ActivityOptions;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -17,8 +18,10 @@ import android.support.v7.widget.CardView;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
+import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.util.Pair;
@@ -39,6 +42,7 @@ import com.slp.songwiki.utilities.LastFmUtils;
 import com.slp.songwiki.utilities.TrackUtils;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
+import com.xiaofeng.flowlayoutmanager.FlowLayoutManager;
 
 import org.json.JSONException;
 
@@ -74,6 +78,10 @@ public class TrackActivity extends AppCompatActivity implements LoaderManager.Lo
     CardView artistCard;
     @Bind(R.id.similar_tracks_label)
     TextView similarTracksLabel;
+    @Bind(R.id.content)
+    TextView content;
+    private int backgroundColor;
+    private int textColor;
     private Palette.PaletteAsyncListener paletteListener;
 
     @Override
@@ -135,19 +143,18 @@ public class TrackActivity extends AppCompatActivity implements LoaderManager.Lo
         paletteListener = new Palette.PaletteAsyncListener() {
             public void onGenerated(Palette palette) {
                 int defaultColor = 0x000000;
-                int darkMutedColor = palette.getDarkMutedColor(defaultColor);
-                int lightMutedColor = palette.getLightMutedColor(defaultColor);
+                textColor = palette.getDarkMutedColor(defaultColor);
+                backgroundColor = palette.getLightMutedColor(defaultColor);
 
                 Palette.Swatch vibrant = palette.getVibrantSwatch();
                 if (vibrant != null) {
-                    artistCard.setBackgroundColor(vibrant.getRgb());
-                    artist.setTextColor(vibrant.getTitleTextColor());
-                    // bylineView.setTextColor(vibrant.getTitleTextColor());
-                } else {
-                    artistCard.setBackgroundColor(lightMutedColor);
-                    artist.setTextColor(darkMutedColor);
-                    //bylineView.setTextColor(darkMutedColor);
+                    backgroundColor = vibrant.getRgb();
+                    textColor = vibrant.getTitleTextColor();
+
+
                 }
+                artistCard.setBackgroundColor(backgroundColor);
+                artist.setTextColor(textColor);
 
 
             }
@@ -162,7 +169,7 @@ public class TrackActivity extends AppCompatActivity implements LoaderManager.Lo
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch(item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.share:
                 startActivity(Intent.createChooser(ShareCompat.IntentBuilder.from(this)
                         .setType("text/plain")
@@ -170,7 +177,7 @@ public class TrackActivity extends AppCompatActivity implements LoaderManager.Lo
                         .getIntent(), track.getTitle()));
                 break;
             case android.R.id.home:
-              finish();
+                finish();
                 break;
         }
         if (item.getItemId() == R.id.share) {
@@ -218,28 +225,47 @@ public class TrackActivity extends AppCompatActivity implements LoaderManager.Lo
     }
 
 
-
     @Override
     public void onLoadFinished(Loader<Void> loader, Void data) {
         loadingFrame.setVisibility(View.GONE);
         initializeRecyclerView();
         if (null != track.getSummary()) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                summary.setText(Html.fromHtml(track.getSummary(), Html.FROM_HTML_MODE_COMPACT));
-            } else {
-                summary.setText(Html.fromHtml(track.getSummary()));
-            }
-            summary.setMovementMethod(LinkMovementMethod.getInstance());
-            summary.setClickable(true);
+            summary.setText(getTextFromHtml(track.getSummary()));
+            content.setText(getTextFromHtml(track.getContent()));
+
+            makeLinkClickable(summary);
+            makeLinkClickable(content);
         }
 
         showTags();
     }
 
+    private void makeLinkClickable(TextView textView) {
+        textView.setMovementMethod(LinkMovementMethod.getInstance());
+        textView.setClickable(true);
+    }
+
+    private Spanned getTextFromHtml(String htmlContent) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            return Html.fromHtml(htmlContent, Html.FROM_HTML_MODE_COMPACT);
+        } else {
+            return Html.fromHtml(htmlContent);
+        }
+    }
+
     private void showTags() {
-        rvTags.setAdapter(new TagAdapter(track.getTags()));
+        rvTags.setAdapter(new TagAdapter(track.getTags(),backgroundColor,textColor));
+        FlowLayoutManager flowLayoutManager = new FlowLayoutManager();
+        flowLayoutManager.setAutoMeasureEnabled(true);
+
+        rvTags.setLayoutManager(flowLayoutManager);
         //int gridSize = 1;
-        rvTags.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false));
+/*        FlowLayoutManager flowLayoutManager = new FlowLayoutManager();
+       flowLayoutManager.setAutoMeasureEnabled(false);
+        rvTags.setLayoutManager(flowLayoutManager);
+         rvTags.setHasFixedSize(true);*/
+        //rvTags.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false));
+        // rvTags.setLayoutManager(new StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.HORIZONTAL,));
         rvTags.setHasFixedSize(true);
     }
 
@@ -274,4 +300,5 @@ public class TrackActivity extends AppCompatActivity implements LoaderManager.Lo
             startActivity(trackIntent, options.toBundle());
         }
 
-}}
+    }
+}

@@ -1,7 +1,13 @@
 package com.slp.songwiki.adapter;
 
+import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.support.v7.graphics.Palette;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,9 +19,12 @@ import android.widget.TextView;
 import com.slp.songwiki.R;
 import com.slp.songwiki.model.Artist;
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static android.content.ContentValues.TAG;
 
 /**
  * Created by lshivaram on 4/30/2017.
@@ -100,8 +109,14 @@ public class ArtistAdapter extends RecyclerView.Adapter<ArtistAdapter.ArtistView
         holder.artistName.setText(artists.get(position).getName());
         String imageLink = artists.get(position).getImageLink();
         holder.artistImage.setTransitionName(artists.get(position).getName());
-        if (!TextUtils.isEmpty(imageLink))
-            Picasso.with(holder.artistImage.getContext()).load(imageLink).into(holder.artistImage);
+        Log.i(TAG, "onBindViewHolder: "+imageLink);
+        if(TextUtils.isEmpty(imageLink)){
+
+            Picasso.with(holder.artistImage.getContext()).load(R.drawable.artist).into(getImageTarget(holder));
+        }else{
+
+            Picasso.with(holder.artistImage.getContext()).load(imageLink).into(getImageTarget(holder));
+        }
 
     }
 
@@ -128,6 +143,43 @@ public class ArtistAdapter extends RecyclerView.Adapter<ArtistAdapter.ArtistView
         return 0;
     }
 
+    private Target getImageTarget(final ArtistViewHolder holder) {
+        return new Target() {
+            @Override
+            public void onBitmapLoaded(final Bitmap bitmap, Picasso.LoadedFrom from) {
+                Palette.from(bitmap).generate(new Palette.PaletteAsyncListener() {
+                    @Override
+                    public void onGenerated(Palette palette) {
+                        holder.artistImage.setImageBitmap(bitmap);
+                        int defaultColor = Color.GRAY;
+                        int darkMutedColor = palette.getDarkMutedColor(defaultColor);
+                        int lightMutedColor = palette.getLightMutedColor(defaultColor);
+                        Palette.Swatch vibrant = palette.getVibrantSwatch();
+                        if (vibrant != null) {
+                            Log.i(TAG, "onGenerated: vibrant is not null"+holder.artistName.getText());
+                            holder.artistCard.setCardBackgroundColor(vibrant.getRgb());
+                            holder.artistName.setTextColor(vibrant.getTitleTextColor());
+                        } else {
+                            Log.i(TAG, "onGenerated: vibrant is null"+holder.artistName.getText());
+                            holder.artistCard.setCardBackgroundColor(lightMutedColor);
+                            holder.artistName.setTextColor(darkMutedColor);
+                        }
+                    }
+                });
+            }
+
+            @Override
+            public void onBitmapFailed(Drawable errorDrawable) {
+                Log.e(TAG, "onBitmapFailed: image loading failed");
+            }
+
+            @Override
+            public void onPrepareLoad(Drawable placeHolderDrawable) {
+
+            }
+        };
+    }
+
     public class ArtistViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public ImageView getArtistImage() {
             return artistImage;
@@ -139,6 +191,7 @@ public class ArtistAdapter extends RecyclerView.Adapter<ArtistAdapter.ArtistView
 
         ImageView artistImage;
         TextView artistName;
+        CardView artistCard;
 
         public ArtistViewHolder(View itemView) {
 
@@ -146,6 +199,8 @@ public class ArtistAdapter extends RecyclerView.Adapter<ArtistAdapter.ArtistView
             artistImage = (ImageView) itemView.findViewById(R.id.artist_image);
             artistName = (TextView) itemView.findViewById(R.id.artist_name);
             artistImage.setOnClickListener(this);
+            artistCard = (CardView) itemView.findViewById(R.id.artist_card);
+            artistCard.setOnClickListener(this);
         }
 
         @Override

@@ -76,41 +76,44 @@
                     android:weightSum="5">
 
 
-
-                        <TextView
-                            android:id="@+id/artist"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_weight="2"
-                            android:ellipsize="end"
-                            android:gravity="center_vertical"
-                            android:maxLines="1"
-                            android:paddingEnd="20dp"
-                            android:paddingStart="20dp"
-                            android:textSize="32sp"
-                            tools:text="@string/artist" />
-                    </LinearLayout>
+                    <TextView
+                        android:id="@+id/artist"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="2"
+                        android:ellipsize="end"
+                        android:gravity="center_vertical"
+                        android:maxLines="1"
+                        android:paddingEnd="20dp"
+                        android:paddingStart="20dp"
+                        android:textSize="32sp"
+                        tools:text="@string/artist" />
+                </LinearLayout>
 
 
             </android.support.v7.widget.CardView>
 
             <include layout="@layout/loading" />
 
+
+            <include layout="@layout/summary" />
+
+            <include layout="@layout/content" />
+
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rv_tags"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
-
-           <include layout="@layout/summary"/>
 
             <TextView
                 android:id="@+id/similar_tracks_label"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="8sp"
+                android:text="@string/similar_tracks"
                 android:textSize="24sp"
-                android:visibility="gone"
-                android:text="@string/similar_tracks"/>
+                android:visibility="gone" />
+
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rv_similar_tracks"

@@ -2,12 +2,16 @@ package com.slp.songwiki.ui.fragment;
 
 import android.app.ActivityOptions;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
+import android.support.v7.graphics.Palette;
 import android.util.Pair;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -34,6 +38,8 @@ import com.slp.songwiki.ui.activity.ArtistSearchResultsActivity;
 import com.slp.songwiki.ui.activity.TrackSearchResultsActivity;
 import com.slp.songwiki.utilities.ArtistUtils;
 import com.slp.songwiki.utilities.NetworkUtils;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
 import org.json.JSONException;
 
@@ -42,6 +48,8 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+
+import static android.content.ContentValues.TAG;
 
 /**
  * Created by lshivaram on 4/30/2017.
@@ -199,4 +207,6 @@ public class TopArtistsFragment extends Fragment implements SongWikiFragmentable
 
         }
     }
+
+
 }

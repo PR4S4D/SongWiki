@@ -34,6 +34,7 @@ dependencies {
     compile 'com.google.android.gms:play-services:10.2.4'
     compile 'com.jakewharton:butterknife:7.0.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    compile 'com.xiaofeng.android:flowlayoutmanager:1.2.3.2'
     testCompile 'junit:junit:4.12'
 }
 
