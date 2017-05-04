@@ -14,6 +14,7 @@ import android.widget.RemoteViewsService;
 import com.slp.songwiki.R;
 import com.slp.songwiki.model.Artist;
 import com.slp.songwiki.utilities.ArtistUtils;
+import com.slp.songwiki.utilities.NetworkUtils;
 
 import org.json.JSONException;
 
@@ -48,7 +49,8 @@ public class ArtistWidgetFactory implements RemoteViewsService.RemoteViewsFactor
 
 
         try {
-            artists = new GetPopularArtists().execute().get();
+            if (NetworkUtils.isNetworkAvailable(context))
+                artists = new GetPopularArtists().execute().get();
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
@@ -60,7 +62,7 @@ public class ArtistWidgetFactory implements RemoteViewsService.RemoteViewsFactor
         protected List<Artist> doInBackground(String... params) {
             try {
                 List<Artist> topChartArtists = ArtistUtils.getTopChartArtists();
-                for(Artist artist : topChartArtists){
+                for (Artist artist : topChartArtists) {
                     artistImages.add(downloadUrl(artist.getImageLink()));
                 }
                 return topChartArtists;
@@ -75,29 +77,28 @@ public class ArtistWidgetFactory implements RemoteViewsService.RemoteViewsFactor
             artists = data;
 
 
-            Log.i("onPostExecute: ",String.valueOf(artists));
+            Log.i("onPostExecute: ", String.valueOf(artists));
             AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
             RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.artist_widget_item);
-            /*Log.i("updating the widget in ",String.valueOf(intent.getIntArrayExtra("appWidgetIds")));
-            appWidgetManager.updateAppWidget(intent.getIntArrayExtra("appWidgetIds"),remoteViews);*/
+
             super.onPostExecute(artists);
         }
     }
 
-    private Bitmap downloadUrl(String strUrl) throws IOException{
+    private Bitmap downloadUrl(String strUrl) throws IOException {
 
-        Bitmap bitmap=null;
+        Bitmap bitmap = null;
         InputStream iStream = null;
-        try{
+        try {
             URL url = new URL(strUrl);
             HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.connect();
             iStream = urlConnection.getInputStream();
             bitmap = BitmapFactory.decodeStream(iStream);
 
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
-        }finally{
+        } finally {
             iStream.close();
         }
         return bitmap;
@@ -110,36 +111,36 @@ public class ArtistWidgetFactory implements RemoteViewsService.RemoteViewsFactor
 
     @Override
     public int getCount() {
-        if (null != artists){
-            Log.i("returning ","artist size");
+        if (null != artists) {
+            Log.i("returning ", "artist size");
             return artists.size();
         }
-        Log.i( "getCount: ","0");
+        Log.i("getCount: ", "0");
         return 0;
     }
 
     @Override
     public RemoteViews getViewAt(int position) {
-        if(null == artists)
+        if (null == artists)
             return null;
 
         final RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.artist_widget_item);
         final Artist artist = artists.get(position);
-        Log.i("getViewAt: ",artist.getName());
+        Log.i("getViewAt: ", artist.getName());
         remoteViews.setTextViewText(R.id.artist_name, artist.getName());
-        remoteViews.setImageViewBitmap(R.id.widget_image,artistImages.get(position));
+        remoteViews.setImageViewBitmap(R.id.widget_image, artistImages.get(position));
 
         Intent fillInIntent = new Intent();
-        fillInIntent.putExtra("artist",artist);
-        remoteViews.setOnClickFillInIntent(R.id.artist_item,fillInIntent);
+        fillInIntent.putExtra("artist", artist);
+        remoteViews.setOnClickFillInIntent(R.id.artist_item, fillInIntent);
 
-        return  remoteViews;
+        return remoteViews;
 
     }
 
     @Override
     public RemoteViews getLoadingView() {
-        return  new RemoteViews(context.getPackageName(), R.layout.artist_widget);
+        return new RemoteViews(context.getPackageName(), R.layout.artist_widget);
     }
 
     @Override

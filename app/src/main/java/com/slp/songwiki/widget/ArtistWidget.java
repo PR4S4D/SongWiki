@@ -23,6 +23,7 @@ public class ArtistWidget extends AppWidgetProvider {
         for (int appWidgetId : appWidgetIds) {
             RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.artist_widget);
             setWidgetOnClick(context, views);
+            views.setEmptyView(views.getLayoutId(),R.layout.error);
             Intent intent = new Intent(context, ArtistWidgetService.class);
             intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
             Log.i("updating the widget ", appWidgetIds.toString());
