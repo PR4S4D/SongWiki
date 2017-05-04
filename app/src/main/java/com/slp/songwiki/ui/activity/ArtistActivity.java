@@ -8,11 +8,14 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.Loader;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -71,6 +74,10 @@ public class ArtistActivity extends AppCompatActivity implements LoaderManager.L
     RecyclerView rvSimilarArtists;
     @Bind(R.id.similar_artists_label)
     TextView similarArtistsLabel;
+    @Bind(R.id.make_favourite)
+    FloatingActionButton favFab;
+    @Bind(R.id.artist_info)
+    NestedScrollView artistInfo;
 
 
     private boolean basicInfoSet = false;
@@ -84,6 +91,15 @@ public class ArtistActivity extends AppCompatActivity implements LoaderManager.L
         collapsingToolbarLayout.setTitle(artist.getName());
         toolbar.setTitle(artist.getName());
         showArtistInfo();
+        setFavouriteIcon();
+    }
+
+    private void setFavouriteIcon() {
+        if (ArtistUtils.isFavourite(getApplicationContext(), artist.getName())) {
+            favFab.setImageResource(R.drawable.ic_favorite);
+        } else {
+            favFab.setImageResource(R.drawable.make_favourite);
+        }
     }
 
     private void showArtistInfo() {
@@ -187,10 +203,13 @@ public class ArtistActivity extends AppCompatActivity implements LoaderManager.L
     public void addToFavourites(View view) {
         checkPermissions();
         if (isWritePermissionGranted()) {
-
-
             if (ArtistUtils.isFavourite(getApplicationContext(), artist.getName())) {
-                Toast.makeText(this, "It's already a fav", Toast.LENGTH_SHORT).show();
+                Uri uri = FavouriteArtistContract.ArtistEntry.CONTENT_URI;
+                String[] args = new String[]{String.valueOf(artist.getName())};
+                int id = getContentResolver().delete(uri, FavouriteArtistContract.ArtistEntry.ARTIST_NAME + "=?", args);
+                if (id > 0) {
+                    Toast.makeText(this, "removed from favourites", Toast.LENGTH_SHORT).show();
+                }
             } else {
                 Log.i("addToFavourites: ", artist.getName());
                 ContentValues artistContent = ArtistUtils.getArtistContent(artist);
@@ -205,6 +224,7 @@ public class ArtistActivity extends AppCompatActivity implements LoaderManager.L
         } else {
             Toast.makeText(this, "write permission not granted ", Toast.LENGTH_SHORT).show();
         }
+        setFavouriteIcon();
     }
 
     private void checkPermissions() {
