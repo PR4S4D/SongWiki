@@ -74,7 +74,6 @@ public class TrackUtils {
 
     private static List<String> getTopTags(JSONArray tagArray) throws JSONException {
         List<String> tags = new ArrayList<>();
-        if (null != tags)
             for (int i = 0; i < tagArray.length(); i++) {
                 tags.add(tagArray.getJSONObject(i).getString("name"));
             }

@@ -70,7 +70,7 @@ public class TopTracksFragment extends Fragment implements SongWikiFragmentable,
             loaderManager.initLoader(TOP_TRACKS, null, this);
             setHasOptionsMenu(true);
         } else {
-            Log.i(TAG, "onCreateView: "+"no network");
+            Log.i(TAG, "onCreateView: " + "no network");
             error.setVisibility(View.VISIBLE);
         }
         return rootView;
@@ -96,7 +96,9 @@ public class TopTracksFragment extends Fragment implements SongWikiFragmentable,
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                ((TrackAdapter) rvTracks.getAdapter()).getFilter().filter(newText);
+                TrackAdapter adapter = (TrackAdapter) rvTracks.getAdapter();
+                if (null != adapter)
+                    adapter.getFilter().filter(newText);
                 return true;
             }
         });

@@ -58,7 +58,6 @@ public class TrackSearchResultsActivity extends AppCompatActivity implements Tra
             List<Track> trackResult = null;
             try {
                 trackResult = TrackUtils.getTrackResult(track);
-                Log.i("doInBackground: ", String.valueOf(trackResult));
 
             } catch (IOException | JSONException e) {
                 e.printStackTrace();

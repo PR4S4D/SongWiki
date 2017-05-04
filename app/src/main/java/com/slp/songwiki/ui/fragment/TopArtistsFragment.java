@@ -78,13 +78,13 @@ public class TopArtistsFragment extends Fragment implements SongWikiFragmentable
         if (null == rootView)
             rootView = inflater.inflate(R.layout.fragment_artist_top, container, false);
         ButterKnife.bind(this, rootView);
-        if(NetworkUtils.isNetworkAvailable(getActivity())){
+        if (NetworkUtils.isNetworkAvailable(getActivity())) {
             error.setVisibility(View.GONE);
             loaderManager = getActivity().getSupportLoaderManager();
             loaderManager.initLoader(TOP_ARTISTS, null, this);
             setupFB();
             setHasOptionsMenu(true);
-        }else{
+        } else {
             error.setVisibility(View.VISIBLE);
         }
 
@@ -120,7 +120,9 @@ public class TopArtistsFragment extends Fragment implements SongWikiFragmentable
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                ((ArtistAdapter) rvArtists.getAdapter()).getFilter().filter(newText);
+                ArtistAdapter adapter = (ArtistAdapter) rvArtists.getAdapter();
+                if (null != adapter)
+                    adapter.getFilter().filter(newText);
                 return true;
             }
         });

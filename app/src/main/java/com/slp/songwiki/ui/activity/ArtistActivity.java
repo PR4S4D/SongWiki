@@ -5,8 +5,12 @@ import android.app.ActivityOptions;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
@@ -17,7 +21,8 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
+import android.support.v7.graphics.Palette;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
@@ -30,6 +35,7 @@ import android.util.Pair;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -37,11 +43,14 @@ import android.widget.Toast;
 
 import com.slp.songwiki.R;
 import com.slp.songwiki.adapter.ArtistAdapter;
+import com.slp.songwiki.adapter.TagAdapter;
 import com.slp.songwiki.data.FavouriteArtistContract;
 import com.slp.songwiki.model.Artist;
 import com.slp.songwiki.utilities.ArtistUtils;
 import com.slp.songwiki.utilities.NetworkUtils;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
+import com.xiaofeng.flowlayoutmanager.FlowLayoutManager;
 
 import org.json.JSONException;
 
@@ -57,12 +66,8 @@ public class ArtistActivity extends AppCompatActivity implements LoaderManager.L
     private List<Artist> similarArtists;
     @Bind(R.id.artist_image)
     ImageView artistImage;
-    @Bind(R.id.listeners)
-    TextView listeners;
     @Bind(R.id.artist_name)
     TextView artistName;
-    @Bind(R.id.artist_summary)
-    TextView summary;
     @Bind(R.id.publish_date)
     TextView publishDate;
     @Bind(R.id.toolbar)
@@ -77,10 +82,20 @@ public class ArtistActivity extends AppCompatActivity implements LoaderManager.L
     TextView similarArtistsLabel;
     @Bind(R.id.make_favourite)
     FloatingActionButton favFab;
+    TextView summary;
+    @Bind(R.id.rv_tags)
+    RecyclerView rvTags;
     @Bind(R.id.artist_info)
     NestedScrollView artistInfo;
     @Bind(R.id.content)
     TextView content;
+    @Bind(R.id.published_tv)
+    TextView publishedTV;
+    private int backgroundColor = Color.GRAY;
+    private int textColor = Color.BLACK;
+    @Bind(R.id.artist_card)
+    CardView artistCard;
+    private Palette.PaletteAsyncListener paletteListener;
 
 
     private boolean basicInfoSet = false;
@@ -120,6 +135,17 @@ public class ArtistActivity extends AppCompatActivity implements LoaderManager.L
         }
     }
 
+    private void showTags() {
+        rvTags.setAdapter(new TagAdapter(artist.getTags(), backgroundColor, textColor));
+        FlowLayoutManager flowLayoutManager = new FlowLayoutManager();
+        flowLayoutManager.setAutoMeasureEnabled(true);
+
+        rvTags.setLayoutManager(flowLayoutManager);
+
+        rvTags.setHasFixedSize(true);
+    }
+
+
     @Override
     public boolean onNavigateUp() {
         getSupportFragmentManager().popBackStack();
@@ -128,7 +154,22 @@ public class ArtistActivity extends AppCompatActivity implements LoaderManager.L
 
     private void showArtistBasicInfo() {
         basicInfoSet = true;
-        Picasso.with(this).load(artist.getImageLink()).into(artistImage);
+
+        Picasso.with(getApplicationContext()).load(artist.getImageLink()).into(artistImage,
+                new Callback() {
+                    @Override
+                    public void onSuccess() {
+                        scheduleStartPostponedTransition(artistImage);
+                        Bitmap bitmap = ((BitmapDrawable) artistImage.getDrawable()).getBitmap();
+                        setPaleteListener();
+                        Palette.from(bitmap).generate(paletteListener);
+                    }
+
+                    @Override
+                    public void onError() {
+                        Log.e("Track", "onError: loading image failed");
+                    }
+                });
 
         artistImage.setTransitionName(artist.getName());
         artistName.setText(artist.getName());
@@ -136,14 +177,48 @@ public class ArtistActivity extends AppCompatActivity implements LoaderManager.L
 
     private void showArtistAdvancedInfo() {
         if (null != artist.getSummary()) {
-            summary.setText(getTextFromHtml(artist.getSummary()));
             content.setText(getTextFromHtml(artist.getContent()));
-
-            makeLinkClickable(summary);
             makeLinkClickable(content);
         }
-        listeners.setText(String.valueOf(artist.getListeners()));
         publishDate.setText(artist.getPublishedOn());
+    }
+
+    private void scheduleStartPostponedTransition(final View sharedElement) {
+        sharedElement.getViewTreeObserver().addOnPreDrawListener(
+                new ViewTreeObserver.OnPreDrawListener() {
+                    @Override
+                    public boolean onPreDraw() {
+                        sharedElement.getViewTreeObserver().removeOnPreDrawListener(this);
+                        ArtistActivity.this.startPostponedEnterTransition();
+                        return true;
+                    }
+                });
+    }
+
+
+    private void setPaleteListener() {
+        paletteListener = new Palette.PaletteAsyncListener() {
+            public void onGenerated(Palette palette) {
+                int defaultColor = 0x000000;
+                textColor = palette.getDarkMutedColor(defaultColor);
+                backgroundColor = palette.getLightMutedColor(defaultColor);
+
+                Palette.Swatch vibrant = palette.getVibrantSwatch();
+                if (vibrant != null) {
+                    backgroundColor = vibrant.getRgb();
+                    textColor = vibrant.getTitleTextColor();
+
+
+                }
+                artistCard.setBackgroundColor(backgroundColor);
+                artistName.setTextColor(textColor);
+                publishedTV.setTextColor(textColor);
+                publishDate.setTextColor(textColor);
+                if (null != artist.getTags())
+                    showTags();
+
+            }
+        };
     }
 
     private Spanned getTextFromHtml(String htmlContent) {
@@ -216,6 +291,7 @@ public class ArtistActivity extends AppCompatActivity implements LoaderManager.L
 
     private void showSimilarArtists() {
         if (artist.getSimilarArtists() != null && artist.getSimilarArtists().size() > 0) {
+            similarArtistsLabel.setVisibility(View.VISIBLE);
             similarArtists = artist.getSimilarArtists();
             rvSimilarArtists.setAdapter(new ArtistAdapter(similarArtists, this));
             // int gridSize = 2;

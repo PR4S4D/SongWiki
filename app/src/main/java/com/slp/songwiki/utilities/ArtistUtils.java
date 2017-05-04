@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
+import android.nfc.Tag;
 import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -62,6 +63,7 @@ public class ArtistUtils implements SongWikiConstants {
         }
         return artists;
     }
+
 
     public static List<String> getTopChartArtistNames() throws IOException, JSONException {
         List<String> topChartArtist = new ArrayList<>();
@@ -135,6 +137,10 @@ public class ArtistUtils implements SongWikiConstants {
                     List<Artist> similarArtists = getArtists(artistObject.getJSONObject("similar").getJSONArray("artist"));
                     artist.setSimilarArtists(similarArtists);
                 }
+                if(artistObject.has("tags")){
+                    List<String> tags = getTags(artistObject.getJSONObject("tags").getJSONArray("tag"));
+                    artist.setTags(tags);
+                }
 
                 artist.setPublishedOn(artistBio.getString("published"));
                 artist.setSummary(artistBio.getString("summary"));
@@ -143,6 +149,14 @@ public class ArtistUtils implements SongWikiConstants {
                     artist.setArtistLink(artistObject.getString("url"));
             }
         }
+    }
+
+    private static List<String> getTags(JSONArray tagArray) throws JSONException {
+        List<String> tags = new ArrayList<>();
+        for (int i = 0; i < tagArray.length(); i++) {
+            tags.add(tagArray.getJSONObject(i).getString("name"));
+        }
+        return tags;
     }
 
 

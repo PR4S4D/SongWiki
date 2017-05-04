@@ -115,7 +115,7 @@ public class ArtistAdapter extends RecyclerView.Adapter<ArtistAdapter.ArtistView
             Picasso.with(holder.artistImage.getContext()).load(R.drawable.artist).into(getImageTarget(holder));
         }else{
 
-            Picasso.with(holder.artistImage.getContext()).load(imageLink).into(getImageTarget(holder));
+            Picasso.with(holder.artistImage.getContext()).load(imageLink).placeholder(R.drawable.artist).into(getImageTarget(holder));
         }
 
     }
@@ -148,6 +148,8 @@ public class ArtistAdapter extends RecyclerView.Adapter<ArtistAdapter.ArtistView
             @Override
             public void onBitmapLoaded(final Bitmap bitmap, Picasso.LoadedFrom from) {
                 Palette.from(bitmap).generate(new Palette.PaletteAsyncListener() {
+
+
                     @Override
                     public void onGenerated(Palette palette) {
                         holder.artistImage.setImageBitmap(bitmap);
@@ -164,14 +166,23 @@ public class ArtistAdapter extends RecyclerView.Adapter<ArtistAdapter.ArtistView
                             holder.artistCard.setCardBackgroundColor(lightMutedColor);
                             holder.artistName.setTextColor(darkMutedColor);
                         }
+
+                       new Runnable() {
+                            public void run() {
+                                ArtistAdapter.this.notifyDataSetChanged();
+                            }
+                        };
+
                     }
                 });
             }
+
 
             @Override
             public void onBitmapFailed(Drawable errorDrawable) {
                 Log.e(TAG, "onBitmapFailed: image loading failed");
             }
+
 
             @Override
             public void onPrepareLoad(Drawable placeHolderDrawable) {

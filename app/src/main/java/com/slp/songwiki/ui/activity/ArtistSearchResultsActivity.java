@@ -49,6 +49,7 @@ public class ArtistSearchResultsActivity extends AppCompatActivity implements Ar
         ButterKnife.bind(this);
         String searchQuery = getIntent().getStringExtra("artist");
         new SearchTask().execute(searchQuery);
+        rvArtists.setLayoutManager(new LinearLayoutManager(this));
     }
 
     @Override
@@ -79,7 +80,6 @@ public class ArtistSearchResultsActivity extends AppCompatActivity implements Ar
             List<Artist> artistResult = null;
             try {
                 artistResult = ArtistUtils.getArtistResult(artist);
-                Log.i("doInBackground: ", String.valueOf(artistResult));
 
             } catch (IOException | JSONException e) {
                 e.printStackTrace();
@@ -91,20 +91,24 @@ public class ArtistSearchResultsActivity extends AppCompatActivity implements Ar
         protected void onPostExecute(List<Artist> artists) {
             if(null!=artists){
                 error.setVisibility(View.GONE);
-                rvArtists.setAdapter(new ArtistAdapter(artists, ArtistSearchResultsActivity.this));
+                ArtistAdapter adapter = new ArtistAdapter(artists, ArtistSearchResultsActivity.this);
+                rvArtists.setAdapter(adapter);
                 int gridSize = 2;
                 rvArtists.setLayoutManager(new GridLayoutManager(ArtistSearchResultsActivity.this, gridSize));
           /*rvArtists.setLayoutManager(new
                   GridLayoutManager(getApplicationContext(), 1,GridLayoutManager.HORIZONTAL, false));*/
                 rvArtists.setHasFixedSize(true);
                 artistSearchLoader.setVisibility(GONE);
+                adapter.notifyDataSetChanged();
+
             }else{
                 artistSearchLoader.setVisibility(GONE);
                 error.setVisibility(View.VISIBLE);
             }
 
 
-            super.onPostExecute(artists);
+
+
         }
     }
 

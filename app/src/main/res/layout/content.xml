@@ -1,38 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/content_card"
-    android:elevation="4dp"
-    android:layout_margin="4dp"
-    app:cardCornerRadius="4dp">
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/content_head"
-        android:textSize="20sp"
-        android:layout_margin="8dp"
-        android:fontFamily="sans-serif"
-        android:textStyle="bold"/>
-
-    <TextView
-        android:id="@+id/content"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:text="@string/summary"
-        android:paddingStart="8dp"
-        android:paddingEnd="8dp"
-        android:layout_marginBottom="4dp"
-        android:textSize="16sp"/>
-    </LinearLayout>
-
-</android.support.v7.widget.CardView>
+    android:id="@+id/content"
+    style="?android:attr/textAppearanceMedium"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginEnd="12dp"
+    android:layout_marginStart="12dp"
+    tools:text="@string/summary"
+    android:ellipsize="marquee"
+    android:textColor="#000000" />

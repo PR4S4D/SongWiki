@@ -84,6 +84,7 @@ public class TrackActivity extends AppCompatActivity implements LoaderManager.Lo
     private int textColor;
     private Palette.PaletteAsyncListener paletteListener;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -259,13 +260,7 @@ public class TrackActivity extends AppCompatActivity implements LoaderManager.Lo
         flowLayoutManager.setAutoMeasureEnabled(true);
 
         rvTags.setLayoutManager(flowLayoutManager);
-        //int gridSize = 1;
-/*        FlowLayoutManager flowLayoutManager = new FlowLayoutManager();
-       flowLayoutManager.setAutoMeasureEnabled(false);
-        rvTags.setLayoutManager(flowLayoutManager);
-         rvTags.setHasFixedSize(true);*/
-        //rvTags.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false));
-        // rvTags.setLayoutManager(new StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.HORIZONTAL,));
+
         rvTags.setHasFixedSize(true);
     }
 
