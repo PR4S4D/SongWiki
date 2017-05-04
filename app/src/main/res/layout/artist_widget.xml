@@ -29,6 +29,15 @@
         android:dividerHeight="0.1px"
         tools:listitem="@layout/artist_widget_item" />
 
-    <include layout="@layout/error" />
+    <TextView
+        android:id="@+id/widget_empty"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/cardview_light_background"
+        android:fontFamily="sans-serif-condensed"
+        android:textColor="@android:color/black"
+        android:gravity="center"
+        android:text="No Data"
+        android:textAppearance="?android:textAppearanceLarge" />
 
 </LinearLayout>

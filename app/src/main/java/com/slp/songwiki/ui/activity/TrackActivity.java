@@ -28,7 +28,6 @@ import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.slp.songwiki.R;
@@ -85,6 +84,7 @@ public class TrackActivity extends AppCompatActivity implements LoaderManager.Lo
         track = getIntent().getParcelableExtra("track");
         collapsingToolbarLayout.setTitle(track.getTitle());
         toolbar.setTitle(track.getTitle());
+        toolbar.setNavigationIcon(R.drawable.ic_arrow_back);
         setSupportActionBar(toolbar);
         setTrackInfo();
         try {
@@ -162,6 +162,17 @@ public class TrackActivity extends AppCompatActivity implements LoaderManager.Lo
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()){
+            case R.id.share:
+                startActivity(Intent.createChooser(ShareCompat.IntentBuilder.from(this)
+                        .setType("text/plain")
+                        .setText(track.getTrackLink())
+                        .getIntent(), track.getTitle()));
+                break;
+            case android.R.id.home:
+              finish();
+                break;
+        }
         if (item.getItemId() == R.id.share) {
             startActivity(Intent.createChooser(ShareCompat.IntentBuilder.from(this)
                     .setType("text/plain")

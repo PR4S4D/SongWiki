@@ -7,9 +7,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
-import android.provider.CalendarContract;
 import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.LoaderManager;
@@ -20,7 +18,6 @@ import android.support.v4.content.Loader;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
@@ -38,7 +35,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.firebase.analytics.FirebaseAnalytics;
 import com.slp.songwiki.R;
 import com.slp.songwiki.adapter.ArtistAdapter;
 import com.slp.songwiki.data.FavouriteArtistContract;
@@ -98,6 +94,8 @@ public class ArtistActivity extends AppCompatActivity implements LoaderManager.L
         collapsingToolbarLayout.setTitle(artist.getName());
         toolbar.setTitle(artist.getName());
         setSupportActionBar(toolbar);
+        toolbar.setNavigationIcon(R.drawable.ic_arrow_back);
+
         showArtistInfo();
         setFavouriteIcon();
     }
@@ -122,6 +120,11 @@ public class ArtistActivity extends AppCompatActivity implements LoaderManager.L
         }
     }
 
+    @Override
+    public boolean onNavigateUp() {
+        getSupportFragmentManager().popBackStack();
+        return true;
+    }
 
     private void showArtistBasicInfo() {
         basicInfoSet = true;
@@ -164,6 +167,9 @@ public class ArtistActivity extends AppCompatActivity implements LoaderManager.L
                     .setType("text/plain")
                     .setText(artist.getArtistLink())
                     .getIntent(), artist.getName()));
+        } else if (item.getItemId() == android.R.id.home) {
+            finish();
+            return true;
         }
 
         return super.onOptionsItemSelected(item);
