@@ -12,7 +12,7 @@
         android:layout_gravity="center"
         android:layout_margin="@dimen/card_margin"
         android:elevation="3dp"
-        card_view:cardCornerRadius="@dimen/card_album_radius">
+        card_view:cardCornerRadius="@dimen/artist_card_radius">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -21,7 +21,7 @@
             <ImageView
                 android:id="@+id/artist_image"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/album_cover_height"
+                android:layout_height="@dimen/artist_image_height"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:clickable="true"
                 android:scaleType="fitXY"
@@ -37,7 +37,7 @@
                 android:paddingLeft="@dimen/album_title_padding"
                 android:paddingRight="@dimen/album_title_padding"
                 android:paddingTop="@dimen/album_title_padding"
-                android:textSize="@dimen/album_title" />
+                android:textSize="@dimen/artist_name" />
 
             <TextView
                 android:id="@+id/count"
