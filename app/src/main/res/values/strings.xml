@@ -27,5 +27,6 @@
     <string name="top_artists">Top Artists</string>
     <string name="artist_image">Artist image</string>
     <string name="top_results">Top Results</string>
+    <string name="no_connectivity">No Connectivity!</string>
 
 </resources>

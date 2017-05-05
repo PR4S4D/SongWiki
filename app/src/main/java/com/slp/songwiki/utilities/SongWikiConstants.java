@@ -1,11 +1,13 @@
 package com.slp.songwiki.utilities;
 
+import com.slp.songwiki.BuildConfig;
+
 /**
  * Created by lshivaram on 4/30/2017.
  */
 
 public interface SongWikiConstants {
-    String LAST_FM_API_KEY = "";
+    String LAST_FM_API_KEY = BuildConfig.MY_API_KEY;
     String ARTIST_INFO_END_POINT = "http://ws.audioscrobbler.com/2.0/?method=artist.getinfo&format=json&api_key="+LAST_FM_API_KEY+"&artist=";
     String ARTIST_INFO_BASE_URL = "http://ws.audioscrobbler.com/2.0/?method=artist.getinfo&format=json";
     String TRACK_INFO_BASE__URL = "http://ws.audioscrobbler.com/2.0/?method=track.getInfo&format=json";
@@ -25,4 +27,6 @@ public interface SongWikiConstants {
     int ARTIST_LIMIT = 20;
     String LIMIT = "limit";
     String API_KEY = "api_key";
+    String ARTIST = "artist";
+    String TRACK = "track";
 }

@@ -29,6 +29,7 @@ import com.slp.songwiki.R;
 import com.slp.songwiki.adapter.ArtistAdapter;
 import com.slp.songwiki.adapter.SongWikiPagerAdapter;
 import com.slp.songwiki.utilities.LastFmUtils;
+import com.slp.songwiki.utilities.NetworkUtils;
 
 public class SongWikiActivity extends AppCompatActivity {
 
@@ -53,7 +54,14 @@ public class SongWikiActivity extends AppCompatActivity {
         adView = (AdView) findViewById(R.id.banner_ad);
 
         showBannerAd();
+        if(NetworkUtils.isNetworkAvailable(this))
+            showErrorMessage();
     }
+
+    private void showErrorMessage() {
+        Snackbar.make(adView, R.string.no_connectivity, Snackbar.LENGTH_SHORT).show();
+    }
+
 
     private void showBannerAd() {
         adView.loadAd(getAdRequest());
