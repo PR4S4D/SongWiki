@@ -54,14 +54,8 @@ public class SongWikiActivity extends AppCompatActivity {
         adView = (AdView) findViewById(R.id.banner_ad);
 
         showBannerAd();
-        if(NetworkUtils.isNetworkAvailable(this))
-            showErrorMessage();
-    }
 
-    private void showErrorMessage() {
-        Snackbar.make(adView, R.string.no_connectivity, Snackbar.LENGTH_SHORT).show();
     }
-
 
     private void showBannerAd() {
         adView.loadAd(getAdRequest());

@@ -5,7 +5,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
-import android.nfc.Tag;
 import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -128,14 +127,14 @@ public class ArtistUtils implements SongWikiConstants {
                 if (!isArtistImageSet(artist)) {
                     artist.setImageLink(LastFmUtils.getImage(artistObject.getJSONArray("image")));
                 }
-                artist.setListeners(Long.valueOf( artistObject.getJSONObject("stats").getString("listeners")));
+                artist.setListeners(Long.valueOf(artistObject.getJSONObject("stats").getString("listeners")));
                 JSONObject artistBio = artistObject.getJSONObject("bio");
 
                 if (artistObject.has("similar")) {
                     List<Artist> similarArtists = getArtists(artistObject.getJSONObject("similar").getJSONArray("artist"));
                     artist.setSimilarArtists(similarArtists);
                 }
-                if(artistObject.has("tags")){
+                if (artistObject.has("tags")) {
                     List<String> tags = getTags(artistObject.getJSONObject("tags").getJSONArray("tag"));
                     artist.setTags(tags);
                 }

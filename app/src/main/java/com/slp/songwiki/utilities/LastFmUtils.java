@@ -11,7 +11,6 @@ import org.json.JSONObject;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLEncoder;
 
 /**
  * Created by lshivaram on 4/30/2017.
@@ -43,22 +42,22 @@ public class LastFmUtils implements SongWikiConstants {
         }
         return null;
     }
-    
+
     public static URL getArtistInfoUrl(String artist) throws MalformedURLException, UnsupportedEncodingException {
         Uri.Builder builder = Uri.parse(ARTIST_INFO_BASE_URL).buildUpon().appendQueryParameter("artist", artist);
         appendAPIKey(builder);
         return new URL(builder.build().toString());
     }
 
-    public static URL getTrackInfoUrl(String artist,String track) throws MalformedURLException {
-        Uri.Builder builder = Uri.parse(TRACK_INFO_BASE__URL).buildUpon().appendQueryParameter("artist",artist)
-                .appendQueryParameter("track",track);
+    public static URL getTrackInfoUrl(String artist, String track) throws MalformedURLException {
+        Uri.Builder builder = Uri.parse(TRACK_INFO_BASE__URL).buildUpon().appendQueryParameter("artist", artist)
+                .appendQueryParameter("track", track);
         appendAPIKey(builder);
         return new URL(builder.build().toString());
     }
 
     private static void appendAPIKey(Uri.Builder builder) {
-         builder.appendQueryParameter(API_KEY,LAST_FM_API_KEY);
+        builder.appendQueryParameter(API_KEY, LAST_FM_API_KEY);
     }
 
     public static URL getSearchArtistUrl(String artist) throws MalformedURLException {
@@ -75,7 +74,7 @@ public class LastFmUtils implements SongWikiConstants {
 
     public static URL getSimilarTracksUrl(Track track) throws MalformedURLException {
         Uri.Builder builder = Uri.parse(SIMILAR_TRACKS_BASE_URL).buildUpon().appendQueryParameter("track", track.getTitle())
-                .appendQueryParameter("artist",track.getArtist());
+                .appendQueryParameter("artist", track.getArtist());
         appendAPIKey(builder);
         return new URL(builder.build().toString());
     }

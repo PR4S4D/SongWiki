@@ -10,7 +10,6 @@ import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
-
 import com.slp.songwiki.R;
 import com.slp.songwiki.model.Artist;
 import com.slp.songwiki.utilities.ArtistUtils;

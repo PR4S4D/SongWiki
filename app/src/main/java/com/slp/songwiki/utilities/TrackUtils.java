@@ -31,11 +31,10 @@ public class TrackUtils {
 
     private static List<Track> getTracks(JSONArray jsonArray) throws JSONException {
         List<Track> tracks = new ArrayList<>();
-        String trackTitle = null;
-        String artist = null;
+        String trackTitle;
+        String artist;
         long listeners = 0;
-        String imageLink = null;
-        String trackLink = null;
+        String imageLink;
         for (int i = 0; i < jsonArray.length(); i++) {
             JSONObject trackInfo = (JSONObject) jsonArray.get(i);
             trackTitle = trackInfo.getString("name");

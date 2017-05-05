@@ -11,6 +11,6 @@ public class ArtistWidgetService extends RemoteViewsService {
     @Override
     public RemoteViewsFactory onGetViewFactory(Intent intent) {
 
-        return new ArtistWidgetFactory(getApplicationContext(),intent);
+        return new ArtistWidgetFactory(getApplicationContext(), intent);
     }
 }

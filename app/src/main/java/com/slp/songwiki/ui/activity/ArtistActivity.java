@@ -180,6 +180,8 @@ public class ArtistActivity extends AppCompatActivity implements LoaderManager.L
             content.setText(getTextFromHtml(artist.getContent()));
             makeLinkClickable(content);
         }
+        if(null != artist.getTags())
+            showTags();
         publishDate.setText(artist.getPublishedOn());
     }
 
