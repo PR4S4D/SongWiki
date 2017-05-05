@@ -34,7 +34,6 @@ public class SongWikiActivity extends AppCompatActivity {
 
     private SongWikiPagerAdapter pagerAdapter;
     private ViewPager mViewPager;
-    private SearchView searchView;
     private AdView adView;
 
     @Override
@@ -46,14 +45,12 @@ public class SongWikiActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         pagerAdapter = new SongWikiPagerAdapter(getSupportFragmentManager(),this);
 
-        // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(pagerAdapter);
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
         adView = (AdView) findViewById(R.id.banner_ad);
-
 
         showBannerAd();
     }

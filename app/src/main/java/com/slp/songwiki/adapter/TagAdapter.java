@@ -16,7 +16,7 @@ import java.util.List;
  */
 
 public class TagAdapter extends RecyclerView.Adapter<TagAdapter.TagViewHolder> {
-    List<String> tags;
+    private List<String> tags;
     private int backgroundColor;
     private int textColor;
 

@@ -71,6 +71,8 @@
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rv_tags"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
@@ -81,7 +83,8 @@
                 android:layout_height="wrap_content"
                 android:padding="8dp"
                 android:text="@string/similar_artists"
-                android:textSize="24sp"
+                android:textSize="16sp"
+                android:textStyle="bold"
                 android:visibility="gone" />
 
             <android.support.v7.widget.RecyclerView
@@ -101,7 +104,6 @@
         android:layout_margin="16dp"
         android:onClick="addToFavourites"
         android:scaleType="centerCrop"
-
         android:src="@drawable/make_favourite"
         app:fabSize="normal" />
 

@@ -34,9 +34,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/artist_image"
-                android:paddingLeft="@dimen/album_title_padding"
-                android:paddingRight="@dimen/album_title_padding"
-                android:paddingTop="@dimen/album_title_padding"
+                android:paddingLeft="@dimen/artist_name_padding"
+                android:paddingStart="@dimen/artist_name_padding"
+                android:paddingEnd="@dimen/artist_name_padding"
+                android:paddingRight="@dimen/artist_name_padding"
+                android:paddingTop="@dimen/artist_name_padding"
                 android:textSize="@dimen/artist_name" />
 
             <TextView
@@ -46,10 +48,12 @@
                 android:maxLines="2"
                 android:ellipsize="end"
                 android:layout_below="@id/artist_name"
-                android:paddingBottom="@dimen/songs_count_padding_bottom"
-                android:paddingLeft="@dimen/album_title_padding"
-                android:paddingRight="@dimen/album_title_padding"
-                android:textSize="@dimen/songs_count" />
+                android:paddingBottom="5dp"
+                android:paddingLeft="@dimen/artist_name_padding"
+                android:paddingStart="@dimen/artist_name_padding"
+                android:paddingEnd="@dimen/artist_name_padding"
+                android:paddingRight="@dimen/artist_name_padding"
+                android:textSize="12sp" />
 
 
         </RelativeLayout>

@@ -294,7 +294,6 @@ public class ArtistActivity extends AppCompatActivity implements LoaderManager.L
             similarArtistsLabel.setVisibility(View.VISIBLE);
             similarArtists = artist.getSimilarArtists();
             rvSimilarArtists.setAdapter(new ArtistAdapter(similarArtists, this));
-            // int gridSize = 2;
             LinearLayoutManager layout = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
             layout.setInitialPrefetchItemCount(2);
             rvSimilarArtists.setLayoutManager(layout);

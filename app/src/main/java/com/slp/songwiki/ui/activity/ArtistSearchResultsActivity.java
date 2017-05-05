@@ -18,6 +18,7 @@ import com.slp.songwiki.R;
 import com.slp.songwiki.adapter.ArtistAdapter;
 import com.slp.songwiki.model.Artist;
 import com.slp.songwiki.utilities.ArtistUtils;
+import com.slp.songwiki.utilities.SongWikiConstants;
 
 import org.json.JSONException;
 
@@ -33,7 +34,7 @@ import static android.view.View.GONE;
  * Created by lshivaram on 4/30/2017.
  */
 
-public class ArtistSearchResultsActivity extends AppCompatActivity implements ArtistAdapter.ListItemClickListener {
+public class ArtistSearchResultsActivity extends AppCompatActivity implements ArtistAdapter.ListItemClickListener, SongWikiConstants {
 
     @Bind(R.id.rv_artists)
     RecyclerView rvArtists;
@@ -47,7 +48,7 @@ public class ArtistSearchResultsActivity extends AppCompatActivity implements Ar
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_artist_search_results);
         ButterKnife.bind(this);
-        String searchQuery = getIntent().getStringExtra("artist");
+        String searchQuery = getIntent().getStringExtra(ARTIST);
         new SearchTask().execute(searchQuery);
         rvArtists.setLayoutManager(new LinearLayoutManager(this));
     }
@@ -61,7 +62,7 @@ public class ArtistSearchResultsActivity extends AppCompatActivity implements Ar
         ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(this, pairs);
         Intent intent = new Intent(this, ArtistActivity.class);
 
-        intent.putExtra("artist", clickedArtist);
+        intent.putExtra(ARTIST, clickedArtist);
         startActivity(intent, options.toBundle());
 
     }
@@ -89,27 +90,20 @@ public class ArtistSearchResultsActivity extends AppCompatActivity implements Ar
 
         @Override
         protected void onPostExecute(List<Artist> artists) {
-            if(null!=artists && artists.size() > 0){
-                setTitle("Top Results");
+            if (null != artists && artists.size() > 0) {
+                setTitle(getString(R.string.top_results));
                 error.setVisibility(View.GONE);
                 ArtistAdapter adapter = new ArtistAdapter(artists, ArtistSearchResultsActivity.this);
                 rvArtists.setAdapter(adapter);
                 int gridSize = getResources().getInteger(R.integer.artist_grid);
                 rvArtists.setLayoutManager(new GridLayoutManager(ArtistSearchResultsActivity.this, gridSize));
-          /*rvArtists.setLayoutManager(new
-                  GridLayoutManager(getApplicationContext(), 1,GridLayoutManager.HORIZONTAL, false));*/
                 rvArtists.setHasFixedSize(true);
                 artistSearchLoader.setVisibility(GONE);
                 adapter.notifyDataSetChanged();
-
-            }else{
+            } else {
                 artistSearchLoader.setVisibility(GONE);
                 error.setVisibility(View.VISIBLE);
             }
-
-
-
-
         }
     }
 

@@ -127,9 +127,6 @@ public class TrackAdapter extends RecyclerView.Adapter<TrackAdapter.TrackViewHol
 
         private ImageView trackImage;
 
-        public TextView getTrackTitle() {
-            return trackTitle;
-        }
 
         public ImageView getTrackImage() {
             return trackImage;

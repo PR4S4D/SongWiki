@@ -39,6 +39,7 @@ import com.slp.songwiki.adapter.TrackAdapter;
 import com.slp.songwiki.model.Artist;
 import com.slp.songwiki.model.Track;
 import com.slp.songwiki.utilities.LastFmUtils;
+import com.slp.songwiki.utilities.SongWikiConstants;
 import com.slp.songwiki.utilities.TrackUtils;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
@@ -53,7 +54,7 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class TrackActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Void>, View.OnClickListener, TrackAdapter.TrackItemClickListener {
+public class TrackActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Void>, View.OnClickListener, TrackAdapter.TrackItemClickListener, SongWikiConstants {
 
     private static final int TRACK_LOADER = 456;
     private Track track;
@@ -78,8 +79,8 @@ public class TrackActivity extends AppCompatActivity implements LoaderManager.Lo
     TextView similarTracksLabel;
     @Bind(R.id.content)
     TextView content;
-    private int backgroundColor;
-    private int textColor;
+    private int backgroundColor = Color.GRAY;
+    private int textColor = Color.BLACK;
     private Palette.PaletteAsyncListener paletteListener;
 
 
@@ -88,7 +89,7 @@ public class TrackActivity extends AppCompatActivity implements LoaderManager.Lo
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_track);
         ButterKnife.bind(this);
-        track = getIntent().getParcelableExtra("track");
+        track = getIntent().getParcelableExtra(TRACK);
         collapsingToolbarLayout.setTitle(track.getTitle());
         toolbar.setTitle(track.getTitle());
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back);
@@ -105,7 +106,6 @@ public class TrackActivity extends AppCompatActivity implements LoaderManager.Lo
 
     private void setTrackInfo() {
         trackImage.setTransitionName(track.getArtist());
-        //  Picasso.with(this).load(track.getImageLink()).into(trackImage);
         artist.setText(track.getArtist());
 
         Picasso.with(getApplicationContext()).load(track.getImageLink()).placeholder(R.drawable.loading).into(trackImage,
@@ -154,7 +154,8 @@ public class TrackActivity extends AppCompatActivity implements LoaderManager.Lo
                 }
                 artistCard.setBackgroundColor(backgroundColor);
                 artist.setTextColor(textColor);
-
+                if (null != track.getTags())
+                    showTags();
 
             }
         };
@@ -214,7 +215,7 @@ public class TrackActivity extends AppCompatActivity implements LoaderManager.Lo
     }
 
     private void initializeRecyclerView() {
-        if (null != similarTracks) {
+        if (null != similarTracks && similarTracks.size() > 0) {
             similarTracksLabel.setVisibility(View.VISIBLE);
             rvTracks.setAdapter(new TrackAdapter(similarTracks, this));
             int gridSize = getResources().getInteger(R.integer.track_grid);
@@ -251,7 +252,9 @@ public class TrackActivity extends AppCompatActivity implements LoaderManager.Lo
     }
 
     private void showTags() {
-        rvTags.setAdapter(new TagAdapter(track.getTags(),backgroundColor,textColor));
+
+
+        rvTags.setAdapter(new TagAdapter(track.getTags(), backgroundColor, textColor));
         FlowLayoutManager flowLayoutManager = new FlowLayoutManager();
         flowLayoutManager.setAutoMeasureEnabled(true);
 
@@ -287,7 +290,7 @@ public class TrackActivity extends AppCompatActivity implements LoaderManager.Lo
             Pair[] pairs = new Pair[1];
             pairs[0] = new Pair<>(viewHolder.getTrackImage(), viewHolder.getArtist().getText());
             ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(this, pairs);
-            trackIntent.putExtra("track", clickedTrack);
+            trackIntent.putExtra(TRACK, clickedTrack);
             startActivity(trackIntent, options.toBundle());
         }
 

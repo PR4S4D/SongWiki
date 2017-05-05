@@ -68,7 +68,7 @@ public class TrackSearchResultsActivity extends AppCompatActivity implements Tra
         @Override
         protected void onPostExecute(List<Track> tracks) {
             if (null != tracks && tracks.size() > 0) {
-                setTitle("Top Results");
+                setTitle(getString(R.string.top_results));
                 error.setVisibility(View.GONE);
 
                 rvTracks.setAdapter(new TrackAdapter(tracks, TrackSearchResultsActivity.this));

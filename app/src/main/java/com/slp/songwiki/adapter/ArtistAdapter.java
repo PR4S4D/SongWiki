@@ -55,7 +55,7 @@ public class ArtistAdapter extends RecyclerView.Adapter<ArtistAdapter.ArtistView
 
             @Override
             protected FilterResults performFiltering(CharSequence constraint) {
-                List<Artist> filteredResults = null;
+                List<Artist> filteredResults ;
                 if (constraint.length() == 0) {
                     filteredResults = artistsOld;
                 } else {
@@ -70,7 +70,7 @@ public class ArtistAdapter extends RecyclerView.Adapter<ArtistAdapter.ArtistView
         };
     }
 
-    protected List<Artist> getFilteredResults(String constraint) {
+    private List<Artist> getFilteredResults(String constraint) {
         List<Artist> results = new ArrayList<>();
 
         for (Artist artist : artists) {
@@ -149,21 +149,6 @@ public class ArtistAdapter extends RecyclerView.Adapter<ArtistAdapter.ArtistView
 
     }
 
-    public void filter(String text) {
-
-        artists.clear();
-        if (text.isEmpty()) {
-            artists.addAll(artists);
-        } else {
-            text = text.toLowerCase();
-            for (Artist item : artists) {
-                if (item.getName().toLowerCase().contains(text) || item.getName().toLowerCase().contains(text)) {
-                    artists.add(item);
-                }
-            }
-        }
-        notifyDataSetChanged();
-    }
 
     @Override
     public int getItemCount() {
@@ -186,7 +171,7 @@ public class ArtistAdapter extends RecyclerView.Adapter<ArtistAdapter.ArtistView
         TextView artistName;
         CardView artistCard;
 
-        public ArtistViewHolder(View itemView) {
+        private ArtistViewHolder(View itemView) {
 
             super(itemView);
             artistImage = (ImageView) itemView.findViewById(R.id.artist_image);

@@ -40,7 +40,7 @@
                 android:layout_weight="1"
                 android:paddingEnd="4dp"
                 android:paddingStart="20dp"
-                android:text="Published :"
+                android:text="@string/published"
                 android:textSize="16sp"
                 android:textStyle="bold" />
 

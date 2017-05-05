@@ -23,5 +23,9 @@
     <string name="similar_tracks">Similar Tracks</string>
     <string name="similar_artists">SImilar Artists</string>
     <string name="share">share</string>
+    <string name="published">Published :</string>
+    <string name="top_artists">Top Artists</string>
+    <string name="artist_image">Artist image</string>
+    <string name="top_results">Top Results</string>
 
 </resources>

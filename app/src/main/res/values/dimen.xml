@@ -4,5 +4,5 @@
     <dimen name="artist_card_radius">0dp</dimen>
     <dimen name="artist_image_height">160dp</dimen>
     <dimen name="artist_name_padding">10dp</dimen>
-    <dimen name="artist_name">15dp</dimen>
+    <dimen name="artist_name">15sp</dimen>
 </resources>

@@ -15,7 +15,7 @@
             android:fontFamily="sans-serif"
             android:gravity="center_horizontal"
             android:padding="4dp"
-            android:text="Top Artists"
+            android:text="@string/top_artists"
             android:textColor="@android:color/primary_text_dark"
             android:textSize="32sp" />
     </FrameLayout>

@@ -70,6 +70,8 @@
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rv_tags"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
@@ -79,7 +81,9 @@
                 android:layout_height="wrap_content"
                 android:padding="8sp"
                 android:text="@string/similar_tracks"
-                android:textSize="24sp"
+                android:textColor="@android:color/black"
+                android:textSize="20sp"
+                android:textStyle="bold"
                 android:visibility="gone" />
 
 
