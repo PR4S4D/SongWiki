@@ -329,7 +329,7 @@ public class ArtistActivity extends AppCompatActivity implements LoaderManager.L
                 String[] args = new String[]{String.valueOf(artist.getName())};
                 int id = getContentResolver().delete(uri, FavouriteArtistContract.ArtistEntry.ARTIST_NAME + "=?", args);
                 if (id > 0) {
-                    Toast.makeText(this, "removed from favourites", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, R.string.removed_From_fav, Toast.LENGTH_SHORT).show();
                 }
             } else {
                 Log.i("addToFavourites: ", artist.getName());
@@ -339,11 +339,11 @@ public class ArtistActivity extends AppCompatActivity implements LoaderManager.L
                     Log.i("Insert failed", artistContent.toString());
                 } else {
                     ArtistUtils.saveImage(artist, getApplicationContext());
-                    Toast.makeText(this, "made favourite", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, R.string.made_favourite, Toast.LENGTH_SHORT).show();
                 }
             }
         } else {
-            Toast.makeText(this, "write permission not granted ", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.write_permission, Toast.LENGTH_SHORT).show();
         }
         setFavouriteIcon();
     }
