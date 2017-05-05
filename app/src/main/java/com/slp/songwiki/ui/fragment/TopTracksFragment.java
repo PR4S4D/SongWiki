@@ -150,8 +150,8 @@ public class TopTracksFragment extends Fragment implements SongWikiFragmentable,
         if (null != tracks) {
             topTracks = tracks;
             rvTracks.setAdapter(new TrackAdapter(tracks, this));
-            int gridSize = 1;
-            rvTracks.setLayoutManager(new GridLayoutManager(getActivity(), 1));
+            int gridSize = getResources().getInteger(R.integer.track_grid);
+            rvTracks.setLayoutManager(new GridLayoutManager(getActivity(), gridSize));
             rvTracks.setHasFixedSize(true);
         }
 

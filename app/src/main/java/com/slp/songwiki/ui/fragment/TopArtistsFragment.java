@@ -184,7 +184,7 @@ public class TopArtistsFragment extends Fragment implements SongWikiFragmentable
         if (null != artists) {
             topArtists = artists;
             rvArtists.setAdapter(new ArtistAdapter(artists, this));
-            int gridSize = 2;
+            int gridSize = getResources().getInteger(R.integer.artist_grid);
             rvArtists.setLayoutManager(new GridLayoutManager(getActivity(), gridSize));
             rvArtists.setHasFixedSize(true);
         }
@@ -203,8 +203,8 @@ public class TopArtistsFragment extends Fragment implements SongWikiFragmentable
             ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(getActivity(), pairs);
             artistIntent.putExtra("artist", clickedArtist);
             Bundle params = new Bundle();
-            params.putString(FirebaseAnalytics.Param.ITEM_NAME, clickedArtist.getName());
-            firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, params);
+            params.putString("artist", clickedArtist.getName());
+            firebaseAnalytics.logEvent("artist", params);
             startActivity(artistIntent, options.toBundle());
 
         }

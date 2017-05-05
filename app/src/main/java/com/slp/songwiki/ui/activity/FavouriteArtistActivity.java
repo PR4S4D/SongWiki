@@ -56,7 +56,7 @@ public class FavouriteArtistActivity extends AppCompatActivity implements Artist
         @Override
         protected void onPostExecute(List<Artist> artists) {
             rvArtists.setAdapter(new ArtistAdapter(artists, FavouriteArtistActivity.this));
-            int gridSize = 2;
+            int gridSize = getResources().getInteger(R.integer.artist_grid);
             rvArtists.setLayoutManager(new GridLayoutManager(FavouriteArtistActivity.this, gridSize));
           /*rvArtists.setLayoutManager(new
                   GridLayoutManager(getApplicationContext(), 1,GridLayoutManager.HORIZONTAL, false));*/

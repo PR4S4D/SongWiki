@@ -71,7 +71,8 @@ public class TrackSearchResultsActivity extends AppCompatActivity implements Tra
                 error.setVisibility(View.GONE);
 
                 rvTracks.setAdapter(new TrackAdapter(tracks, TrackSearchResultsActivity.this));
-                int gridSize = 1;
+                int gridSize = getResources().getInteger(R.integer.track_grid);
+
                 rvTracks.setLayoutManager(new GridLayoutManager(TrackSearchResultsActivity.this, gridSize));
                 rvTracks.setHasFixedSize(true);
                 trackSearchLoader.setVisibility(View.GONE);

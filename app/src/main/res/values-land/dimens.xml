@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="track_grid">2</integer>
+    <integer name="artist_grid">3</integer>
+
+</resources>

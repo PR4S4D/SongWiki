@@ -93,7 +93,7 @@ public class ArtistSearchResultsActivity extends AppCompatActivity implements Ar
                 error.setVisibility(View.GONE);
                 ArtistAdapter adapter = new ArtistAdapter(artists, ArtistSearchResultsActivity.this);
                 rvArtists.setAdapter(adapter);
-                int gridSize = 2;
+                int gridSize = getResources().getInteger(R.integer.artist_grid);
                 rvArtists.setLayoutManager(new GridLayoutManager(ArtistSearchResultsActivity.this, gridSize));
           /*rvArtists.setLayoutManager(new
                   GridLayoutManager(getApplicationContext(), 1,GridLayoutManager.HORIZONTAL, false));*/

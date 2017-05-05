@@ -217,7 +217,7 @@ public class TrackActivity extends AppCompatActivity implements LoaderManager.Lo
         if (null != similarTracks) {
             similarTracksLabel.setVisibility(View.VISIBLE);
             rvTracks.setAdapter(new TrackAdapter(similarTracks, this));
-            int gridSize = 1;
+            int gridSize = getResources().getInteger(R.integer.track_grid);
             rvTracks.setLayoutManager(new GridLayoutManager(this, 1));
             rvTracks.setHasFixedSize(true);
         }
