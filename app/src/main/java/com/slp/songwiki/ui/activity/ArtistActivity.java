@@ -155,7 +155,7 @@ public class ArtistActivity extends AppCompatActivity implements LoaderManager.L
     private void showArtistBasicInfo() {
         basicInfoSet = true;
 
-        Picasso.with(getApplicationContext()).load(artist.getImageLink()).into(artistImage,
+        Picasso.with(getApplicationContext()).load(artist.getImageLink()).placeholder(R.drawable.loading).into(artistImage,
                 new Callback() {
                     @Override
                     public void onSuccess() {

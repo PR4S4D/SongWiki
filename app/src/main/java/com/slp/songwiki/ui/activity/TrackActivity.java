@@ -108,7 +108,7 @@ public class TrackActivity extends AppCompatActivity implements LoaderManager.Lo
         //  Picasso.with(this).load(track.getImageLink()).into(trackImage);
         artist.setText(track.getArtist());
 
-        Picasso.with(getApplicationContext()).load(track.getImageLink()).into(trackImage,
+        Picasso.with(getApplicationContext()).load(track.getImageLink()).placeholder(R.drawable.loading).into(trackImage,
                 new Callback() {
                     @Override
                     public void onSuccess() {
@@ -218,7 +218,7 @@ public class TrackActivity extends AppCompatActivity implements LoaderManager.Lo
             similarTracksLabel.setVisibility(View.VISIBLE);
             rvTracks.setAdapter(new TrackAdapter(similarTracks, this));
             int gridSize = getResources().getInteger(R.integer.track_grid);
-            rvTracks.setLayoutManager(new GridLayoutManager(this, 1));
+            rvTracks.setLayoutManager(new GridLayoutManager(this, gridSize));
             rvTracks.setHasFixedSize(true);
         }
     }

@@ -89,7 +89,8 @@ public class ArtistSearchResultsActivity extends AppCompatActivity implements Ar
 
         @Override
         protected void onPostExecute(List<Artist> artists) {
-            if(null!=artists){
+            if(null!=artists && artists.size() > 0){
+                setTitle("Top Results");
                 error.setVisibility(View.GONE);
                 ArtistAdapter adapter = new ArtistAdapter(artists, ArtistSearchResultsActivity.this);
                 rvArtists.setAdapter(adapter);

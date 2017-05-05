@@ -96,7 +96,6 @@ public class ArtistAdapter extends RecyclerView.Adapter<ArtistAdapter.ArtistView
         int artistLayout = R.layout.artist_item;
         LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
         View view = inflater.inflate(artistLayout, viewGroup, false);
-        Picasso.with(viewGroup.getContext()).setLoggingEnabled(true);
         return new ArtistViewHolder(view);
 
     }
@@ -115,10 +114,10 @@ public class ArtistAdapter extends RecyclerView.Adapter<ArtistAdapter.ArtistView
         Log.i(TAG, "onBindViewHolder: " + imageLink);
         if (TextUtils.isEmpty(imageLink)) {
 
-            Picasso.with(holder.artistImage.getContext()).load(R.drawable.artist).into(holder.artistImage);
+            Picasso.with(holder.artistImage.getContext()).load(R.drawable.loading).into(holder.artistImage);
         } else {
 
-            Picasso.with(holder.artistImage.getContext()).load(imageLink).placeholder(R.drawable.artist).into(holder.artistImage, new Callback() {
+            Picasso.with(holder.artistImage.getContext()).load(imageLink).placeholder(R.drawable.loading).into(holder.artistImage, new Callback() {
                 @Override
                 public void onSuccess() {
                     Bitmap bitmap = ((BitmapDrawable) holder.artistImage.getDrawable()).getBitmap();
