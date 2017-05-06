@@ -20,6 +20,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.Spanned;
+import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.util.Pair;
@@ -105,22 +106,25 @@ public class TrackActivity extends AppCompatActivity implements LoaderManager.Lo
     private void setTrackInfo() {
         trackImage.setTransitionName(track.getArtist());
         artist.setText(track.getArtist());
+        if (TextUtils.isEmpty(track.getImageLink())) {
+            Picasso.with(getApplicationContext()).load(R.drawable.loading).into(trackImage);
+        } else {
+            Picasso.with(getApplicationContext()).load(track.getImageLink()).placeholder(R.drawable.loading).into(trackImage,
+                    new Callback() {
+                        @Override
+                        public void onSuccess() {
+                            scheduleStartPostponedTransition(trackImage);
+                            Bitmap bitmap = ((BitmapDrawable) trackImage.getDrawable()).getBitmap();
+                            setPaleteListener();
+                            Palette.from(bitmap).generate(paletteListener);
+                        }
 
-        Picasso.with(getApplicationContext()).load(track.getImageLink()).placeholder(R.drawable.loading).into(trackImage,
-                new Callback() {
-                    @Override
-                    public void onSuccess() {
-                        scheduleStartPostponedTransition(trackImage);
-                        Bitmap bitmap = ((BitmapDrawable) trackImage.getDrawable()).getBitmap();
-                        setPaleteListener();
-                        Palette.from(bitmap).generate(paletteListener);
-                    }
-
-                    @Override
-                    public void onError() {
-                        Log.e("Track", "onError: loading image failed");
-                    }
-                });
+                        @Override
+                        public void onError() {
+                            Log.e("Track", "onError: loading image failed");
+                        }
+                    });
+        }
     }
 
     private void scheduleStartPostponedTransition(final View sharedElement) {

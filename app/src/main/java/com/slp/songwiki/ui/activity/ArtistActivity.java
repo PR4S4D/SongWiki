@@ -29,6 +29,7 @@ import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.Spanned;
+import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.util.Pair;
@@ -154,25 +155,28 @@ public class ArtistActivity extends AppCompatActivity implements LoaderManager.L
 
     private void showArtistBasicInfo() {
         basicInfoSet = true;
+        if (TextUtils.isEmpty(artist.getImageLink())) {
+            Picasso.with(getApplicationContext()).load(R.drawable.loading).into(artistImage);
+        } else {
+            Picasso.with(getApplicationContext()).load(artist.getImageLink()).placeholder(R.drawable.loading).into(artistImage,
+                    new Callback() {
+                        @Override
+                        public void onSuccess() {
+                            scheduleStartPostponedTransition(artistImage);
+                            Bitmap bitmap = ((BitmapDrawable) artistImage.getDrawable()).getBitmap();
+                            setPaleteListener();
+                            Palette.from(bitmap).generate(paletteListener);
+                        }
 
-        Picasso.with(getApplicationContext()).load(artist.getImageLink()).placeholder(R.drawable.loading).into(artistImage,
-                new Callback() {
-                    @Override
-                    public void onSuccess() {
-                        scheduleStartPostponedTransition(artistImage);
-                        Bitmap bitmap = ((BitmapDrawable) artistImage.getDrawable()).getBitmap();
-                        setPaleteListener();
-                        Palette.from(bitmap).generate(paletteListener);
-                    }
+                        @Override
+                        public void onError() {
+                            Log.e("Track", "onError: loading image failed");
+                        }
+                    });
 
-                    @Override
-                    public void onError() {
-                        Log.e("Track", "onError: loading image failed");
-                    }
-                });
-
-        artistImage.setTransitionName(artist.getName());
-        artistName.setText(artist.getName());
+            artistImage.setTransitionName(artist.getName());
+            artistName.setText(artist.getName());
+        }
     }
 
     private void showArtistAdvancedInfo() {
@@ -180,7 +184,7 @@ public class ArtistActivity extends AppCompatActivity implements LoaderManager.L
             content.setText(getTextFromHtml(artist.getContent()));
             makeLinkClickable(content);
         }
-        if(null != artist.getTags())
+        if (null != artist.getTags())
             showTags();
         publishDate.setText(artist.getPublishedOn());
     }

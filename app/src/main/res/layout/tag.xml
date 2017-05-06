@@ -12,7 +12,6 @@
         android:id="@+id/tag_card"
         android:layout_margin="4dp"
         android:elevation="8dp"
-        app:cardBackgroundColor="@color/place_autocomplete_search_hint"
         app:cardCornerRadius="8dp">
 
         <TextView
