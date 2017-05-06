@@ -31,5 +31,6 @@
     <string name="removed_From_fav">removed from favourites</string>
     <string name="made_favourite">Made favourite</string>
     <string name="write_permission">Write permission not granted</string>
+    <string name="album_cover">Album Cover</string>
 
 </resources>

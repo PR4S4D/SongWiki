@@ -27,6 +27,7 @@
                 android:id="@+id/track_image"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:contentDescription="@string/album_cover"
                 android:fitsSystemWindows="true"
                 android:scaleType="centerCrop"
                 app:layout_collapseMode="parallax"
@@ -70,10 +71,10 @@
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rv_tags"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp" />
 
             <TextView
                 android:id="@+id/similar_tracks_label"
