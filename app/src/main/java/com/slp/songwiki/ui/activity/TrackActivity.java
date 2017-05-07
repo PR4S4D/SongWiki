@@ -89,10 +89,7 @@ public class TrackActivity extends AppCompatActivity implements LoaderManager.Lo
         setContentView(R.layout.activity_track);
         ButterKnife.bind(this);
         track = getIntent().getParcelableExtra(TRACK);
-        collapsingToolbarLayout.setTitle(track.getTitle());
-        toolbar.setTitle(track.getTitle());
-        toolbar.setNavigationIcon(R.drawable.ic_arrow_back);
-        setSupportActionBar(toolbar);
+        setToolbar();
         setTrackInfo();
         try {
             Log.i("similar Artist", String.valueOf(LastFmUtils.getSimilarTracksUrl(track)));
@@ -101,6 +98,14 @@ public class TrackActivity extends AppCompatActivity implements LoaderManager.Lo
         }
         getSupportLoaderManager().initLoader(TRACK_LOADER, null, this);
 
+    }
+
+    private void setToolbar() {
+        collapsingToolbarLayout.setTitle(track.getTitle());
+        toolbar.setTitle(track.getTitle());
+        toolbar.setNavigationIcon(R.drawable.ic_arrow_back);
+        setSupportActionBar(toolbar);
+        getWindow().setStatusBarColor(Color.TRANSPARENT);
     }
 
     private void setTrackInfo() {

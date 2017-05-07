@@ -109,6 +109,7 @@ public class ArtistActivity extends AppCompatActivity implements LoaderManager.L
         artist = getIntent().getParcelableExtra("artist");
         collapsingToolbarLayout.setTitle(artist.getName());
         toolbar.setTitle(artist.getName());
+        getWindow().setStatusBarColor(Color.TRANSPARENT);
         setSupportActionBar(toolbar);
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back);
 
