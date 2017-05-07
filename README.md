@@ -30,9 +30,9 @@ Shared element transition is used
 [**Lakshmiprasad**](https://github.com/sLakshmiprasad)
 
 ## Libraries
-[* Picasso](http://square.github.io/picasso/)
-[* ButterKnife](http://jakewharton.github.io/butterknife/)
-[* Palette](https://developer.android.com/training/material/palette-colors.html)
-[* FlowLayoutManager](https://github.com/xiaofeng-han/AndroidLibs/tree/master/flowlayoutmanager)
-[* Firebase Analytics](https://firebase.google.com/docs/analytics/android/start/)
-[* Adbmod](https://firebase.google.com/docs/admob/admob-firebase)
+* [Picasso](http://square.github.io/picasso/)
+* [ButterKnife](http://jakewharton.github.io/butterknife/)
+* [Palette](https://developer.android.com/training/material/palette-colors.html)
+* [FlowLayoutManager](https://github.com/xiaofeng-han/AndroidLibs/tree/master/flowlayoutmanager)
+* [Firebase Analytics](https://firebase.google.com/docs/analytics/android/start/)
+* [Adbmod](https://firebase.google.com/docs/admob/admob-firebase)
