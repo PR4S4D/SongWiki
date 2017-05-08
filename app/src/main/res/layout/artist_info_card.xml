@@ -6,8 +6,7 @@
     android:id="@+id/artist_card"
     android:layout_width="match_parent"
     android:layout_height="80dp"
-    android:elevation="0dp"
-    android:onClick="goToArtist">
+    android:elevation="0dp">
 
     <LinearLayout
         android:layout_width="match_parent"
