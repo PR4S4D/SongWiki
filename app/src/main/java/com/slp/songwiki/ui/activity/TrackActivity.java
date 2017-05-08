@@ -161,6 +161,10 @@ public class TrackActivity extends AppCompatActivity implements LoaderManager.Lo
                 }
                 artistCard.setBackgroundColor(backgroundColor);
                 artist.setTextColor(textColor);
+                collapsingToolbarLayout.setCollapsedTitleTextColor(textColor);
+                collapsingToolbarLayout.setBackgroundColor(backgroundColor);
+                collapsingToolbarLayout.setStatusBarScrimColor(backgroundColor);
+                collapsingToolbarLayout.setContentScrimColor(backgroundColor);
                 if (null != track.getTags())
                     showTags();
 

@@ -221,6 +221,10 @@ public class ArtistActivity extends AppCompatActivity implements LoaderManager.L
                 artistName.setTextColor(textColor);
                 publishedTV.setTextColor(textColor);
                 publishDate.setTextColor(textColor);
+                collapsingToolbarLayout.setCollapsedTitleTextColor(textColor);
+                collapsingToolbarLayout.setBackgroundColor(backgroundColor);
+                collapsingToolbarLayout.setStatusBarScrimColor(backgroundColor);
+                collapsingToolbarLayout.setContentScrimColor(backgroundColor);
                 if (null != artist.getTags())
                     showTags();
 
