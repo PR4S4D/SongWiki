@@ -37,21 +37,21 @@ public class LastFmUtils implements SongWikiConstants {
         if (null != imageArray) {
             JSONObject imageObj = (JSONObject) imageArray.get(IMAGE_SIZE);
             if (null != imageObj) {
-                return imageObj.getString("#text");
+                return imageObj.getString(TEXT);
             }
         }
         return null;
     }
 
     public static URL getArtistInfoUrl(String artist) throws MalformedURLException, UnsupportedEncodingException {
-        Uri.Builder builder = Uri.parse(ARTIST_INFO_BASE_URL).buildUpon().appendQueryParameter("artist", artist);
+        Uri.Builder builder = Uri.parse(ARTIST_INFO_BASE_URL).buildUpon().appendQueryParameter(ARTIST, artist);
         appendAPIKey(builder);
         return new URL(builder.build().toString());
     }
 
     public static URL getTrackInfoUrl(String artist, String track) throws MalformedURLException {
-        Uri.Builder builder = Uri.parse(TRACK_INFO_BASE__URL).buildUpon().appendQueryParameter("artist", artist)
-                .appendQueryParameter("track", track);
+        Uri.Builder builder = Uri.parse(TRACK_INFO_BASE__URL).buildUpon().appendQueryParameter(ARTIST, artist)
+                .appendQueryParameter(TRACK, track);
         appendAPIKey(builder);
         return new URL(builder.build().toString());
     }
@@ -61,20 +61,20 @@ public class LastFmUtils implements SongWikiConstants {
     }
 
     public static URL getSearchArtistUrl(String artist) throws MalformedURLException {
-        Uri.Builder builder = Uri.parse(SEARCH_ARTIST_BASE_URL).buildUpon().appendQueryParameter("artist", artist);
+        Uri.Builder builder = Uri.parse(SEARCH_ARTIST_BASE_URL).buildUpon().appendQueryParameter(ARTIST, artist);
         appendAPIKey(builder);
         return new URL(builder.build().toString());
     }
 
     public static URL getSearchTrackUrl(String track) throws MalformedURLException {
-        Uri.Builder builder = Uri.parse(SEARCH_TRACK_BASE_URL).buildUpon().appendQueryParameter("track", track);
+        Uri.Builder builder = Uri.parse(SEARCH_TRACK_BASE_URL).buildUpon().appendQueryParameter(TRACK, track);
         appendAPIKey(builder);
         return new URL(builder.build().toString());
     }
 
     public static URL getSimilarTracksUrl(Track track) throws MalformedURLException {
-        Uri.Builder builder = Uri.parse(SIMILAR_TRACKS_BASE_URL).buildUpon().appendQueryParameter("track", track.getTitle())
-                .appendQueryParameter("artist", track.getArtist());
+        Uri.Builder builder = Uri.parse(SIMILAR_TRACKS_BASE_URL).buildUpon().appendQueryParameter(TRACK, track.getTitle())
+                .appendQueryParameter(ARTIST, track.getArtist());
         appendAPIKey(builder);
         return new URL(builder.build().toString());
     }

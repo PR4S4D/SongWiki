@@ -3,14 +3,12 @@ package com.slp.songwiki.utilities;
 import android.util.Log;
 
 import com.slp.songwiki.model.Track;
-import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,13 +16,13 @@ import java.util.List;
  * Created by lshivaram on 4/30/2017.
  */
 
-public class TrackUtils {
+public class TrackUtils implements SongWikiConstants {
 
     public static List<Track> getTopChartTracks() throws IOException, JSONException {
         List<Track> topTracks = new ArrayList<>();
         String response = NetworkUtils.getResponseFromHttpUrl(LastFmUtils.getTopTracksUrl());
         JSONObject jsonResponse = new JSONObject(response);
-        JSONArray trackArray = jsonResponse.getJSONObject("tracks").getJSONArray("track");
+        JSONArray trackArray = jsonResponse.getJSONObject(TRACKS).getJSONArray(TRACK);
 
         return getTracks(trackArray);
     }
@@ -37,12 +35,12 @@ public class TrackUtils {
         String imageLink;
         for (int i = 0; i < jsonArray.length(); i++) {
             JSONObject trackInfo = (JSONObject) jsonArray.get(i);
-            trackTitle = trackInfo.getString("name");
-            artist = trackInfo.getJSONObject("artist").getString("name");
-            if (trackInfo.has("listeners"))
-                listeners = Long.valueOf(trackInfo.getString("listeners"));
+            trackTitle = trackInfo.getString(NAME);
+            artist = trackInfo.getJSONObject(ARTIST).getString(NAME);
+            if (trackInfo.has(LISTENERS))
+                listeners = Long.valueOf(trackInfo.getString(LISTENERS));
 
-            imageLink = LastFmUtils.getImage(trackInfo.getJSONArray("image"));
+            imageLink = LastFmUtils.getImage(trackInfo.getJSONArray(IMAGE));
             tracks.add(new Track(trackTitle, artist, listeners, imageLink));
         }
         return tracks;
@@ -51,30 +49,30 @@ public class TrackUtils {
     public static void addTrackInfo(Track track) throws IOException, JSONException {
         String response = NetworkUtils.getResponseFromHttpUrl(LastFmUtils.getTrackInfoUrl(track.getArtist(), track.getTitle()));
         JSONObject jsonObject = new JSONObject(response);
-        JSONObject trackInfo = jsonObject.getJSONObject("track");
-        track.setTrackLink( trackInfo.getString("url"));
-        if (trackInfo.has("album")) {
+        JSONObject trackInfo = jsonObject.getJSONObject(TRACK);
+        track.setTrackLink( trackInfo.getString(URL));
+        if (trackInfo.has(ALBUM)) {
 
-            JSONObject albumJson = trackInfo.getJSONObject("album");
-            String album = albumJson.getString("title");
+            JSONObject albumJson = trackInfo.getJSONObject(ALBUM);
+            String album = albumJson.getString(TITLE);
             track.setAlbum(album);
         }
 
-        if (trackInfo.has("wiki")) {
-            JSONObject trackWiki = trackInfo.getJSONObject("wiki");
-            track.setSummary(trackWiki.getString("summary"));
-            track.setContent(trackWiki.getString("content"));
+        if (trackInfo.has(WIKI)) {
+            JSONObject trackWiki = trackInfo.getJSONObject(WIKI);
+            track.setSummary(trackWiki.getString(SUMMARY));
+            track.setContent(trackWiki.getString(CONTENT));
         }
 
-        if (trackInfo.has("toptags")) {
-            track.setTags(getTopTags(trackInfo.getJSONObject("toptags").getJSONArray("tag")));
+        if (trackInfo.has(TOP_TAGS)) {
+            track.setTags(getTopTags(trackInfo.getJSONObject(TOP_TAGS).getJSONArray(TAG)));
         }
     }
 
     private static List<String> getTopTags(JSONArray tagArray) throws JSONException {
         List<String> tags = new ArrayList<>();
             for (int i = 0; i < tagArray.length(); i++) {
-                tags.add(tagArray.getJSONObject(i).getString("name"));
+                tags.add(tagArray.getJSONObject(i).getString(NAME));
             }
         return tags;
     }
@@ -83,8 +81,8 @@ public class TrackUtils {
         Log.i( "getTrackResult: ",LastFmUtils.getSearchTrackUrl(track).toString());
         String resultsJson = NetworkUtils.getResponseFromHttpUrl(LastFmUtils.getSearchTrackUrl(track));
         JSONObject json = new JSONObject(resultsJson);
-        JSONObject resultJson = json.getJSONObject("results");
-        JSONArray trackArray = resultJson.getJSONObject("trackmatches").getJSONArray("track");
+        JSONObject resultJson = json.getJSONObject(RESULTS);
+        JSONArray trackArray = resultJson.getJSONObject(TRACK_MATCHES).getJSONArray(TRACK);
         return getTracksFromMatches(trackArray);
     }
 
@@ -96,10 +94,10 @@ public class TrackUtils {
         String imageLink = null;
         for (int i = 0; i < trackArray.length(); i++) {
             JSONObject trackInfo = (JSONObject) trackArray.get(i);
-            trackTitle = trackInfo.getString("name");
-            artist = trackInfo.getString("artist");
-            listeners = Long.valueOf(trackInfo.getString("listeners"));
-            imageLink = LastFmUtils.getImage(trackInfo.getJSONArray("image"));
+            trackTitle = trackInfo.getString(NAME);
+            artist = trackInfo.getString(ARTIST);
+            listeners = Long.valueOf(trackInfo.getString(LISTENERS));
+            imageLink = LastFmUtils.getImage(trackInfo.getJSONArray(IMAGE));
             tracks.add(new Track(trackTitle, artist, listeners, imageLink));
         }
         return tracks;
@@ -108,7 +106,7 @@ public class TrackUtils {
     public static List<Track> getSimilarTracks(Track track) throws IOException, JSONException {
         String response = NetworkUtils.getResponseFromHttpUrl(LastFmUtils.getSimilarTracksUrl(track));
         JSONObject jsonResponse = new JSONObject(response);
-        JSONArray similarTracks = jsonResponse.getJSONObject("similartracks").getJSONArray("track");
+        JSONArray similarTracks = jsonResponse.getJSONObject(SIMILAR_TRACKS).getJSONArray(TRACK);
         return getTracks(similarTracks);
     }
 }

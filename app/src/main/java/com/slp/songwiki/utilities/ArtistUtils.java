@@ -32,12 +32,14 @@ import java.util.List;
  */
 
 public class ArtistUtils implements SongWikiConstants {
+
+
     public static List<Artist> getTopChartArtists() throws IOException, JSONException {
 
         String topArtistDetails = NetworkUtils.getResponseFromHttpUrl(LastFmUtils.getTopArtistUrl());
         JSONObject topArtistJsonObject = new JSONObject(topArtistDetails);
-        JSONObject artists = topArtistJsonObject.getJSONObject("topartists");
-        JSONArray artistArray = (JSONArray) artists.get("artist");
+        JSONObject artists = topArtistJsonObject.getJSONObject(TOP_ARTISTS);
+        JSONArray artistArray = (JSONArray) artists.get(ARTIST);
         return getArtists(artistArray);
     }
 
@@ -51,9 +53,9 @@ public class ArtistUtils implements SongWikiConstants {
         for (int i = 0; i < artistArray.length(); i++) {
             JSONObject artist = (JSONObject) artistArray.get(i);
             if (null != artist) {
-                name = (String) artist.get("name");
-                artistLink = artist.getString("url");
-                imageLink = LastFmUtils.getImage((JSONArray) artist.get("image"));
+                name = (String) artist.get(NAME);
+                artistLink = artist.getString(URL);
+                imageLink = LastFmUtils.getImage((JSONArray) artist.get(IMAGE));
                 artists.add(new Artist(name, imageLink, artistLink));
 
             }
@@ -67,11 +69,11 @@ public class ArtistUtils implements SongWikiConstants {
         String topArtistDetails = NetworkUtils.getResponseFromHttpUrl(new URL(TOP_ARTISTS_END_POINT));
         JSONObject topArtistJsonObject = new JSONObject(topArtistDetails);
         JSONObject artists = topArtistJsonObject.getJSONObject(ARTISTS);
-        JSONArray artistArray = (JSONArray) artists.get("artist");
+        JSONArray artistArray = (JSONArray) artists.get(ARTIST);
         for (int i = 0; i < artistArray.length(); i++) {
             JSONObject artist = (JSONObject) artistArray.get(i);
             if (null != artist) {
-                topChartArtist.add(artist.getString("name"));
+                topChartArtist.add(artist.getString(NAME));
             }
         }
         return topChartArtist;
@@ -96,16 +98,16 @@ public class ArtistUtils implements SongWikiConstants {
     }
 
     private static String getEncodedString(String string) throws UnsupportedEncodingException {
-        return URLEncoder.encode(string, "UTF-8");
+        return URLEncoder.encode(string, UTF_8);
     }
 
     public static Artist getArtist(String artistDetails) throws JSONException {
         Artist artist = new Artist();
         if (null != artistDetails) {
             JSONObject jsonObject = new JSONObject(artistDetails);
-            JSONObject artistObject = jsonObject.getJSONObject("artist");
-            artist.setName(artistObject.getString("name"));
-            artist.setImageLink(LastFmUtils.getImage(artistObject.getJSONArray("image")));
+            JSONObject artistObject = jsonObject.getJSONObject(ARTIST);
+            artist.setName(artistObject.getString(NAME));
+            artist.setImageLink(LastFmUtils.getImage(artistObject.getJSONArray(IMAGE)));
 
         }
         return artist;
@@ -123,27 +125,27 @@ public class ArtistUtils implements SongWikiConstants {
 
             if (null != artistDetails) {
                 JSONObject jsonObject = new JSONObject(artistDetails);
-                JSONObject artistObject = jsonObject.getJSONObject("artist");
+                JSONObject artistObject = jsonObject.getJSONObject(ARTIST);
                 if (!isArtistImageSet(artist)) {
-                    artist.setImageLink(LastFmUtils.getImage(artistObject.getJSONArray("image")));
+                    artist.setImageLink(LastFmUtils.getImage(artistObject.getJSONArray(IMAGE)));
                 }
-                artist.setListeners(Long.valueOf(artistObject.getJSONObject("stats").getString("listeners")));
-                JSONObject artistBio = artistObject.getJSONObject("bio");
+                artist.setListeners(Long.valueOf(artistObject.getJSONObject(STATS).getString(LISTENERS)));
+                JSONObject artistBio = artistObject.getJSONObject(BIO);
 
-                if (artistObject.has("similar")) {
-                    List<Artist> similarArtists = getArtists(artistObject.getJSONObject("similar").getJSONArray("artist"));
+                if (artistObject.has(SIMILAR)) {
+                    List<Artist> similarArtists = getArtists(artistObject.getJSONObject(SIMILAR).getJSONArray(ARTIST));
                     artist.setSimilarArtists(similarArtists);
                 }
-                if (artistObject.has("tags")) {
-                    List<String> tags = getTags(artistObject.getJSONObject("tags").getJSONArray("tag"));
+                if (artistObject.has(TAGS)) {
+                    List<String> tags = getTags(artistObject.getJSONObject(TAGS).getJSONArray(TAG));
                     artist.setTags(tags);
                 }
 
-                artist.setPublishedOn(artistBio.getString("published"));
-                artist.setSummary(artistBio.getString("summary"));
-                artist.setContent(artistBio.getString("content"));
+                artist.setPublishedOn(artistBio.getString(PUBLISHED));
+                artist.setSummary(artistBio.getString(SUMMARY));
+                artist.setContent(artistBio.getString(CONTENT));
                 if (null == artist.getArtistLink())
-                    artist.setArtistLink(artistObject.getString("url"));
+                    artist.setArtistLink(artistObject.getString(URL));
             }
         }
     }
@@ -151,7 +153,7 @@ public class ArtistUtils implements SongWikiConstants {
     private static List<String> getTags(JSONArray tagArray) throws JSONException {
         List<String> tags = new ArrayList<>();
         for (int i = 0; i < tagArray.length(); i++) {
-            tags.add(tagArray.getJSONObject(i).getString("name"));
+            tags.add(tagArray.getJSONObject(i).getString(NAME));
         }
         return tags;
     }
@@ -160,8 +162,8 @@ public class ArtistUtils implements SongWikiConstants {
     public static List<Artist> getArtistResult(String artist) throws IOException, JSONException {
         String resultsJson = NetworkUtils.getResponseFromHttpUrl(LastFmUtils.getSearchArtistUrl(artist));
         JSONObject json = new JSONObject(resultsJson);
-        JSONObject resultJson = json.getJSONObject("results");
-        JSONArray artistArray = resultJson.getJSONObject("artistmatches").getJSONArray("artist");
+        JSONObject resultJson = json.getJSONObject(RESULTS);
+        JSONArray artistArray = resultJson.getJSONObject(ARTIST_MATCHES).getJSONArray(ARTIST);
         return getArtists(artistArray);
     }
 
