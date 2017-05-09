@@ -33,6 +33,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/artist_image"
+                android:maxLines="2"
+                android:ellipsize="end"
                 android:paddingEnd="@dimen/artist_name_padding"
                 android:paddingLeft="@dimen/artist_name_padding"
                 android:paddingRight="@dimen/artist_name_padding"

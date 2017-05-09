@@ -119,7 +119,7 @@ public class ArtistAdapter extends RecyclerView.Adapter<ArtistAdapter.ArtistView
             Picasso.with(holder.artistImage.getContext()).load(R.drawable.loading).into(holder.artistImage);
         } else {
 
-            Picasso.with(holder.artistImage.getContext()).load(imageLink).placeholder(R.drawable.loading).into(holder.artistImage, new Callback() {
+            Picasso.with(holder.artistImage.getContext()).load(imageLink).error(R.drawable.loading).into(holder.artistImage, new Callback() {
                 @Override
                 public void onSuccess() {
                     Bitmap bitmap = ((BitmapDrawable) holder.artistImage.getDrawable()).getBitmap();

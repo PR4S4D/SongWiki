@@ -6,6 +6,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_marginEnd="12dp"
+    android:lineSpacingMultiplier="1.2"
     android:layout_marginStart="12dp"
     tools:text="@string/summary"
     android:ellipsize="marquee"
