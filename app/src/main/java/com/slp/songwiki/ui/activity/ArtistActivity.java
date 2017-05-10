@@ -24,6 +24,7 @@ import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
@@ -46,6 +47,7 @@ import android.widget.Toast;
 import com.slp.songwiki.R;
 import com.slp.songwiki.adapter.ArtistAdapter;
 import com.slp.songwiki.adapter.TagAdapter;
+import com.slp.songwiki.adapter.TrackAdapter;
 import com.slp.songwiki.data.FavouriteArtistContract;
 import com.slp.songwiki.model.Artist;
 import com.slp.songwiki.model.Track;
@@ -64,7 +66,7 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class ArtistActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<String>, SearchView.OnQueryTextListener, ArtistAdapter.ListItemClickListener {
+public class ArtistActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<String>, SearchView.OnQueryTextListener, ArtistAdapter.ListItemClickListener,TrackAdapter.TrackItemClickListener {
 
     private Artist artist;
     private List<Artist> similarArtists;
@@ -100,8 +102,11 @@ public class ArtistActivity extends AppCompatActivity implements LoaderManager.L
     private int textColor = Color.BLACK;
     @Bind(R.id.artist_card)
     CardView artistCard;
+    @Bind(R.id.rv_top_tracks)
+    RecyclerView rvTopTracks;
+    @Bind(R.id.top_tracks_label)
+    TextView topTracksLabel;
     private Palette.PaletteAsyncListener paletteListener;
-
 
     private boolean basicInfoSet = false;
 
@@ -304,7 +309,18 @@ public class ArtistActivity extends AppCompatActivity implements LoaderManager.L
             showArtistBasicInfo();
         showArtistAdvancedInfo();
         showSimilarArtists();
+        showTopTracks();
         Log.i("onLoadFinished: ", String.valueOf(artist.getArtistLink()));
+    }
+
+    private void showTopTracks() {
+        if(topTracks != null && topTracks.size() > 0){
+            topTracksLabel.setVisibility(View.VISIBLE);
+            rvTopTracks.setAdapter(new TrackAdapter(topTracks,this));
+            int gridSize = getResources().getInteger(R.integer.track_grid);
+            rvTopTracks.setLayoutManager(new GridLayoutManager(this, gridSize));
+            rvTopTracks.setHasFixedSize(true);
+        }
     }
 
     private void showSimilarArtists() {
@@ -388,6 +404,21 @@ public class ArtistActivity extends AppCompatActivity implements LoaderManager.L
             artistIntent.putExtra("artist", clickedArtist);
             startActivity(artistIntent, options.toBundle());
 
+        }
+
+    }
+
+    @Override
+    public void onTrackItemClick(int position) {
+        if(null != topTracks){
+            Intent trackIntent = new Intent(this, TrackActivity.class);
+            Track clickedTrack = ((TrackAdapter)rvTopTracks.getAdapter()).getItem(position);
+            TrackAdapter.TrackViewHolder viewHolder = (TrackAdapter.TrackViewHolder) rvTopTracks.findViewHolderForAdapterPosition(position);
+            Pair[] pairs = new Pair[1];
+            pairs[0] = new Pair<>(viewHolder.getTrackImage(),viewHolder.getArtist().getText());
+            ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(this,pairs);
+            trackIntent.putExtra("track",clickedTrack);
+            startActivity(trackIntent,options.toBundle());
         }
 
     }

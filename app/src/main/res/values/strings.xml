@@ -32,5 +32,6 @@
     <string name="made_favourite">Made favourite</string>
     <string name="write_permission">Write permission not granted</string>
     <string name="album_cover">Album Cover</string>
+    <string name="top_tracks">Top Tracks</string>
 
 </resources>
