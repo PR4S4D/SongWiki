@@ -83,7 +83,7 @@
                 android:id="@+id/similar_tracks_label"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="8sp"
+                android:padding="8dp"
                 android:text="@string/similar_tracks"
                 android:textColor="@android:color/black"
                 android:textSize="20sp"

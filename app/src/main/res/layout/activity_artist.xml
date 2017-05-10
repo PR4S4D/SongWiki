@@ -85,7 +85,8 @@
                 android:layout_height="wrap_content"
                 android:padding="8dp"
                 android:text="@string/similar_artists"
-                android:textSize="16sp"
+                android:textColor="@android:color/black"
+                android:textSize="20sp"
                 android:textStyle="bold"
                 android:visibility="gone" />
 
@@ -101,7 +102,8 @@
                 android:layout_height="wrap_content"
                 android:padding="8dp"
                 android:text="@string/top_tracks"
-                android:textSize="16sp"
+                android:textColor="@android:color/black"
+                android:textSize="20sp"
                 android:textStyle="bold"
                 android:visibility="gone" />
 
