@@ -9,6 +9,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -109,4 +110,12 @@ public class TrackUtils implements SongWikiConstants {
         JSONArray similarTracks = jsonResponse.getJSONObject(SIMILAR_TRACKS).getJSONArray(TRACK);
         return getTracks(similarTracks);
     }
+
+    public static List<Track> getTopTracks(String artist) throws IOException, JSONException {
+        String response = NetworkUtils.getResponseFromHttpUrl(LastFmUtils.getArtistTopTracksUrl(artist));
+        JSONObject jsonResponse = new JSONObject(response);
+        JSONArray topTracks = jsonResponse.getJSONObject(TOP_TRACKS).getJSONArray(TRACK);
+        return getTracks(topTracks);
+    }
+
 }

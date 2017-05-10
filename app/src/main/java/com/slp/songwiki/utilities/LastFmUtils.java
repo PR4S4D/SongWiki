@@ -78,4 +78,10 @@ public class LastFmUtils implements SongWikiConstants {
         appendAPIKey(builder);
         return new URL(builder.build().toString());
     }
+
+    public static URL getArtistTopTracksUrl(String artist) throws MalformedURLException {
+        Uri.Builder builder = Uri.parse(ARTIST_TOP_TRACKS_BASE_URL).buildUpon().appendQueryParameter(ARTIST, artist);
+        appendAPIKey(builder);
+        return new URL(builder.build().toString());
+    }
 }

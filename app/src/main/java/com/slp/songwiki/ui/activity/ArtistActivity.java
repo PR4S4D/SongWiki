@@ -48,8 +48,10 @@ import com.slp.songwiki.adapter.ArtistAdapter;
 import com.slp.songwiki.adapter.TagAdapter;
 import com.slp.songwiki.data.FavouriteArtistContract;
 import com.slp.songwiki.model.Artist;
+import com.slp.songwiki.model.Track;
 import com.slp.songwiki.utilities.ArtistUtils;
 import com.slp.songwiki.utilities.NetworkUtils;
+import com.slp.songwiki.utilities.TrackUtils;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 import com.xiaofeng.flowlayoutmanager.FlowLayoutManager;
@@ -66,6 +68,7 @@ public class ArtistActivity extends AppCompatActivity implements LoaderManager.L
 
     private Artist artist;
     private List<Artist> similarArtists;
+    private List<Track> topTracks;
     @Bind(R.id.artist_image)
     ImageView artistImage;
     @Bind(R.id.artist_name)
@@ -282,6 +285,7 @@ public class ArtistActivity extends AppCompatActivity implements LoaderManager.L
             public String loadInBackground() {
                 try {
                     ArtistUtils.setArtistDetails(artist);
+                    topTracks = TrackUtils.getTopTracks(artist.getName());
 
                 } catch (IOException | JSONException e) {
                     e.printStackTrace();
@@ -294,6 +298,7 @@ public class ArtistActivity extends AppCompatActivity implements LoaderManager.L
     @Override
     public void onLoadFinished(Loader<String> loader, String data) {
         Log.i("onLoadFinished: ", artist.toString());
+        Log.i("top tracks",topTracks.toString());
         loadingFrame.setVisibility(View.GONE);
         if (!basicInfoSet)
             showArtistBasicInfo();
