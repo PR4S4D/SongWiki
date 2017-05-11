@@ -200,6 +200,8 @@ public class ArtistActivity extends AppCompatActivity implements LoaderManager.L
         if (null != artist.getTags())
             showTags();
         publishDate.setText(artist.getPublishedOn());
+        publishedTV.setVisibility(View.VISIBLE);
+
     }
 
     private void scheduleStartPostponedTransition(final View sharedElement) {
@@ -231,7 +233,6 @@ public class ArtistActivity extends AppCompatActivity implements LoaderManager.L
                 }
                 artistCard.setBackgroundColor(backgroundColor);
                 artistName.setTextColor(textColor);
-                publishedTV.setVisibility(View.VISIBLE);
                 publishedTV.setTextColor(textColor);
                 publishDate.setTextColor(textColor);
                 collapsingToolbarLayout.setCollapsedTitleTextColor(textColor);
