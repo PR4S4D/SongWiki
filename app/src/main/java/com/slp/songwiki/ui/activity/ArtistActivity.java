@@ -14,6 +14,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.app.ShareCompat;
@@ -63,10 +64,12 @@ import org.json.JSONException;
 import java.io.IOException;
 import java.util.List;
 
+import javax.net.ssl.SNIHostName;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class ArtistActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<String>, SearchView.OnQueryTextListener, ArtistAdapter.ListItemClickListener,TrackAdapter.TrackItemClickListener {
+public class ArtistActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<String>, SearchView.OnQueryTextListener, ArtistAdapter.ListItemClickListener, TrackAdapter.TrackItemClickListener {
 
     private Artist artist;
     private List<Artist> similarArtists;
@@ -303,7 +306,7 @@ public class ArtistActivity extends AppCompatActivity implements LoaderManager.L
     @Override
     public void onLoadFinished(Loader<String> loader, String data) {
         Log.i("onLoadFinished: ", artist.toString());
-        Log.i("top tracks",topTracks.toString());
+        Log.i("top tracks", topTracks.toString());
         loadingFrame.setVisibility(View.GONE);
         if (!basicInfoSet)
             showArtistBasicInfo();
@@ -314,9 +317,9 @@ public class ArtistActivity extends AppCompatActivity implements LoaderManager.L
     }
 
     private void showTopTracks() {
-        if(topTracks != null && topTracks.size() > 0){
+        if (topTracks != null && topTracks.size() > 0) {
             topTracksLabel.setVisibility(View.VISIBLE);
-            rvTopTracks.setAdapter(new TrackAdapter(topTracks,this));
+            rvTopTracks.setAdapter(new TrackAdapter(topTracks, this));
             int gridSize = getResources().getInteger(R.integer.track_grid);
             rvTopTracks.setLayoutManager(new GridLayoutManager(this, gridSize));
             rvTopTracks.setHasFixedSize(true);
@@ -361,7 +364,7 @@ public class ArtistActivity extends AppCompatActivity implements LoaderManager.L
                 String[] args = new String[]{String.valueOf(artist.getName())};
                 int id = getContentResolver().delete(uri, FavouriteArtistContract.ArtistEntry.ARTIST_NAME + "=?", args);
                 if (id > 0) {
-                    Toast.makeText(this, R.string.removed_From_fav, Toast.LENGTH_SHORT).show();
+                    Snackbar.make(view, R.string.removed_From_fav, Snackbar.LENGTH_SHORT).show();
                 }
             } else {
                 Log.i("addToFavourites: ", artist.getName());
@@ -372,6 +375,7 @@ public class ArtistActivity extends AppCompatActivity implements LoaderManager.L
                 } else {
                     ArtistUtils.saveImage(artist, getApplicationContext());
                     Toast.makeText(this, R.string.made_favourite, Toast.LENGTH_SHORT).show();
+                    Snackbar.make(view, R.string.made_favourite, Snackbar.LENGTH_SHORT).show();
                 }
             }
         } else {
@@ -410,15 +414,15 @@ public class ArtistActivity extends AppCompatActivity implements LoaderManager.L
 
     @Override
     public void onTrackItemClick(int position) {
-        if(null != topTracks){
+        if (null != topTracks) {
             Intent trackIntent = new Intent(this, TrackActivity.class);
-            Track clickedTrack = ((TrackAdapter)rvTopTracks.getAdapter()).getItem(position);
+            Track clickedTrack = ((TrackAdapter) rvTopTracks.getAdapter()).getItem(position);
             TrackAdapter.TrackViewHolder viewHolder = (TrackAdapter.TrackViewHolder) rvTopTracks.findViewHolderForAdapterPosition(position);
             Pair[] pairs = new Pair[1];
-            pairs[0] = new Pair<>(viewHolder.getTrackImage(),viewHolder.getArtist().getText());
-            ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(this,pairs);
-            trackIntent.putExtra("track",clickedTrack);
-            startActivity(trackIntent,options.toBundle());
+            pairs[0] = new Pair<>(viewHolder.getTrackImage(), viewHolder.getArtist().getText());
+            ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(this, pairs);
+            trackIntent.putExtra("track", clickedTrack);
+            startActivity(trackIntent, options.toBundle());
         }
 
     }
