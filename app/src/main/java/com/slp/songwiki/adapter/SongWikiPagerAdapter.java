@@ -26,10 +26,10 @@ public class SongWikiPagerAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         switch (position){
             case 0:
-                currentFragment = new TopTracksFragment();
+                currentFragment = new TopArtistsFragment();
                 break;
             case 1:
-                currentFragment = new TopArtistsFragment();
+                currentFragment = new TopTracksFragment();
                 break;
 
         }
@@ -42,10 +42,11 @@ public class SongWikiPagerAdapter extends FragmentPagerAdapter {
         String pageTitle = "";
         switch (position){
             case 0:
-                pageTitle = context.getString(R.string.track_title);
+                pageTitle = context.getString(R.string.artist_title);
             break;
             case 1:
-                pageTitle = context.getString(R.string.artist_title);
+                pageTitle = context.getString(R.string.track_title);
+
                 break;
         }
         return pageTitle;
