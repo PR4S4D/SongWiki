@@ -4,6 +4,7 @@ import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
@@ -70,6 +71,7 @@ public class TopTracksFragment extends Fragment implements SongWikiFragmentable,
             loaderManager.initLoader(TOP_TRACKS, null, this);
             setHasOptionsMenu(true);
         } else {
+            Snackbar.make(getActivity().findViewById(R.id.toolbar),"No Connectivity!",Snackbar.LENGTH_LONG).show();
             Log.i(TAG, "onCreateView: " + "no network");
             error.setVisibility(View.VISIBLE);
         }
