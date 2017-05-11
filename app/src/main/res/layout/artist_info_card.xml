@@ -40,6 +40,7 @@
                 android:paddingEnd="4dp"
                 android:paddingStart="20dp"
                 android:text="@string/published"
+                android:visibility="gone"
                 android:textSize="16sp"
                 android:textStyle="bold" />
 
