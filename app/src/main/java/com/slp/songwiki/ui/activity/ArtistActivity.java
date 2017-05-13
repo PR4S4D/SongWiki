@@ -220,14 +220,14 @@ public class ArtistActivity extends AppCompatActivity implements LoaderManager.L
     private void setPaleteListener() {
         paletteListener = new Palette.PaletteAsyncListener() {
             public void onGenerated(Palette palette) {
-                int defaultColor = 0x000000;
-                textColor = palette.getDarkMutedColor(defaultColor);
-                backgroundColor = palette.getLightMutedColor(defaultColor);
+                textColor = palette.getDarkMutedColor(textColor);
+                backgroundColor = palette.getLightMutedColor(backgroundColor);
 
                 Palette.Swatch vibrant = palette.getVibrantSwatch();
                 if (vibrant != null) {
                     backgroundColor = vibrant.getRgb();
-                    textColor = vibrant.getTitleTextColor();
+                    if (backgroundColor != vibrant.getTitleTextColor())
+                        textColor = vibrant.getTitleTextColor();
 
 
                 }
@@ -307,8 +307,6 @@ public class ArtistActivity extends AppCompatActivity implements LoaderManager.L
 
     @Override
     public void onLoadFinished(Loader<String> loader, String data) {
-        Log.i("onLoadFinished: ", artist.toString());
-        Log.i("top tracks", topTracks.toString());
         loadingFrame.setVisibility(View.GONE);
         if (!basicInfoSet)
             showArtistBasicInfo();

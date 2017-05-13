@@ -93,6 +93,7 @@ public class ArtistAdapter extends RecyclerView.Adapter<ArtistAdapter.ArtistView
 
     @Override
     public ArtistAdapter.ArtistViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
+
         int artistLayout = R.layout.artist_item;
         LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
         View view = inflater.inflate(artistLayout, viewGroup, false);
@@ -113,7 +114,6 @@ public class ArtistAdapter extends RecyclerView.Adapter<ArtistAdapter.ArtistView
         holder.artistImage.setTransitionName(artists.get(position).getName());
         holder.artistImage.setContentDescription(artists.get(position).getName());
 
-        Log.i(TAG, "onBindViewHolder: " + imageLink);
         if (TextUtils.isEmpty(imageLink)) {
 
             Picasso.with(holder.artistImage.getContext()).load(R.drawable.loading).into(holder.artistImage);
@@ -122,21 +122,25 @@ public class ArtistAdapter extends RecyclerView.Adapter<ArtistAdapter.ArtistView
             Picasso.with(holder.artistImage.getContext()).load(imageLink).error(R.drawable.loading).into(holder.artistImage, new Callback() {
                 @Override
                 public void onSuccess() {
+                    int backgroundColor = Color.GRAY;
+                    int textColor = Color.BLACK;
+
                     Bitmap bitmap = ((BitmapDrawable) holder.artistImage.getDrawable()).getBitmap();
                     Palette palette = Palette.from(bitmap).generate();
-                    int defaultColor = Color.GRAY;
-                    int darkMutedColor = palette.getDarkMutedColor(defaultColor);
-                    int lightMutedColor = palette.getLightMutedColor(defaultColor);
+
+                    textColor = palette.getDarkMutedColor(textColor);
+                    backgroundColor = palette.getLightMutedColor(backgroundColor);
+
                     Palette.Swatch vibrant = palette.getVibrantSwatch();
                     if (vibrant != null) {
-                        Log.i(TAG, "onGenerated: vibrant is not null" + holder.artistName.getText());
-                        holder.artistCard.setCardBackgroundColor(vibrant.getRgb());
-                        holder.artistName.setTextColor(vibrant.getTitleTextColor());
-                    } else {
-                        Log.i(TAG, "onGenerated: vibrant is null" + holder.artistName.getText());
-                        holder.artistCard.setCardBackgroundColor(lightMutedColor);
-                        holder.artistName.setTextColor(darkMutedColor);
+                        backgroundColor = vibrant.getRgb();
+                        if (backgroundColor != vibrant.getTitleTextColor())
+                            textColor = vibrant.getTitleTextColor();
+
+
                     }
+                    holder.artistCard.setCardBackgroundColor(backgroundColor);
+                    holder.artistName.setTextColor(textColor);
                 }
 
                 @Override
