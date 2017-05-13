@@ -2,6 +2,7 @@ package com.slp.songwiki.ui.fragment;
 
 import android.app.ActivityOptions;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
@@ -29,6 +30,7 @@ import com.slp.songwiki.model.Track;
 import com.slp.songwiki.ui.activity.TrackActivity;
 import com.slp.songwiki.ui.activity.TrackSearchResultsActivity;
 import com.slp.songwiki.utilities.NetworkUtils;
+import com.slp.songwiki.utilities.PreferenceUtils;
 import com.slp.songwiki.utilities.TrackUtils;
 
 import org.json.JSONException;
@@ -45,7 +47,7 @@ import static android.content.ContentValues.TAG;
  * Created by lshivaram on 4/30/2017.
  */
 
-public class TopTracksFragment extends Fragment implements SongWikiFragmentable, LoaderManager.LoaderCallbacks<List<Track>>, TrackAdapter.TrackItemClickListener {
+public class TopTracksFragment extends Fragment implements SongWikiFragmentable, LoaderManager.LoaderCallbacks<List<Track>>, TrackAdapter.TrackItemClickListener, SharedPreferences.OnSharedPreferenceChangeListener {
     private View rootView;
     private LoaderManager loaderManager;
     private List<Track> topTracks;
@@ -75,7 +77,15 @@ public class TopTracksFragment extends Fragment implements SongWikiFragmentable,
             Log.i(TAG, "onCreateView: " + "no network");
             error.setVisibility(View.VISIBLE);
         }
+        PreferenceUtils.getPreferences(getActivity()).registerOnSharedPreferenceChangeListener(this);
         return rootView;
+    }
+
+    @Override
+    public void onDestroy() {
+        PreferenceUtils.getPreferences(getActivity()).unregisterOnSharedPreferenceChangeListener(this);
+
+        super.onDestroy();
     }
 
     @Override
@@ -117,6 +127,7 @@ public class TopTracksFragment extends Fragment implements SongWikiFragmentable,
                 if (null != tracks) {
                     deliverResult(tracks);
                 } else {
+                    rvTracks.setVisibility(View.GONE);
                     trackLoader.setVisibility(View.VISIBLE);
 
                     forceLoad();
@@ -126,7 +137,7 @@ public class TopTracksFragment extends Fragment implements SongWikiFragmentable,
             @Override
             public List<Track> loadInBackground() {
                 try {
-                    tracks = TrackUtils.getTopChartTracks();
+                    tracks = TrackUtils.getTopChartTracks(getActivity());
                 } catch (IOException | JSONException e) {
                     e.printStackTrace();
                 }
@@ -145,6 +156,7 @@ public class TopTracksFragment extends Fragment implements SongWikiFragmentable,
     public void onLoadFinished(Loader<List<Track>> loader, List<Track> data) {
         Log.i(TAG, "onLoadFinished: finishedloadingtracks " + data);
         trackLoader.setVisibility(View.GONE);
+        rvTracks.setVisibility(View.VISIBLE);
         initializeRecyclerView(data);
     }
 
@@ -177,5 +189,12 @@ public class TopTracksFragment extends Fragment implements SongWikiFragmentable,
             startActivity(trackIntent, options.toBundle());
         }
 
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        if(key.equals("top_tracks_limit")){
+            loaderManager.restartLoader(TOP_TRACKS,null,this);
+        }
     }
 }

@@ -30,6 +30,7 @@ import com.slp.songwiki.adapter.ArtistAdapter;
 import com.slp.songwiki.adapter.SongWikiPagerAdapter;
 import com.slp.songwiki.utilities.LastFmUtils;
 import com.slp.songwiki.utilities.NetworkUtils;
+import com.slp.songwiki.utilities.PreferenceUtils;
 
 public class SongWikiActivity extends AppCompatActivity {
 
@@ -52,7 +53,7 @@ public class SongWikiActivity extends AppCompatActivity {
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
         adView = (AdView) findViewById(R.id.banner_ad);
-
+        Log.i( "Top artisst limit ", PreferenceUtils.getTopArtistsLimit(this));
         showBannerAd();
 
     }

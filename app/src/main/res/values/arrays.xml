@@ -6,7 +6,7 @@
         <item>30</item>
         <item>40</item>
         <item>50</item>
-        <item>100</item>>
+        <item>100</item>
     </string-array>
 
     <string-array name="top_artists_limit">
@@ -15,6 +15,5 @@
         <item>30</item>
         <item>40</item>
         <item>50</item>
-        <item>100</item>
     </string-array>
 </resources>

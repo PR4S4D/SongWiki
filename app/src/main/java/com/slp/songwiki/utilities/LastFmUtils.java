@@ -1,5 +1,6 @@
 package com.slp.songwiki.utilities;
 
+import android.content.Context;
 import android.net.Uri;
 
 import com.slp.songwiki.model.Track;
@@ -18,6 +19,13 @@ import java.net.URL;
 
 public class LastFmUtils implements SongWikiConstants {
 
+    public static URL getTopArtistUrl(Context context) throws MalformedURLException {
+        Uri.Builder builder = Uri.parse(TOP_ARTISTS_BASE_URL).buildUpon()
+                .appendQueryParameter(LIMIT, PreferenceUtils.getTopArtistsLimit(context));
+        appendAPIKey(builder);
+        return new URL(builder.build().toString());
+    }
+
     public static URL getTopArtistUrl() throws MalformedURLException {
         Uri.Builder builder = Uri.parse(TOP_ARTISTS_BASE_URL).buildUpon()
                 .appendQueryParameter(LIMIT, String.valueOf(ARTIST_LIMIT));
@@ -25,12 +33,20 @@ public class LastFmUtils implements SongWikiConstants {
         return new URL(builder.build().toString());
     }
 
+    @Deprecated
     public static URL getTopTracksUrl() throws MalformedURLException {
         Uri.Builder builder = Uri.parse(TOP_TRACKS_BASE_URL).buildUpon()
                 .appendQueryParameter(LIMIT, String.valueOf(TRACK_LIMIT));
         appendAPIKey(builder);
         return new URL(builder.build().toString());
+    }
 
+
+    public static URL getTopTracksUrl(Context context) throws MalformedURLException {
+        Uri.Builder builder = Uri.parse(TOP_TRACKS_BASE_URL).buildUpon()
+                .appendQueryParameter(LIMIT, PreferenceUtils.getTopTracksLimit(context));
+        appendAPIKey(builder);
+        return new URL(builder.build().toString());
     }
 
     public static String getImage(JSONArray imageArray) throws JSONException {

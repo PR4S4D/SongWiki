@@ -35,6 +35,7 @@
     <string name="top_tracks">Top Tracks</string>
     <string name="top_tracks_limit_title">Number of Top Tracks</string>
     <string name="top_artists_limit_title">Number of Top Artists</string>
+    <string name="default_limit">20</string>
 
 
 </resources>

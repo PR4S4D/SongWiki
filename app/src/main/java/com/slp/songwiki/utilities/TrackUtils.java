@@ -1,5 +1,6 @@
 package com.slp.songwiki.utilities;
 
+import android.content.Context;
 import android.util.Log;
 
 import com.slp.songwiki.model.Track;
@@ -19,6 +20,16 @@ import java.util.List;
 
 public class TrackUtils implements SongWikiConstants {
 
+    public static List<Track> getTopChartTracks(Context context) throws IOException, JSONException {
+        List<Track> topTracks = new ArrayList<>();
+        String response = NetworkUtils.getResponseFromHttpUrl(LastFmUtils.getTopTracksUrl(context));
+        JSONObject jsonResponse = new JSONObject(response);
+        JSONArray trackArray = jsonResponse.getJSONObject(TRACKS).getJSONArray(TRACK);
+
+        return getTracks(trackArray);
+    }
+
+    @Deprecated
     public static List<Track> getTopChartTracks() throws IOException, JSONException {
         List<Track> topTracks = new ArrayList<>();
         String response = NetworkUtils.getResponseFromHttpUrl(LastFmUtils.getTopTracksUrl());

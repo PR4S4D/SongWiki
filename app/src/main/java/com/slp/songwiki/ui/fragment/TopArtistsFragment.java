@@ -2,6 +2,7 @@ package com.slp.songwiki.ui.fragment;
 
 import android.app.ActivityOptions;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -33,6 +34,7 @@ import com.slp.songwiki.ui.activity.ArtistActivity;
 import com.slp.songwiki.ui.activity.ArtistSearchResultsActivity;
 import com.slp.songwiki.utilities.ArtistUtils;
 import com.slp.songwiki.utilities.NetworkUtils;
+import com.slp.songwiki.utilities.PreferenceUtils;
 
 import org.json.JSONException;
 
@@ -46,7 +48,7 @@ import butterknife.ButterKnife;
  * Created by lshivaram on 4/30/2017.
  */
 
-public class TopArtistsFragment extends Fragment implements SongWikiFragmentable, LoaderManager.LoaderCallbacks<List<Artist>>, ArtistAdapter.ListItemClickListener {
+public class TopArtistsFragment extends Fragment implements SongWikiFragmentable, LoaderManager.LoaderCallbacks<List<Artist>>, ArtistAdapter.ListItemClickListener, SharedPreferences.OnSharedPreferenceChangeListener {
     private static final int TOP_ARTISTS = 321;
     private View rootView;
     private LoaderManager loaderManager;
@@ -78,10 +80,17 @@ public class TopArtistsFragment extends Fragment implements SongWikiFragmentable
         } else {
             error.setVisibility(View.VISIBLE);
         }
+        PreferenceUtils.getPreferences(getActivity()).registerOnSharedPreferenceChangeListener(this);
 
         return rootView;
     }
 
+    @Override
+    public void onDestroy() {
+        PreferenceUtils.getPreferences(getActivity()).unregisterOnSharedPreferenceChangeListener(this);
+
+        super.onDestroy();
+    }
 
     private void setupFB() {
         mFBConfig = FirebaseRemoteConfig.getInstance();
@@ -132,6 +141,7 @@ public class TopArtistsFragment extends Fragment implements SongWikiFragmentable
                 if (null != artists) {
                     deliverResult(artists);
                 } else {
+                    rvArtists.setVisibility(View.GONE);
                     artistLoader.setVisibility(View.VISIBLE);
 
                     forceLoad();
@@ -141,7 +151,7 @@ public class TopArtistsFragment extends Fragment implements SongWikiFragmentable
             @Override
             public List<Artist> loadInBackground() {
                 try {
-                    artists = ArtistUtils.getTopChartArtists();
+                    artists = ArtistUtils.getTopChartArtists(getActivity());
                     Log.i("loadInBackground: ", artists.toString());
                 } catch (IOException | JSONException e) {
                     e.printStackTrace();
@@ -162,6 +172,7 @@ public class TopArtistsFragment extends Fragment implements SongWikiFragmentable
     @Override
     public void onLoadFinished(Loader<List<Artist>> loader, List<Artist> artists) {
         artistLoader.setVisibility(View.GONE);
+        rvArtists.setVisibility(View.VISIBLE);
         initializeRecyclerView(artists);
 
     }
@@ -203,4 +214,11 @@ public class TopArtistsFragment extends Fragment implements SongWikiFragmentable
     }
 
 
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        if (key.equals("top_artists_limit")) {
+            Log.i("onSharedPreferen ","reloading");
+            loaderManager.restartLoader(TOP_ARTISTS, null, this);
+        }
+    }
 }

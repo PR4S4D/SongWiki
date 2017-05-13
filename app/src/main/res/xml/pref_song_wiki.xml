@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <ListPreference
-        android:defaultValue="20"
+        android:defaultValue="@string/default_limit"
         android:entries="@array/top_artists_limit"
         android:entryValues="@array/top_artists_limit"
-        android:key="top_tacks_limit"
-        android:summary="%s"
-        android:title="@string/top_tracks_limit_title" />
-
-    <ListPreference
-        android:defaultValue="20"
-        android:entries="@array/top_tracks_limit"
-        android:entryValues="@array/top_tracks_limit"
-        android:key="top_tacks_limit"
+        android:key="top_artists_limit"
         android:summary="%s"
         android:title="@string/top_artists_limit_title" />
+
+    <ListPreference
+        android:defaultValue="@string/default_limit"
+        android:entries="@array/top_tracks_limit"
+        android:entryValues="@array/top_tracks_limit"
+        android:key="top_tracks_limit"
+        android:summary="%s"
+        android:title="@string/top_tracks_limit_title" />
 
 </PreferenceScreen>

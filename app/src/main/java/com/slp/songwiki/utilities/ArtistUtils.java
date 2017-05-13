@@ -34,6 +34,15 @@ import java.util.List;
 public class ArtistUtils implements SongWikiConstants {
 
 
+    public static List<Artist> getTopChartArtists(Context context) throws IOException, JSONException {
+
+        String topArtistDetails = NetworkUtils.getResponseFromHttpUrl(LastFmUtils.getTopArtistUrl(context));
+        JSONObject topArtistJsonObject = new JSONObject(topArtistDetails);
+        JSONObject artists = topArtistJsonObject.getJSONObject(TOP_ARTISTS);
+        JSONArray artistArray = (JSONArray) artists.get(ARTIST);
+        return getArtists(artistArray);
+    }
+
     public static List<Artist> getTopChartArtists() throws IOException, JSONException {
 
         String topArtistDetails = NetworkUtils.getResponseFromHttpUrl(LastFmUtils.getTopArtistUrl());
