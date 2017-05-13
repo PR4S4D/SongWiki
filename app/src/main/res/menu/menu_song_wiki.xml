@@ -1,9 +1,15 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.slp.songwiki.ui.activity.SongWikiActivity" >
-    <item android:id="@+id/favourite_artists"
-        android:title="@string/favourite_artists"
+    tools:context="com.slp.songwiki.ui.activity.SongWikiActivity">
+    <item
+        android:id="@+id/favourite_artists"
         android:orderInCategory="100"
+        android:title="@string/favourite_artists"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/song_wiki_settings"
+        android:orderInCategory="100"
+        android:title="@string/action_settings"
         app:showAsAction="never" />
 </menu>

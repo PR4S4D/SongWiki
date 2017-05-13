@@ -78,6 +78,8 @@ public class SongWikiActivity extends AppCompatActivity {
         if (id == R.id.favourite_artists) {
             startActivity(new Intent(this,FavouriteArtistActivity.class));
             return true;
+        }else if(id == R.id.song_wiki_settings){
+            startActivity(new Intent(this,SettingsActivity.class));
         }
         return super.onOptionsItemSelected(item);
     }
