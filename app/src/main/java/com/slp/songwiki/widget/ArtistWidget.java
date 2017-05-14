@@ -12,6 +12,7 @@ import android.widget.RemoteViews;
 
 import com.slp.songwiki.R;
 import com.slp.songwiki.ui.activity.ArtistActivity;
+import com.slp.songwiki.ui.activity.SongWikiActivity;
 import com.slp.songwiki.ui.fragment.TopArtistsFragment;
 
 /**
@@ -37,9 +38,12 @@ public class ArtistWidget extends AppWidgetProvider {
     }
 
     private void setWidgetOnClick(Context context, RemoteViews views) {
+        Intent intent = new Intent(context, SongWikiActivity.class);
+        PendingIntent clickPendingIntentTemplate = PendingIntent.getActivity(context,0,intent,0);
+        views.setOnClickPendingIntent(R.id.top_artists,clickPendingIntentTemplate);
 
-        Intent intent = new Intent(context, ArtistActivity.class);
-        PendingIntent clickPendingIntentTemplate = TaskStackBuilder.create(context)
+         intent = new Intent(context, ArtistActivity.class);
+         clickPendingIntentTemplate = TaskStackBuilder.create(context)
                 .addNextIntentWithParentStack(intent)
                 .getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
         views.setPendingIntentTemplate(R.id.artists, clickPendingIntentTemplate);
