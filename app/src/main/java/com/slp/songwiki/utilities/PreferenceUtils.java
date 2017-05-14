@@ -22,4 +22,8 @@ public class PreferenceUtils {
     public static String getTopArtistsLimit(Context context){
         return getPreferences(context).getString("top_artists_limit", context.getString(R.string.default_limit));
     }
+
+    public static String getCountry(Context context){
+        return getPreferences(context).getString("country",context.getString(R.string.default_country));
+    }
 }

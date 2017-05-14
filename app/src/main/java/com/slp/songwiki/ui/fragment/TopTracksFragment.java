@@ -193,7 +193,7 @@ public class TopTracksFragment extends Fragment implements SongWikiFragmentable,
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        if(key.equals("top_tracks_limit")){
+        if(key.equals("top_tracks_limit")|| key.equals("country")){
             loaderManager.restartLoader(TOP_TRACKS,null,this);
         }
     }

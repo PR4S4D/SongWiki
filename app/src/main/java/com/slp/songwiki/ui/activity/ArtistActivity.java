@@ -153,6 +153,7 @@ public class ArtistActivity extends AppCompatActivity implements LoaderManager.L
         rvTags.setAdapter(new TagAdapter(artist.getTags(), backgroundColor, textColor));
         FlowLayoutManager flowLayoutManager = new FlowLayoutManager();
         flowLayoutManager.setAutoMeasureEnabled(true);
+        flowLayoutManager.canScrollHorizontally();
 
         rvTags.setLayoutManager(flowLayoutManager);
 

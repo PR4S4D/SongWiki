@@ -63,7 +63,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            >
 
             <include layout="@layout/artist_card" />
 
@@ -74,6 +75,8 @@
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rv_tags"
+                android:clickable="false"
+
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"

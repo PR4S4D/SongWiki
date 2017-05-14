@@ -74,6 +74,7 @@
         <receiver android:name=".widget.ArtistWidget">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="com.slp.songwiki.ACTION_DATA_UPDATED"/>
             </intent-filter>
 
             <meta-data

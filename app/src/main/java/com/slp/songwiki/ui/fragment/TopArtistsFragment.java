@@ -62,6 +62,7 @@ public class TopArtistsFragment extends Fragment implements SongWikiFragmentable
     private SearchView searchView;
     private FirebaseAnalytics firebaseAnalytics;
     private FirebaseRemoteConfig mFBConfig;
+    public static final String ACTION_DATA_UPDATED = "com.slp.songwiki.ACTION_DATA_UPDATED";
 
     @Nullable
     @Override
@@ -216,9 +217,11 @@ public class TopArtistsFragment extends Fragment implements SongWikiFragmentable
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        if (key.equals("top_artists_limit")) {
-            Log.i("onSharedPreferen ","reloading");
+        if (key.equals("top_artists_limit") || key.equals("country")) {
+            Log.i("onSharedPreference ","reloading");
             loaderManager.restartLoader(TOP_ARTISTS, null, this);
+            Intent dataUpdated = new Intent(ACTION_DATA_UPDATED).setPackage(getActivity().getPackageName());
+            getContext().sendBroadcast(dataUpdated);
         }
     }
 }

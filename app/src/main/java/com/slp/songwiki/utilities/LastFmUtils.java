@@ -21,7 +21,8 @@ public class LastFmUtils implements SongWikiConstants {
 
     public static URL getTopArtistUrl(Context context) throws MalformedURLException {
         Uri.Builder builder = Uri.parse(TOP_ARTISTS_BASE_URL).buildUpon()
-                .appendQueryParameter(LIMIT, PreferenceUtils.getTopArtistsLimit(context));
+                .appendQueryParameter(LIMIT, PreferenceUtils.getTopArtistsLimit(context))
+                .appendQueryParameter(COUNTRY,PreferenceUtils.getCountry(context));
         appendAPIKey(builder);
         return new URL(builder.build().toString());
     }
@@ -44,7 +45,8 @@ public class LastFmUtils implements SongWikiConstants {
 
     public static URL getTopTracksUrl(Context context) throws MalformedURLException {
         Uri.Builder builder = Uri.parse(TOP_TRACKS_BASE_URL).buildUpon()
-                .appendQueryParameter(LIMIT, PreferenceUtils.getTopTracksLimit(context));
+                .appendQueryParameter(LIMIT, PreferenceUtils.getTopTracksLimit(context))
+                .appendQueryParameter(COUNTRY,PreferenceUtils.getCountry(context));
         appendAPIKey(builder);
         return new URL(builder.build().toString());
     }

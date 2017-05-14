@@ -12,6 +12,7 @@ import android.widget.RemoteViews;
 
 import com.slp.songwiki.R;
 import com.slp.songwiki.ui.activity.ArtistActivity;
+import com.slp.songwiki.ui.fragment.TopArtistsFragment;
 
 /**
  * Implementation of App Widget functionality.
@@ -48,11 +49,14 @@ public class ArtistWidget extends AppWidgetProvider {
     @Override
     public void onReceive(Context context, Intent intent) {
         super.onReceive(context, intent);
-        Log.i("Inside onreceive", intent.toString());
-        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
-        int[] appWidgetIds = appWidgetManager.getAppWidgetIds(
-                new ComponentName(context, getClass()));
-        appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.artist_item);
+        Log.i("Inside onreceive", String.valueOf(intent.getAction()));
+        if(TopArtistsFragment.ACTION_DATA_UPDATED.equals(intent.getAction()) ){
+
+            AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
+            int[] appWidgetIds = appWidgetManager.getAppWidgetIds(
+                    new ComponentName(context, getClass()));
+            appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.artist_item);
+        }
     }
 
     @Override

@@ -268,6 +268,7 @@ public class TrackActivity extends AppCompatActivity implements LoaderManager.Lo
         rvTags.setAdapter(new TagAdapter(track.getTags(), backgroundColor, textColor));
         FlowLayoutManager flowLayoutManager = new FlowLayoutManager();
         flowLayoutManager.setAutoMeasureEnabled(true);
+        flowLayoutManager.canScrollVertically();
 
         rvTags.setLayoutManager(flowLayoutManager);
 

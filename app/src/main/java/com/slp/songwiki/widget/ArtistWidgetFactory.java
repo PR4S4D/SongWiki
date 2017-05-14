@@ -60,7 +60,7 @@ public class ArtistWidgetFactory implements RemoteViewsService.RemoteViewsFactor
         @Override
         protected List<Artist> doInBackground(String... params) {
             try {
-                List<Artist> topChartArtists = ArtistUtils.getTopChartArtists();
+                List<Artist> topChartArtists = ArtistUtils.getTopChartArtists(context);
                 for (Artist artist : topChartArtists) {
                     artistImages.add(downloadUrl(artist.getImageLink()));
                 }
