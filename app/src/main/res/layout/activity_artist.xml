@@ -28,6 +28,7 @@
                 android:id="@+id/artist_image"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:background="@drawable/scrim"
                 android:contentDescription="@string/artist_image"
                 android:fitsSystemWindows="true"
                 android:scaleType="centerCrop"
@@ -36,8 +37,7 @@
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/scrim" />
+                android:layout_height="match_parent" />
 
 
             <android.support.v7.widget.Toolbar

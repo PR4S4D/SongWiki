@@ -16,13 +16,13 @@
             android:id="@+id/collapsing_tool_bar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:fitsSystemWindows="true"
             app:collapsedTitleTextAppearance="@style/collapsingToolBar"
             app:contentScrim="@color/colorPrimary"
             app:expandedTitleMarginEnd="@dimen/margin_end"
             app:expandedTitleMarginStart="@dimen/margin_start"
             app:expandedTitleTextAppearance="@style/collapsingToolBar"
             app:layout_collapseMode="parallax"
-            android:fitsSystemWindows="true"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
 
@@ -30,6 +30,7 @@
                 android:id="@+id/track_image"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:background="@drawable/scrim"
                 android:contentDescription="@string/album_cover"
                 android:fitsSystemWindows="true"
                 android:scaleType="centerCrop"
@@ -38,8 +39,7 @@
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/scrim" />
+                android:layout_height="match_parent" />
 
 
             <android.support.v7.widget.Toolbar
@@ -63,8 +63,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            >
+            android:orientation="vertical">
 
             <include layout="@layout/artist_card" />
 
@@ -75,12 +74,12 @@
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rv_tags"
-                android:clickable="false"
-
                 android:layout_width="match_parent"
+
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
-                android:layout_marginStart="8dp" />
+                android:layout_marginStart="8dp"
+                android:clickable="false" />
 
             <TextView
                 android:id="@+id/similar_tracks_label"
