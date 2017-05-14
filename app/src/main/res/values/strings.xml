@@ -38,5 +38,6 @@
     <string name="default_limit">20</string>
     <string name="default_country">United States</string>
     <string name="country">Country</string>
-
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
 </resources>
