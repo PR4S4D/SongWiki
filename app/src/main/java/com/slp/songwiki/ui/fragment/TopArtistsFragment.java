@@ -3,8 +3,12 @@ package com.slp.songwiki.ui.fragment;
 import android.app.ActivityOptions;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
@@ -20,6 +24,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -35,6 +40,8 @@ import com.slp.songwiki.ui.activity.ArtistSearchResultsActivity;
 import com.slp.songwiki.utilities.ArtistUtils;
 import com.slp.songwiki.utilities.NetworkUtils;
 import com.slp.songwiki.utilities.PreferenceUtils;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
 import org.json.JSONException;
 
@@ -53,6 +60,7 @@ public class TopArtistsFragment extends Fragment implements SongWikiFragmentable
     private View rootView;
     private LoaderManager loaderManager;
     private List<Artist> topArtists;
+    private Artist topArtist;
     @Bind(R.id.rv_artists)
     RecyclerView rvArtists;
     @Bind(R.id.artist_loader)
@@ -185,15 +193,55 @@ public class TopArtistsFragment extends Fragment implements SongWikiFragmentable
     }
 
     private void initializeRecyclerView(List<Artist> artists) {
-        if (null != artists) {
+        if (null != artists && artists.size() > 0) {
             topArtists = artists;
+            topArtist = artists.get(0);
             rvArtists.setAdapter(new ArtistAdapter(artists, this));
             int gridSize = getResources().getInteger(R.integer.artist_grid);
             rvArtists.setLayoutManager(new GridLayoutManager(getActivity(), gridSize));
             rvArtists.setHasFixedSize(true);
+            setNavHeaderBackground();
         }
 
 
+    }
+
+    private void setNavHeaderBackground() {
+        final NavigationView navigationView = (NavigationView) getActivity().findViewById(R.id.nav_view);
+        final View header = navigationView.getHeaderView(0);
+        final ImageView navHeaderImage = (ImageView) header.findViewById(R.id.nav_header_image);
+        navHeaderImage.setContentDescription(topArtist.getName());
+
+        Picasso.with(getContext()).load(topArtist.getImageLink()).into(new Target() {
+            @Override
+            public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                Log.i("onBitmapLoaded: ","setting image");
+                navHeaderImage.setImageBitmap(bitmap);
+                navHeaderImage.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent artistIntent = new Intent(getActivity(), ArtistActivity.class);
+                        Pair[] pairs = new Pair[1];
+                        pairs[0] = new Pair<>(navHeaderImage, topArtist.getName());
+                        ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(getActivity(), pairs);
+                        artistIntent.putExtra("artist", topArtist);
+                        startActivity(artistIntent,options.toBundle());
+                    }
+                });
+
+            }
+
+            @Override
+            public void onBitmapFailed(Drawable errorDrawable) {
+                Log.i("onBitmapLoaded: ","failed" );
+
+            }
+
+            @Override
+            public void onPrepareLoad(Drawable placeHolderDrawable) {
+
+            }
+        });
     }
 
     @Override
@@ -210,7 +258,6 @@ public class TopArtistsFragment extends Fragment implements SongWikiFragmentable
             params.putString("artist", clickedArtist.getName());
             firebaseAnalytics.logEvent("artist", params);
             startActivity(artistIntent, options.toBundle());
-
         }
     }
 
@@ -218,7 +265,7 @@ public class TopArtistsFragment extends Fragment implements SongWikiFragmentable
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         if (key.equals("top_artists_limit") || key.equals("country")) {
-            Log.i("onSharedPreference ","reloading");
+            Log.i("onSharedPreference ", "reloading");
             loaderManager.restartLoader(TOP_ARTISTS, null, this);
             Intent dataUpdated = new Intent(ACTION_DATA_UPDATED).setPackage(getActivity().getPackageName());
             getContext().sendBroadcast(dataUpdated);
