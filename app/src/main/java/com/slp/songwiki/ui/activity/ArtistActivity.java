@@ -375,7 +375,6 @@ public class ArtistActivity extends AppCompatActivity implements LoaderManager.L
                     Log.i("Insert failed", artistContent.toString());
                 } else {
                     ArtistUtils.saveImage(artist, getApplicationContext());
-                    Toast.makeText(this, R.string.made_favourite, Toast.LENGTH_SHORT).show();
                     Snackbar.make(view, R.string.made_favourite, Snackbar.LENGTH_SHORT).show();
                 }
             }

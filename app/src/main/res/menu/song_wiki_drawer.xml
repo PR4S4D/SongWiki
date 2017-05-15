@@ -3,13 +3,17 @@
     <item android:title="Communicate">
         <menu>
             <item
-                android:id="@+id/nav_share"
-                android:icon="@android:drawable/ic_media_play"
-                android:title="Share" />
+                android:id="@+id/favourite_artists"
+                android:icon="@drawable/make_favourite"
+                android:title="@string/favourite_artists" />
             <item
                 android:id="@+id/nav_send"
-                android:icon="@android:drawable/ic_media_play"
-                android:title="Send" />
+                android:icon="@android:drawable/ic_dialog_info"
+                android:title="@string/about" />
+            <item
+                android:id="@+id/song_wiki_settings"
+                android:icon="@drawable/ic_menu_pref"
+                android:title="@string/action_settings" />
         </menu>
     </item>
 </menu>

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -43,12 +44,12 @@ public class SongWikiActivity extends AppCompatActivity implements  NavigationVi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.song_wiki_main);
         ButterKnife.bind(this);
-        setUpNavigationView();
         setSupportActionBar(toolbar);
         pagerAdapter = new SongWikiPagerAdapter(getSupportFragmentManager(), this);
 
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(pagerAdapter);
+        setUpNavigationView();
 
 
         tabLayout.setupWithViewPager(mViewPager);
@@ -83,7 +84,7 @@ public class SongWikiActivity extends AppCompatActivity implements  NavigationVi
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.favourite_artists) {
             startActivity(new Intent(this, FavouriteArtistActivity.class));
@@ -91,17 +92,19 @@ public class SongWikiActivity extends AppCompatActivity implements  NavigationVi
         } else if (id == R.id.song_wiki_settings) {
             startActivity(new Intent(this, SettingsActivity.class));
         }
-        return super.onOptionsItemSelected(item);
-    }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_song_wiki, menu);
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 
     @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        return false;
+    public void onBackPressed() {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
     }
 }
