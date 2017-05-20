@@ -42,6 +42,7 @@ import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -86,6 +87,8 @@ public class ArtistActivity extends AppCompatActivity implements LoaderManager.L
     CollapsingToolbarLayout collapsingToolbarLayout;
     @Bind(R.id.loading_frame)
     FrameLayout loadingFrame;
+    @Bind(R.id.progress_bar)
+    ProgressBar progressBar;
     @Bind(R.id.rv_similar_artists)
     RecyclerView rvSimilarArtists;
     @Bind(R.id.similar_artists_label)
@@ -236,11 +239,13 @@ public class ArtistActivity extends AppCompatActivity implements LoaderManager.L
                 artistName.setTextColor(textColor);
                 publishedTV.setTextColor(textColor);
                 publishDate.setTextColor(textColor);
-                collapsingToolbarLayout.setCollapsedTitleTextColor(textColor);
+                if (textColor != backgroundColor)
+                    collapsingToolbarLayout.setCollapsedTitleTextColor(textColor);
                 collapsingToolbarLayout.setBackgroundColor(backgroundColor);
                 collapsingToolbarLayout.setStatusBarScrimColor(backgroundColor);
                 collapsingToolbarLayout.setContentScrimColor(backgroundColor);
                 favFab.setBackgroundTintList(ColorStateList.valueOf(palette.getDarkMutedColor(textColor)));
+                progressBar.getIndeterminateDrawable().setTint(textColor);
                 if (null != artist.getTags())
                     showTags();
 

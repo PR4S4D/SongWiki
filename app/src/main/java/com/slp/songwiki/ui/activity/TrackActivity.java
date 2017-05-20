@@ -30,6 +30,7 @@ import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.slp.songwiki.R;
@@ -68,6 +69,8 @@ public class TrackActivity extends AppCompatActivity implements LoaderManager.Lo
     CollapsingToolbarLayout collapsingToolbarLayout;
     @Bind(R.id.loading_frame)
     FrameLayout loadingFrame;
+    @Bind(R.id.progress_bar)
+    ProgressBar progressBar;
     @Bind(R.id.toolbar)
     Toolbar toolbar;
     @Bind(R.id.rv_similar_tracks)
@@ -148,9 +151,8 @@ public class TrackActivity extends AppCompatActivity implements LoaderManager.Lo
     private void setPaleteListener() {
         paletteListener = new Palette.PaletteAsyncListener() {
             public void onGenerated(Palette palette) {
-                int defaultColor = 0x000000;
-                textColor = palette.getDarkMutedColor(defaultColor);
-                backgroundColor = palette.getLightMutedColor(defaultColor);
+                textColor = palette.getDarkMutedColor(textColor);
+                backgroundColor = palette.getLightMutedColor(backgroundColor);
 
                 Palette.Swatch vibrant = palette.getVibrantSwatch();
                 if (vibrant != null) {
@@ -165,6 +167,7 @@ public class TrackActivity extends AppCompatActivity implements LoaderManager.Lo
                 collapsingToolbarLayout.setBackgroundColor(backgroundColor);
                 collapsingToolbarLayout.setStatusBarScrimColor(backgroundColor);
                 collapsingToolbarLayout.setContentScrimColor(backgroundColor);
+                progressBar.getIndeterminateDrawable().setTint(textColor);
                 if (null != track.getTags())
                     showTags();
 

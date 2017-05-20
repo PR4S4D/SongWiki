@@ -27,7 +27,7 @@ android {
         }
     }
     buildTypes.each {
-        it.buildConfigField 'String', 'MY_API_KEY', '"590c44628f39b7cb72d850d9d03709a8"'
+        it.buildConfigField 'String', 'MY_API_KEY', '"YOUR API KEY"'
     }
     productFlavors {
     }
