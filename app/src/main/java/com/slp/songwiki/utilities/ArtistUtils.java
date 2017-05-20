@@ -249,7 +249,7 @@ public class ArtistUtils implements SongWikiConstants {
 
 
             do {
-                Artist artist = new Artist(cursor.getString(name), cursor.getLong(listeners), cursor.getString(imageLink), cursor.getString(publishedOn), cursor.getString(summary), cursor.getColumnName(content));
+                Artist artist = new Artist(cursor.getString(name), cursor.getLong(listeners), cursor.getString(imageLink), cursor.getString(publishedOn), cursor.getString(summary), cursor.getString(content));
                 Log.i("Artist", artist.toString());
                 artists.add(artist);
             } while (cursor.moveToNext());
