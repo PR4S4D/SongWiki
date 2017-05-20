@@ -8,9 +8,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Pair;
+import android.view.View;
+import android.widget.TextView;
 
 import com.slp.songwiki.R;
 import com.slp.songwiki.adapter.ArtistAdapter;
+import com.slp.songwiki.adapter.TrackAdapter;
 import com.slp.songwiki.model.Artist;
 import com.slp.songwiki.utilities.ArtistUtils;
 
@@ -22,6 +25,8 @@ import butterknife.ButterKnife;
 public class FavouriteArtistActivity extends AppCompatActivity implements ArtistAdapter.ListItemClickListener {
     @Bind(R.id.rv_artists)
     RecyclerView rvArtists;
+    @Bind(R.id.no_favourites)
+    TextView noFavourites;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +50,7 @@ public class FavouriteArtistActivity extends AppCompatActivity implements Artist
         startActivity(intent, options.toBundle());
     }
 
-    class QueryArtistTask extends AsyncTask<String, Void, List<Artist>> {
+    private class QueryArtistTask extends AsyncTask<String, Void, List<Artist>> {
 
         @Override
         protected List<Artist> doInBackground(String... params) {
@@ -55,14 +60,16 @@ public class FavouriteArtistActivity extends AppCompatActivity implements Artist
 
         @Override
         protected void onPostExecute(List<Artist> artists) {
-            rvArtists.setAdapter(new ArtistAdapter(artists, FavouriteArtistActivity.this));
-            int gridSize = getResources().getInteger(R.integer.artist_grid);
-            rvArtists.setLayoutManager(new GridLayoutManager(FavouriteArtistActivity.this, gridSize));
-          /*rvArtists.setLayoutManager(new
-                  GridLayoutManager(getApplicationContext(), 1,GridLayoutManager.HORIZONTAL, false));*/
-            rvArtists.setHasFixedSize(true);
-            super.onPostExecute(artists);
-            super.onPostExecute(artists);
+            if (null != artists && artists.size() > 0) {
+                rvArtists.setAdapter(new ArtistAdapter(artists, FavouriteArtistActivity.this));
+                int gridSize = getResources().getInteger(R.integer.artist_grid);
+                rvArtists.setLayoutManager(new GridLayoutManager(FavouriteArtistActivity.this, gridSize));
+                rvArtists.setHasFixedSize(true);
+                super.onPostExecute(artists);
+                super.onPostExecute(artists);
+            } else {
+                noFavourites.setVisibility(View.VISIBLE);
+            }
         }
     }
 }
