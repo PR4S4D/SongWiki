@@ -162,6 +162,7 @@ public class TopTracksFragment extends Fragment implements SongWikiFragmentable,
 
     private void initializeRecyclerView(List<Track> tracks) {
         if (null != tracks) {
+            error.setVisibility(View.GONE);
             topTracks = tracks;
             rvTracks.setAdapter(new TrackAdapter(tracks, this));
             int gridSize = getResources().getInteger(R.integer.track_grid);
@@ -194,7 +195,11 @@ public class TopTracksFragment extends Fragment implements SongWikiFragmentable,
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         if(key.equals("top_tracks_limit")|| key.equals("country")){
-            loaderManager.restartLoader(TOP_TRACKS,null,this);
+            if(null == loaderManager){
+                getActivity().getSupportLoaderManager().initLoader(TOP_TRACKS,null,this);
+            }else{
+                loaderManager.restartLoader(TOP_TRACKS,null,this);
+            }
         }
     }
 }

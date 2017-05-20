@@ -194,6 +194,7 @@ public class TopArtistsFragment extends Fragment implements SongWikiFragmentable
 
     private void initializeRecyclerView(List<Artist> artists) {
         if (null != artists && artists.size() > 0) {
+            error.setVisibility(View.GONE);
             topArtists = artists;
             topArtist = artists.get(0);
             rvArtists.setAdapter(new ArtistAdapter(artists, this));
@@ -266,7 +267,11 @@ public class TopArtistsFragment extends Fragment implements SongWikiFragmentable
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         if (key.equals("top_artists_limit") || key.equals("country")) {
             Log.i("onSharedPreference ", "reloading");
-            loaderManager.restartLoader(TOP_ARTISTS, null, this);
+            if(null==loaderManager){
+                getActivity().getSupportLoaderManager().initLoader(TOP_ARTISTS, null, this);
+            }else{
+                loaderManager.restartLoader(TOP_ARTISTS, null, this);
+            }
             Intent dataUpdated = new Intent(ACTION_DATA_UPDATED).setPackage(getActivity().getPackageName());
             getContext().sendBroadcast(dataUpdated);
         }
