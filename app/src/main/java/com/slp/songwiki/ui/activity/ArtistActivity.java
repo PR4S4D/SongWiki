@@ -8,6 +8,7 @@ import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Build;
@@ -245,7 +246,7 @@ public class ArtistActivity extends AppCompatActivity implements LoaderManager.L
                 collapsingToolbarLayout.setStatusBarScrimColor(backgroundColor);
                 collapsingToolbarLayout.setContentScrimColor(backgroundColor);
                 favFab.setBackgroundTintList(ColorStateList.valueOf(palette.getDarkMutedColor(textColor)));
-                progressBar.getIndeterminateDrawable().setTint(textColor);
+                progressBar.getIndeterminateDrawable().setColorFilter(textColor, PorterDuff.Mode.MULTIPLY);
                 if (null != artist.getTags())
                     showTags();
 

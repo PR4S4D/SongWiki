@@ -1,8 +1,10 @@
 package com.slp.songwiki.utilities;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.slp.songwiki.R;
 import com.slp.songwiki.model.Track;
 
 import org.json.JSONArray;

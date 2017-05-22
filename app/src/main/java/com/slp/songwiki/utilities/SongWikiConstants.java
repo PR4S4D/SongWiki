@@ -13,7 +13,8 @@ public interface SongWikiConstants {
     String TRACK_INFO_BASE__URL = "http://ws.audioscrobbler.com/2.0/?method=track.getInfo&format=json";
     String TOP_ARTISTS_BASE_URL = "http://ws.audioscrobbler.com/2.0/?method=geo.gettopartists&&format=json";
     String TOP_TRACKS_BASE_URL = "http://ws.audioscrobbler.com/2.0/?method=geo.gettoptracks&&format=json";
-    String TOP_ARTISTS_END_POINT = "http://ws.audioscrobbler.com/2.0/?method=chart.gettopartists&limit=15&format=json&api_key=" + LAST_FM_API_KEY;
+    String TOP_ARTISTS_GLOBAL_BASE_URL = "http://ws.audioscrobbler.com/2.0/?method=chart.gettopartists&format=json";
+    String TOP_TRACKS_GLOBAL_BASE_URL = "http://ws.audioscrobbler.com/2.0/?method=chart.gettoptracks&format=json";
     String SEARCH_ARTIST_END_POINT = "http://ws.audioscrobbler.com/2.0/?method=artist.search&api_key=" + LAST_FM_API_KEY + "&limit=6&format=json&artist=";
     String SEARCH_ARTIST_BASE_URL = "http://ws.audioscrobbler.com/2.0/?method=artist.search&limit=12&format=json";
     String SEARCH_TRACK_BASE_URL = "http://ws.audioscrobbler.com/2.0/?method=track.search&limit=12&format=json";

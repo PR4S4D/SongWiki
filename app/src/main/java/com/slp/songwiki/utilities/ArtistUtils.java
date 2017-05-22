@@ -9,6 +9,7 @@ import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.slp.songwiki.R;
 import com.slp.songwiki.data.FavouriteArtistContract;
 import com.slp.songwiki.model.Artist;
 import com.squareup.picasso.Picasso;
@@ -38,9 +39,14 @@ public class ArtistUtils implements SongWikiConstants {
 
         String topArtistDetails = NetworkUtils.getResponseFromHttpUrl(LastFmUtils.getTopArtistUrl(context));
         JSONObject topArtistJsonObject = new JSONObject(topArtistDetails);
-        JSONObject artists = topArtistJsonObject.getJSONObject(TOP_ARTISTS);
+        JSONObject artists = topArtistJsonObject.getJSONObject(getArtistJsonKey(context));
         JSONArray artistArray = (JSONArray) artists.get(ARTIST);
         return getArtists(artistArray);
+    }
+
+    @NonNull
+    private static String getArtistJsonKey(Context context) {
+        return context.getString(R.string.global).equals(PreferenceUtils.getCountry(context)) ? ARTISTS : TOP_ARTISTS;
     }
 
     public static List<Artist> getTopChartArtists() throws IOException, JSONException {
@@ -75,7 +81,7 @@ public class ArtistUtils implements SongWikiConstants {
 
     public static List<String> getTopChartArtistNames() throws IOException, JSONException {
         List<String> topChartArtist = new ArrayList<>();
-        String topArtistDetails = NetworkUtils.getResponseFromHttpUrl(new URL(TOP_ARTISTS_END_POINT));
+        String topArtistDetails = NetworkUtils.getResponseFromHttpUrl(new URL(TOP_ARTISTS_GLOBAL_BASE_URL));
         JSONObject topArtistJsonObject = new JSONObject(topArtistDetails);
         JSONObject artists = topArtistJsonObject.getJSONObject(ARTISTS);
         JSONArray artistArray = (JSONArray) artists.get(ARTIST);
