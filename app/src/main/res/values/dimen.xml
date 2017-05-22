@@ -6,5 +6,5 @@
     <dimen name="artist_name_padding">10dp</dimen>
     <dimen name="artist_name">15sp</dimen>
     <dimen name="nav_header_vertical_spacing">16dp</dimen>
-    <dimen name="nav_header_height">220dp</dimen>
+    <dimen name="nav_header_height">240dp</dimen>
 </resources>

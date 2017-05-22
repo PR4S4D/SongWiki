@@ -17,7 +17,7 @@
         android:title="@string/top_tracks_limit_title" />
 
     <ListPreference
-        android:defaultValue="@string/global"
+        android:defaultValue="@string/default_country"
         android:entries="@array/countries"
         android:entryValues="@array/countries"
         android:key="country"
