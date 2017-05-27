@@ -2,8 +2,10 @@ package com.slp.songwiki.ui.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
@@ -14,6 +16,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -24,7 +27,7 @@ import com.slp.songwiki.utilities.PreferenceUtils;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class SongWikiActivity extends AppCompatActivity implements  NavigationView.OnNavigationItemSelectedListener{
+public class SongWikiActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private SongWikiPagerAdapter pagerAdapter;
     private ViewPager mViewPager;
@@ -38,6 +41,10 @@ public class SongWikiActivity extends AppCompatActivity implements  NavigationVi
     NavigationView navigationView;
     @Bind(R.id.drawer_layout)
     DrawerLayout drawer;
+
+    private static final int PRESS_BACK_INTERVAL = 2000; // # milliseconds, desired time passed between two back presses.
+    private boolean doubleBackToExitPressedOnce;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +71,7 @@ public class SongWikiActivity extends AppCompatActivity implements  NavigationVi
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
+        drawer.addDrawerListener(toggle);
         toggle.syncState();
     }
 
@@ -104,7 +111,24 @@ public class SongWikiActivity extends AppCompatActivity implements  NavigationVi
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            if (doubleBackToExitPressedOnce) {
+                super.onBackPressed();
+                return;
+            }
+
+            this.doubleBackToExitPressedOnce = true;
+            Snackbar.make(tabLayout, R.string.press_back,Snackbar.LENGTH_SHORT).show();
+
+            new Handler().postDelayed(new Runnable() {
+
+                @Override
+                public void run() {
+                    doubleBackToExitPressedOnce = false;
+                }
+            }, PRESS_BACK_INTERVAL);
+
+
         }
     }
+
 }

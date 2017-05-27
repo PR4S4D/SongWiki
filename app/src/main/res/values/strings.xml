@@ -5,8 +5,8 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="artist_title">ARTISTS</string>
-    <string name="track_title">TRACKS</string>
+    <string name="artist_title">Artists</string>
+    <string name="track_title">Tracks</string>
     <string name="album_title">ALBUM</string>
     <string name="rihanna">Rihanna</string>
     <string name="favourite_artists">Favourite Artists</string>
@@ -43,4 +43,6 @@
     <string name="about">About</string>
     <string name="fork_on_github">Fork on GitHub</string>
     <string name="no_favourites_yet">No favourites yet!</string>
+    <string name="song_wiki">SongWiki</string>
+    <string name="press_back">Press back again!</string>
 </resources>
