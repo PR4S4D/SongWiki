@@ -6,7 +6,7 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:windowContentTransitions" tools:targetApi="lollipop">true</item>
+        <item name="android:windowSharedElementsUseOverlay">true</item>
         <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
     </style>
 
@@ -14,10 +14,13 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
+
     <style name="AppTheme.NoActionBar.TransparentStatusBar">
         <item name="android:statusBarColor">@android:color/transparent</item>
     </style>
+
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
     <style name="TransparentText" parent="@android:style/TextAppearance">
@@ -26,5 +29,16 @@
 
     <style name="collapsingToolBar" parent="Theme.AppCompat.Light">
         <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    <style name="AppToolbar" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="android:textColorPrimary">@android:color/white</item>
+        <item name="android:textColorSecondary">@android:color/white</item>
+        <item name="android:fontFamily">sans-serif-condensed</item>
+    </style>
+
+    <style name="splashTheme" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:background">@drawable/splash_background</item>
+        <item name="android:statusBarColor">@color/colorPrimary</item>
     </style>
 </resources>

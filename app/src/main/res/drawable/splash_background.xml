@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:drawable="@color/colorPrimary" />
+    <item>
+        <shape android:shape="rectangle">
+
+        </shape>
+    </item>
+
+    <item
+        android:bottom="220dp"
+        android:drawable="@drawable/splash_icon"
+        android:top="180dp"
+        android:right="70dp"
+        android:left="70dp"/>
+
+</layer-list>
