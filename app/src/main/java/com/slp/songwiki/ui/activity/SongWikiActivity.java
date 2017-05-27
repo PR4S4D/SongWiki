@@ -1,6 +1,7 @@
 package com.slp.songwiki.ui.activity;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -14,9 +15,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -42,7 +41,7 @@ public class SongWikiActivity extends AppCompatActivity implements NavigationVie
     @Bind(R.id.drawer_layout)
     DrawerLayout drawer;
 
-    private static final int PRESS_BACK_INTERVAL = 2000; // # milliseconds, desired time passed between two back presses.
+    private static final int PRESS_BACK_INTERVAL = 2000;
     private boolean doubleBackToExitPressedOnce;
 
 
@@ -93,12 +92,26 @@ public class SongWikiActivity extends AppCompatActivity implements NavigationVie
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.favourite_artists) {
-            startActivity(new Intent(this, FavouriteArtistActivity.class));
-            return true;
-        } else if (id == R.id.song_wiki_settings) {
-            startActivity(new Intent(this, SettingsActivity.class));
+        switch (item.getItemId()){
+            case R.id.favourite_artists:
+                startActivity(new Intent(this, FavouriteArtistActivity.class));
+                break;
+            case R.id.song_wiki_settings:
+                startActivity(new Intent(this, SettingsActivity.class));
+                break;
+            case R.id.share :
+                Intent i = new Intent(Intent.ACTION_SEND);
+                i.setType("text/plain");
+                i.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.song_wiki));
+                String appLink = getString(R.string.sharing_description);
+                appLink = appLink + "https://play.google.com/store/apps/details?id="+getPackageName();
+                i.putExtra(Intent.EXTRA_TEXT, appLink);
+                startActivity(Intent.createChooser(i, getString(R.string.choose_one)));
+                break;
+            case R.id.rate_app:
+                startActivity(new Intent(Intent.ACTION_VIEW,getPlayStoreLink()));
         }
+
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
@@ -129,6 +142,11 @@ public class SongWikiActivity extends AppCompatActivity implements NavigationVie
 
 
         }
+    }
+
+    private Uri getPlayStoreLink(){
+       return Uri.parse("market://details?id="+getPackageName());
+
     }
 
 }

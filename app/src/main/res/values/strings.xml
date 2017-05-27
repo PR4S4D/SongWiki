@@ -21,8 +21,8 @@
     <string name="content_head">Content</string>
     <string name="go_to_artist">Go to artist</string>
     <string name="similar_tracks">Similar Tracks</string>
-    <string name="similar_artists">SImilar Artists</string>
-    <string name="share">share</string>
+    <string name="similar_artists">Similar Artists</string>
+    <string name="share">Share</string>
     <string name="published">Published :</string>
     <string name="top_artists">Top Artists</string>
     <string name="artist_image">Artist image</string>
@@ -45,4 +45,7 @@
     <string name="no_favourites_yet">No favourites yet!</string>
     <string name="song_wiki">SongWiki</string>
     <string name="press_back">Press back again!</string>
+    <string name="rate_this_app">Rate this app</string>
+    <string name="choose_one">Choose one</string>
+    <string name="sharing_description">Check out this cool application</string>
 </resources>

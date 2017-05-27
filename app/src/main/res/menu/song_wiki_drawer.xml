@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group
+        android:id="@+id/main"
+        android:checkableBehavior="single">
     <item
         android:id="@+id/favourite_artists"
         android:icon="@drawable/ic_favorite"
@@ -8,12 +11,26 @@
         android:id="@+id/song_wiki_settings"
         android:icon="@drawable/ic_menu_pref"
         android:title="@string/action_settings" />
-    <item
-        android:id="@+id/fork_on_github"
-        android:icon="@drawable/ic_github_logo"
-        android:title="@string/fork_on_github" />
-    <item
-        android:id="@+id/nav_send"
-        android:icon="@drawable/ic_info_button"
-        android:title="@string/about" />
+    </group>
+    <group
+        android:id="@+id/extras"
+        android:checkableBehavior="none">
+        <item
+            android:id="@+id/rate_app"
+            android:icon="@drawable/ic_rating"
+            android:title="@string/rate_this_app" />
+        <item
+            android:id="@+id/share"
+            android:icon="@drawable/ic_share"
+            android:title="@string/share" />
+        <item
+            android:id="@+id/fork_on_github"
+            android:icon="@drawable/ic_github_logo"
+            android:title="@string/fork_on_github" />
+        <item
+            android:id="@+id/nav_send"
+            android:icon="@drawable/ic_info_button"
+            android:title="@string/about" />
+    </group>
+
 </menu>
