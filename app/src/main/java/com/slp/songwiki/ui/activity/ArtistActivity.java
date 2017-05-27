@@ -80,8 +80,6 @@ public class ArtistActivity extends AppCompatActivity implements LoaderManager.L
     ImageView artistImage;
     @Bind(R.id.artist_name)
     TextView artistName;
-    @Bind(R.id.publish_date)
-    TextView publishDate;
     @Bind(R.id.toolbar)
     Toolbar toolbar;
     @Bind(R.id.collapsing_tool_bar)
@@ -103,8 +101,6 @@ public class ArtistActivity extends AppCompatActivity implements LoaderManager.L
     NestedScrollView artistInfo;
     @Bind(R.id.content)
     TextView content;
-    @Bind(R.id.published_tv)
-    TextView publishedTV;
     private int backgroundColor = Color.GRAY;
     private int textColor = Color.BLACK;
     @Bind(R.id.artist_card)
@@ -174,6 +170,7 @@ public class ArtistActivity extends AppCompatActivity implements LoaderManager.L
     private void showArtistBasicInfo() {
         basicInfoSet = true;
         if (TextUtils.isEmpty(artist.getImageLink())) {
+            artistName.setText(artist.getName());
             Picasso.with(getApplicationContext()).load(R.drawable.loading).into(artistImage);
         } else {
             Picasso.with(getApplicationContext()).load(artist.getImageLink()).placeholder(R.drawable.loading).into(artistImage,
@@ -204,8 +201,6 @@ public class ArtistActivity extends AppCompatActivity implements LoaderManager.L
         }
         if (null != artist.getTags())
             showTags();
-        publishDate.setText(artist.getPublishedOn());
-        publishedTV.setVisibility(View.VISIBLE);
 
     }
 
@@ -237,11 +232,10 @@ public class ArtistActivity extends AppCompatActivity implements LoaderManager.L
 
                 }
                 artistCard.setBackgroundColor(backgroundColor);
-                artistName.setTextColor(textColor);
-                publishedTV.setTextColor(textColor);
-                publishDate.setTextColor(textColor);
-                if (textColor != backgroundColor)
+                if (textColor != backgroundColor){
+                    artistName.setTextColor(textColor);
                     collapsingToolbarLayout.setCollapsedTitleTextColor(textColor);
+                }
                 collapsingToolbarLayout.setBackgroundColor(backgroundColor);
                 collapsingToolbarLayout.setStatusBarScrimColor(backgroundColor);
                 collapsingToolbarLayout.setContentScrimColor(backgroundColor);
@@ -279,7 +273,7 @@ public class ArtistActivity extends AppCompatActivity implements LoaderManager.L
             startActivity(Intent.createChooser(ShareCompat.IntentBuilder.from(this)
                     .setType("text/plain")
                     .setText(artist.getArtistLink())
-                    .getIntent(), artist.getName()));
+                    .getIntent(), getString(R.string.choose_one)));
         } else if (item.getItemId() == android.R.id.home) {
             finish();
             return true;
