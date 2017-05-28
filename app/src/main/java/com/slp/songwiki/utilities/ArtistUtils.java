@@ -213,8 +213,15 @@ public class ArtistUtils implements SongWikiConstants {
                                   @Override
                                   public void run() {
 
+                                      File songWikiDir = new File(Environment.getExternalStorageDirectory() + "/SongWiki");
+
+                                      if (!songWikiDir.exists()) {
+                                          File newDir = new File(Environment.getExternalStorageDirectory().getPath()+"/SongWiki/");
+                                          newDir.mkdirs();
+                                      }
+
                                       File file = new File(
-                                              Environment.getExternalStorageDirectory().getPath() + "/"
+                                              Environment.getExternalStorageDirectory().getPath() + "/SongWiki/"
                                                       + artist.getName() + JPG_EXTENSION);
                                       Log.i("run: ", file.toString());
                                       try {

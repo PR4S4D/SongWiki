@@ -23,7 +23,7 @@ public interface SongWikiConstants {
     String ARTISTS = "artists";
     int IMAGE_SIZE = 3;
     String JPG_EXTENSION = ".jpg";
-    String LOCAL_IMAGE_BASE_URL = "file:///storage/emulated/0/";
+    String LOCAL_IMAGE_BASE_URL = "file:///storage/emulated/0/SongWiki/";
     int TRACK_LIMIT = 30;
     int ARTIST_LIMIT = 20;
     String LIMIT = "limit";
