@@ -18,7 +18,6 @@ import android.util.Log;
 import android.view.MenuItem;
 
 import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
 import com.slp.songwiki.R;
 import com.slp.songwiki.adapter.SongWikiPagerAdapter;
 import com.slp.songwiki.utilities.PreferenceUtils;
@@ -30,8 +29,6 @@ public class SongWikiActivity extends AppCompatActivity implements NavigationVie
 
     private SongWikiPagerAdapter pagerAdapter;
     private ViewPager mViewPager;
-    @Bind(R.id.banner_ad)
-    AdView adView;
     @Bind(R.id.toolbar)
     Toolbar toolbar;
     @Bind(R.id.tabs)
@@ -59,9 +56,7 @@ public class SongWikiActivity extends AppCompatActivity implements NavigationVie
 
 
         tabLayout.setupWithViewPager(mViewPager);
-        adView = (AdView) findViewById(R.id.banner_ad);
         Log.i("Top artist limit ", PreferenceUtils.getTopArtistsLimit(this));
-        showBannerAd();
 
     }
 
@@ -74,9 +69,6 @@ public class SongWikiActivity extends AppCompatActivity implements NavigationVie
         toggle.syncState();
     }
 
-    private void showBannerAd() {
-        adView.loadAd(getAdRequest());
-    }
 
     @NonNull
     private AdRequest getAdRequest() {
@@ -86,30 +78,29 @@ public class SongWikiActivity extends AppCompatActivity implements NavigationVie
     @Override
     protected void onResume() {
         super.onResume();
-        adView.loadAd(getAdRequest());
     }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.favourite_artists:
                 startActivity(new Intent(this, FavouriteArtistActivity.class));
                 break;
             case R.id.song_wiki_settings:
                 startActivity(new Intent(this, SettingsActivity.class));
                 break;
-            case R.id.share :
+            case R.id.share:
                 Intent i = new Intent(Intent.ACTION_SEND);
                 i.setType("text/plain");
                 i.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.song_wiki));
                 String appLink = getString(R.string.sharing_description);
-                appLink = appLink + "https://play.google.com/store/apps/details?id="+getPackageName();
+                appLink = appLink + "https://play.google.com/store/apps/details?id=" + getPackageName();
                 i.putExtra(Intent.EXTRA_TEXT, appLink);
                 startActivity(Intent.createChooser(i, getString(R.string.choose_one)));
                 break;
             case R.id.rate_app:
-                startActivity(new Intent(Intent.ACTION_VIEW,getPlayStoreLink()));
+                startActivity(new Intent(Intent.ACTION_VIEW, getPlayStoreLink()));
         }
 
 
@@ -130,7 +121,7 @@ public class SongWikiActivity extends AppCompatActivity implements NavigationVie
             }
 
             this.doubleBackToExitPressedOnce = true;
-            Snackbar.make(tabLayout, R.string.press_back,Snackbar.LENGTH_SHORT).show();
+            Snackbar.make(tabLayout, R.string.press_back, Snackbar.LENGTH_SHORT).show();
 
             new Handler().postDelayed(new Runnable() {
 
@@ -139,13 +130,11 @@ public class SongWikiActivity extends AppCompatActivity implements NavigationVie
                     doubleBackToExitPressedOnce = false;
                 }
             }, PRESS_BACK_INTERVAL);
-
-
         }
     }
 
-    private Uri getPlayStoreLink(){
-       return Uri.parse("market://details?id="+getPackageName());
+    private Uri getPlayStoreLink() {
+        return Uri.parse("market://details?id=" + getPackageName());
 
     }
 
