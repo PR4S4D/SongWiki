@@ -20,6 +20,7 @@ import android.view.MenuItem;
 import com.google.android.gms.ads.AdRequest;
 import com.slp.songwiki.R;
 import com.slp.songwiki.adapter.SongWikiPagerAdapter;
+import com.slp.songwiki.ui.fragment.AboutActivity;
 import com.slp.songwiki.utilities.PreferenceUtils;
 
 import butterknife.Bind;
@@ -101,6 +102,10 @@ public class SongWikiActivity extends AppCompatActivity implements NavigationVie
                 break;
             case R.id.rate_app:
                 startActivity(new Intent(Intent.ACTION_VIEW, getPlayStoreLink()));
+                break;
+            case R.id.about:
+                startActivity(new Intent(this, AboutActivity.class));
+                break;
         }
 
 
@@ -135,7 +140,6 @@ public class SongWikiActivity extends AppCompatActivity implements NavigationVie
 
     private Uri getPlayStoreLink() {
         return Uri.parse("market://details?id=" + getPackageName());
-
     }
 
 }

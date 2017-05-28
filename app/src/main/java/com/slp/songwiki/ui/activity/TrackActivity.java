@@ -198,7 +198,7 @@ public class TrackActivity extends AppCompatActivity implements LoaderManager.Lo
             startActivity(Intent.createChooser(ShareCompat.IntentBuilder.from(this)
                     .setType("text/plain")
                     .setText(track.getTrackLink())
-                    .getIntent(), track.getTitle()));
+                    .getIntent(),getString(R.string.choose_one)));
         }
 
         return super.onOptionsItemSelected(item);

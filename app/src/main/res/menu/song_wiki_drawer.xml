@@ -24,11 +24,7 @@
             android:icon="@drawable/ic_share"
             android:title="@string/share" />
         <item
-            android:id="@+id/fork_on_github"
-            android:icon="@drawable/ic_github_logo"
-            android:title="@string/fork_on_github" />
-        <item
-            android:id="@+id/nav_send"
+            android:id="@+id/about"
             android:icon="@drawable/ic_info_button"
             android:title="@string/about" />
     </group>
