@@ -29,7 +29,7 @@ import java.util.List;
 import static android.content.ContentValues.TAG;
 
 /**
- * Created by lshivaram on 4/30/2017.
+ * Created by Lakshmiprasad on 4/30/2017.
  */
 
 public class ArtistAdapter extends RecyclerView.Adapter<ArtistAdapter.ArtistViewHolder> implements Filterable {

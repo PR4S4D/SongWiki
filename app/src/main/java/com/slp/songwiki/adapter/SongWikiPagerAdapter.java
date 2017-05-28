@@ -11,7 +11,7 @@ import com.slp.songwiki.ui.fragment.SongWikiFragmentable;
 import com.slp.songwiki.ui.fragment.TopTracksFragment;
 
 /**
- * Created by lshivaram on 4/29/2017.
+ * Created by Lakshmiprasad on 4/29/2017.
  */
 
 public class SongWikiPagerAdapter extends FragmentPagerAdapter {

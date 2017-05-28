@@ -4,7 +4,7 @@ import android.content.Intent;
 import android.widget.RemoteViewsService;
 
 /**
- * Created by lshivaram on 4/29/2017.
+ * Created by Lakshmiprasad on 4/29/2017.
  */
 
 public class ArtistWidgetService extends RemoteViewsService {

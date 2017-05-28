@@ -7,7 +7,7 @@ import android.preference.PreferenceManager;
 import com.slp.songwiki.R;
 
 /**
- * Created by lshivaram on 5/14/2017.
+ * Created by Lakshmiprasad on 5/14/2017.
  */
 
 public class PreferenceUtils {

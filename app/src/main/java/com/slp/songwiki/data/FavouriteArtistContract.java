@@ -4,7 +4,7 @@ import android.net.Uri;
 import android.provider.BaseColumns;
 
 /**
- * Created by lshivaram on 4/30/2017.
+ * Created by Lakshmiprasad on 4/30/2017.
  */
 
 public class FavouriteArtistContract {

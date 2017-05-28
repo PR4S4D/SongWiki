@@ -14,7 +14,7 @@ import static com.slp.songwiki.data.FavouriteArtistContract.ArtistEntry.SUMMARY;
 import static com.slp.songwiki.data.FavouriteArtistContract.ArtistEntry.TABLE_NAME;
 
 /**
- * Created by lshivaram on 4/30/2017.
+ * Created by Lakshmiprasad on 4/30/2017.
  */
 
 public class FavouriteArtistDbHelper extends SQLiteOpenHelper {

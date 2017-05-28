@@ -12,7 +12,7 @@ import com.slp.songwiki.R;
 import java.util.List;
 
 /**
- * Created by lshivaram on 5/1/2017.
+ * Created by Lakshmiprasad on 5/1/2017.
  */
 
 public class TagAdapter extends RecyclerView.Adapter<TagAdapter.TagViewHolder> {

@@ -30,7 +30,7 @@ import butterknife.ButterKnife;
 import static android.view.View.GONE;
 
 /**
- * Created by lshivaram on 4/30/2017.
+ * Created by Lakshmiprasad on 4/30/2017.
  */
 
 public class ArtistSearchResultsActivity extends AppCompatActivity implements ArtistAdapter.ListItemClickListener, SongWikiConstants {

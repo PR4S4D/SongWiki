@@ -14,6 +14,7 @@ SongWiki lets you discover new music and find out more about your favorite songs
 SongWiki uses the Gradle build system. To build this project, use the "gradlew build" command or use "Import Project" in Android Studio.
 
 ### Prerequisites
+Use your  [Last.fm](http://www.last.fm/api) API key in the gradle file. 
 ```
 Android SDK 25
 Android Build Tools v25.0.2

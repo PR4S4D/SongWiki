@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <group
         android:id="@+id/main"
-        android:checkableBehavior="single">
+        android:checkableBehavior="none">
     <item
         android:id="@+id/favourite_artists"
         android:icon="@drawable/ic_favorite"
