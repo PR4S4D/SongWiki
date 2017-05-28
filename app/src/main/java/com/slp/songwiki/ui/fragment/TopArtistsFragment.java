@@ -257,6 +257,7 @@ public class TopArtistsFragment extends Fragment implements SongWikiFragmentable
             artistIntent.putExtra("artist", clickedArtist);
             Bundle params = new Bundle();
             params.putString("artist", clickedArtist.getName());
+            if(null != firebaseAnalytics)
             firebaseAnalytics.logEvent("artist", params);
             startActivity(artistIntent, options.toBundle());
         }
