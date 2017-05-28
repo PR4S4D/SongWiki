@@ -34,7 +34,7 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
@@ -53,6 +53,7 @@ dependencies {
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.xiaofeng.android:flowlayoutmanager:1.2.3.2'
     compile 'com.android.support:preference-v14:25.3.1'
+    compile 'com.github.daniel-stoneuk:material-about-library:1.9.0'
     testCompile 'junit:junit:4.12'
 }
 

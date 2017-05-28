@@ -28,9 +28,7 @@
         <activity
             android:name=".ui.activity.SongWikiActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar.TransparentStatusBar">
-
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar.TransparentStatusBar"></activity>
         <activity
             android:name=".ui.activity.ArtistActivity"
             android:theme="@style/AppTheme.NoActionBar">
@@ -93,6 +91,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".ui.fragment.AboutActivity"
+            android:theme="@style/AppTheme.MaterialAboutActivity"/>
     </application>
 
 </manifest>

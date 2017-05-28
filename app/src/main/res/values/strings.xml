@@ -48,4 +48,12 @@
     <string name="rate_this_app">Rate this app</string>
     <string name="choose_one">Choose one</string>
     <string name="sharing_description">Check out this cool application</string>
+    <string name="version_1_0">Version : 1.0</string>
+    <string name="author">Author</string>
+    <string name="lp">Lakshmiprasad</string>
+    <string name="version">Version</string>
+    <string name="author_location">Bengaluru, India</string>
+    <string name="linkedIn">LinkedIn</string>
+    <string name="github">Github</string>
+    <string name="give_feedback">Give feedback</string>
 </resources>
