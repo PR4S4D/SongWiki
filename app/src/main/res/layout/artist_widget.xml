@@ -4,22 +4,33 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <FrameLayout
+    <LinearLayout
         android:id="@+id/top_artists"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:orientation="horizontal"
+        android:weightSum="5">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="4"
+            android:contentDescription="@string/song_wiki"
+            android:src="@drawable/splash_icon" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/colorPrimary"
+            android:layout_weight="1"
             android:fontFamily="sans-serif"
             android:gravity="center_horizontal"
             android:padding="4dp"
             android:text="@string/top_artists"
             android:textColor="@android:color/primary_text_dark"
             android:textSize="32sp" />
-    </FrameLayout>
+    </LinearLayout>
+
 
     <ListView
         android:id="@+id/artists"
@@ -30,15 +41,16 @@
         android:dividerHeight="0.1px"
         tools:listitem="@layout/artist_widget_item" />
 
+
     <TextView
         android:id="@+id/widget_empty"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/cardview_light_background"
         android:fontFamily="sans-serif-condensed"
-        android:textColor="@android:color/black"
         android:gravity="center"
-        android:text="No Data"
-        android:textAppearance="?android:textAppearanceLarge" />
+        android:text="@string/no_data"
+        android:textAppearance="?android:textAppearanceLarge"
+        android:textColor="@android:color/black" />
 
 </LinearLayout>
