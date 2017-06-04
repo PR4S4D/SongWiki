@@ -235,6 +235,7 @@ public class TrackActivity extends AppCompatActivity implements LoaderManager.Lo
             int gridSize = getResources().getInteger(R.integer.track_grid);
             rvTracks.setLayoutManager(new GridLayoutManager(this, gridSize));
             rvTracks.setHasFixedSize(true);
+            rvTracks.setNestedScrollingEnabled(false);
         }
     }
 

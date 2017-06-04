@@ -324,6 +324,7 @@ public class ArtistActivity extends AppCompatActivity implements LoaderManager.L
             int gridSize = getResources().getInteger(R.integer.track_grid);
             rvTopTracks.setLayoutManager(new GridLayoutManager(this, gridSize));
             rvTopTracks.setHasFixedSize(true);
+            rvTopTracks.setNestedScrollingEnabled(false);
         }
     }
 
@@ -336,6 +337,7 @@ public class ArtistActivity extends AppCompatActivity implements LoaderManager.L
             layout.setInitialPrefetchItemCount(2);
             rvSimilarArtists.setLayoutManager(layout);
             rvSimilarArtists.setHasFixedSize(true);
+            rvSimilarArtists.setNestedScrollingEnabled(true);
         }
     }
 
