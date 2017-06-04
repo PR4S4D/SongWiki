@@ -2,6 +2,6 @@
 <resources>
     <integer name="track_grid">2</integer>
     <integer name="artist_grid">3</integer>
-
+    <dimen name="artist_image_height">168dp</dimen>
     <dimen name="image_size">256dp</dimen>
 </resources>
