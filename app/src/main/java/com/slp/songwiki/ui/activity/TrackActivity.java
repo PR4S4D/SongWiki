@@ -275,7 +275,7 @@ public class TrackActivity extends AppCompatActivity implements LoaderManager.Lo
         flowLayoutManager.canScrollVertically();
 
         rvTags.setLayoutManager(flowLayoutManager);
-
+        rvTags.setNestedScrollingEnabled(false);
         rvTags.setHasFixedSize(true);
     }
 

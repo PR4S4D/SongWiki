@@ -156,7 +156,7 @@ public class ArtistActivity extends AppCompatActivity implements LoaderManager.L
         flowLayoutManager.canScrollHorizontally();
 
         rvTags.setLayoutManager(flowLayoutManager);
-
+        rvTags.setNestedScrollingEnabled(false);
         rvTags.setHasFixedSize(true);
     }
 
