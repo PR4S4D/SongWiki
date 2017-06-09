@@ -18,7 +18,7 @@
         android:minWidth="50dp"
         android:scaleType="fitXY"
         android:adjustViewBounds="true"
-        tools:src="@drawable/artist" />
+        tools:src="@drawable/loading" />
 
     <TextView
         android:id="@+id/artist_name"
