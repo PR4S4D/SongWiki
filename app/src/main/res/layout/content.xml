@@ -7,9 +7,11 @@
     android:layout_height="wrap_content"
     android:paddingTop="8dp"
     android:paddingBottom="8dp"
-    android:layout_marginEnd="12dp"
+    android:gravity="fill_horizontal"
+    android:layout_marginEnd="8dp"
     android:lineSpacingMultiplier="1.2"
     android:layout_marginStart="12dp"
-    tools:text="@string/summary"
     android:ellipsize="marquee"
+    android:marqueeRepeatLimit ="marquee_forever"
+    tools:text="@string/summary"
     android:textColor="#000000" />
