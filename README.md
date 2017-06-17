@@ -39,4 +39,5 @@ Shared element transition is used
 * [Adbmod](https://firebase.google.com/docs/admob/admob-firebase)
 * [Material About Library](https://github.com/daniel-stoneuk/material-about-library)
 
+## Download it on Google play
 <a href='https://play.google.com/store/apps/details?id=com.slp.songwiki&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img height="100" alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png'/></a>
