@@ -56,4 +56,12 @@ public interface SongWikiConstants {
     String SIMILAR_TRACKS = "similartracks";
     String TOP_TRACKS = "toptracks";
     String COUNTRY = "country";
+
+    //youtube API
+    String YOUTUBE_SEARCH_API_KEY = "YOUR YOUTUBE API KEY";
+    String YOUTUBE_SEARCH_BASE_URL = "https://www.googleapis.com/youtube/v3/search?part=snippet";
+    String KEY = "key";
+    String MAX_RESULTS = "maxResults";
+    int NUMBER_OF_VIDEOS = 1;
+    String YOUTUBE_SERACH = "q";
 }

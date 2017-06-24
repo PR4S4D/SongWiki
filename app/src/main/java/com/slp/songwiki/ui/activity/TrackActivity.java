@@ -41,6 +41,7 @@ import com.slp.songwiki.model.Track;
 import com.slp.songwiki.utilities.LastFmUtils;
 import com.slp.songwiki.utilities.SongWikiConstants;
 import com.slp.songwiki.utilities.TrackUtils;
+import com.slp.songwiki.utilities.YoutubeUtils;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 import com.xiaofeng.flowlayoutmanager.FlowLayoutManager;
@@ -219,6 +220,7 @@ public class TrackActivity extends AppCompatActivity implements LoaderManager.Lo
                 try {
                     TrackUtils.addTrackInfo(track);
                     similarTracks = TrackUtils.getSimilarTracks(track);
+                    Log.i(TAG, "videoId: "+ YoutubeUtils.getVideoId(track));
 
                 } catch (IOException | JSONException e) {
                     e.printStackTrace();
