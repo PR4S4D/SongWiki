@@ -2,16 +2,19 @@ package com.slp.songwiki.ui.activity;
 
 import android.app.ActivityOptions;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.app.ShareCompat;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.CardView;
@@ -82,9 +85,12 @@ public class TrackActivity extends AppCompatActivity implements LoaderManager.Lo
     TextView similarTracksLabel;
     @Bind(R.id.content)
     TextView content;
+    @Bind(R.id.play)
+    FloatingActionButton playTrackVideo;
     private int backgroundColor = Color.GRAY;
     private int textColor = Color.BLACK;
     private Palette.PaletteAsyncListener paletteListener;
+    private String trackVideoId;
 
 
     @Override
@@ -168,6 +174,7 @@ public class TrackActivity extends AppCompatActivity implements LoaderManager.Lo
                 collapsingToolbarLayout.setBackgroundColor(backgroundColor);
                 collapsingToolbarLayout.setStatusBarScrimColor(backgroundColor);
                 collapsingToolbarLayout.setContentScrimColor(backgroundColor);
+                playTrackVideo.setBackgroundTintList(ColorStateList.valueOf(palette.getDarkMutedColor(textColor)));
                 progressBar.getIndeterminateDrawable().setTint(textColor);
                 if (null != track.getTags())
                     showTags();
@@ -220,7 +227,7 @@ public class TrackActivity extends AppCompatActivity implements LoaderManager.Lo
                 try {
                     TrackUtils.addTrackInfo(track);
                     similarTracks = TrackUtils.getSimilarTracks(track);
-                    Log.i(TAG, "videoId: "+ YoutubeUtils.getVideoId(track));
+                    trackVideoId = YoutubeUtils.getVideoId(track);
 
                 } catch (IOException | JSONException e) {
                     e.printStackTrace();
@@ -238,6 +245,9 @@ public class TrackActivity extends AppCompatActivity implements LoaderManager.Lo
             rvTracks.setLayoutManager(new GridLayoutManager(this, gridSize));
             rvTracks.setHasFixedSize(true);
             rvTracks.setNestedScrollingEnabled(false);
+        }
+        if(!TextUtils.isEmpty(trackVideoId)){
+             playTrackVideo.setVisibility(View.VISIBLE);
         }
     }
 
@@ -312,5 +322,9 @@ public class TrackActivity extends AppCompatActivity implements LoaderManager.Lo
             startActivity(trackIntent, options.toBundle());
         }
 
+    }
+
+    public void playTrackVideo(View view) {
+        // TODO open videoActivity send similar tracks Info.
     }
 }
