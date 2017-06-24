@@ -27,7 +27,7 @@ android {
         }
     }
     buildTypes.each {
-        it.buildConfigField 'String', 'MY_API_KEY', '"YOUR LAST FM API KEY"'
+        it.buildConfigField 'String', 'MY_API_KEY', '"590c44628f39b7cb72d850d9d03709a8"'
     }
     productFlavors {
     }
@@ -55,6 +55,7 @@ dependencies {
     compile 'com.android.support:preference-v14:25.3.1'
     compile 'com.github.daniel-stoneuk:material-about-library:1.9.0'
     testCompile 'junit:junit:4.12'
+    compile files('libs/YouTubeAndroidPlayerApi.jar')
 }
 
 apply plugin: 'com.google.gms.google-services'
