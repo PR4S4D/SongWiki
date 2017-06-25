@@ -53,6 +53,7 @@ import org.json.JSONException;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
@@ -325,6 +326,14 @@ public class TrackActivity extends AppCompatActivity implements LoaderManager.Lo
     }
 
     public void playTrackVideo(View view) {
-        // TODO open videoActivity send similar tracks Info.
+         Intent videoIntent = new Intent(this,VideoActivity.class);
+         videoIntent.putParcelableArrayListExtra(SIMILAR_TRACKS, (ArrayList<Track>)similarTracks);
+         videoIntent.putExtra(TRACK_VIDEO_ID,trackVideoId);
+         videoIntent.putExtra(ARTIST,track.getArtist());
+         videoIntent.putExtra(TRACK,track.getTitle());
+         videoIntent.putExtra(BACKGROUND_COLOR,backgroundColor);
+         videoIntent.putExtra(TEXT_COLOR,textColor);
+
+         startActivity(videoIntent);
     }
 }

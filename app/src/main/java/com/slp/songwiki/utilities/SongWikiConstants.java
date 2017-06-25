@@ -19,7 +19,7 @@ public interface SongWikiConstants {
     String SEARCH_ARTIST_BASE_URL = "http://ws.audioscrobbler.com/2.0/?method=artist.search&limit=12&format=json";
     String SEARCH_TRACK_BASE_URL = "http://ws.audioscrobbler.com/2.0/?method=track.search&limit=12&format=json";
     String SIMILAR_TRACKS_BASE_URL = "http://ws.audioscrobbler.com/2.0/?method=track.getsimilar&limit=7&format=json";
-    String ARTIST_TOP_TRACKS_BASE_URL ="http://ws.audioscrobbler.com/2.0/?method=artist.gettoptracks&format=json&limit=10";
+    String ARTIST_TOP_TRACKS_BASE_URL = "http://ws.audioscrobbler.com/2.0/?method=artist.gettoptracks&format=json&limit=10";
     String ARTISTS = "artists";
     int IMAGE_SIZE = 3;
     String JPG_EXTENSION = ".jpg";
@@ -56,12 +56,16 @@ public interface SongWikiConstants {
     String SIMILAR_TRACKS = "similartracks";
     String TOP_TRACKS = "toptracks";
     String COUNTRY = "country";
+    String BACKGROUND_COLOR = "backgroundColor";
+    String TEXT_COLOR = "textColor";
 
     //youtube API
     String YOUTUBE_SEARCH_API_KEY = "YOUR YOUTUBE API KEY";
+    String YOUTUBE_PLAYER_API_KEY = "YOUR YOUTUBE API KEY";
     String YOUTUBE_SEARCH_BASE_URL = "https://www.googleapis.com/youtube/v3/search?part=snippet";
     String KEY = "key";
     String MAX_RESULTS = "maxResults";
     int NUMBER_OF_VIDEOS = 1;
     String YOUTUBE_SERACH = "q";
+    String TRACK_VIDEO_ID = "trackVideoId";
 }
