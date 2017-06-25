@@ -22,6 +22,7 @@ import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerView;
 import com.slp.songwiki.R;
 import com.slp.songwiki.adapter.TrackAdapter;
+import com.slp.songwiki.model.Artist;
 import com.slp.songwiki.model.Track;
 import com.slp.songwiki.utilities.SongWikiConstants;
 
@@ -48,6 +49,8 @@ public class VideoActivity extends YouTubeBaseActivity implements SongWikiConsta
     CardView artistCard;
     @Bind(R.id.artist)
     TextView artist;
+    @Bind(R.id.track_title)
+    TextView trackTitle;
 
 
 
@@ -66,6 +69,8 @@ public class VideoActivity extends YouTubeBaseActivity implements SongWikiConsta
         artist.setText(artistName);
         artist.setTextColor(textColor);
         track = getIntent().getStringExtra(TRACK);
+        trackTitle.setText(track);
+        trackTitle.setTextColor(textColor);
 
         Log.i(TAG, "onCreate: "+similarTracks);
         Log.i(TAG, "onCreate: videoId" + videoId);
@@ -100,6 +105,14 @@ public class VideoActivity extends YouTubeBaseActivity implements SongWikiConsta
 
             }
         };
+    }
+
+    public void goToArtist(View view) {
+        Intent intent = new Intent(this, ArtistActivity.class);
+        Artist artist = new Artist();
+        artist.setName(artistName);
+        intent.putExtra("artist", artist);
+        startActivity(intent);
     }
 
 

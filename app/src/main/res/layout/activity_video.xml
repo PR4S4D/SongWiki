@@ -28,7 +28,7 @@
 
             </com.google.android.youtube.player.YouTubePlayerView>
 
-            <include layout="@layout/artist_card" />
+            <include layout="@layout/track_info_card" />
 
 
         </android.support.design.widget.AppBarLayout>
