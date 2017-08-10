@@ -6,6 +6,7 @@ import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -227,7 +228,6 @@ public class TrackActivity extends AppCompatActivity implements LoaderManager.Lo
             public Void loadInBackground() {
                 try {
                     TrackUtils.addTrackInfo(track);
-                    similarTracks = TrackUtils.getSimilarTracks(track);
                     trackVideoId = YoutubeUtils.getVideoId(track);
 
                 } catch (IOException | JSONException e) {
@@ -236,6 +236,25 @@ public class TrackActivity extends AppCompatActivity implements LoaderManager.Lo
                 return null;
             }
         };
+    }
+
+    private class GetYoutubeLinkTask extends AsyncTask{
+
+        @Override
+        protected Object doInBackground(Object[] params) {
+            try {
+                similarTracks = TrackUtils.getSimilarTracks(track);
+            } catch (IOException | JSONException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Object o) {
+            initializeRecyclerView();
+            super.onPostExecute(o);
+        }
     }
 
     private void initializeRecyclerView() {
@@ -247,22 +266,20 @@ public class TrackActivity extends AppCompatActivity implements LoaderManager.Lo
             rvTracks.setHasFixedSize(true);
             rvTracks.setNestedScrollingEnabled(false);
         }
-        if(!TextUtils.isEmpty(trackVideoId)){
-             playTrackVideo.setVisibility(View.VISIBLE);
-        }
     }
 
 
     @Override
     public void onLoadFinished(Loader<Void> loader, Void data) {
+        new GetYoutubeLinkTask().execute();
         loadingFrame.setVisibility(View.GONE);
-        initializeRecyclerView();
         if (null != track.getContent()) {
             content.setText(getTextFromHtml(track.getContent()));
-
             makeLinkClickable(content);
         }
-
+        if(!TextUtils.isEmpty(trackVideoId)){
+            playTrackVideo.setVisibility(View.VISIBLE);
+        }
         showTags();
     }
 

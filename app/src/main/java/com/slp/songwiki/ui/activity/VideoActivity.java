@@ -40,7 +40,8 @@ public class VideoActivity extends YouTubeBaseActivity implements SongWikiConsta
     private  int textColor;
     private String artistName;
     private String track;
-
+    private boolean fullScreen;
+    private YouTubePlayer mYouTubePlayer;
     @Bind(R.id.track_video)
     YouTubePlayerView videoPlayer;
     @Bind(R.id.rv_similar_tracks)
@@ -84,8 +85,7 @@ public class VideoActivity extends YouTubeBaseActivity implements SongWikiConsta
     private void initializeRecyclerView() {
         if (null != similarTracks && similarTracks.size() > 0) {
             rvSimilarTracks.setAdapter(new TrackAdapter(similarTracks, this));
-            int gridSize = getResources().getInteger(R.integer.track_grid);
-            rvSimilarTracks.setLayoutManager(new GridLayoutManager(this, gridSize));
+            rvSimilarTracks.setLayoutManager(new GridLayoutManager(this, 1));
             rvSimilarTracks.setHasFixedSize(true);
             rvSimilarTracks.setNestedScrollingEnabled(false);
         }}
@@ -98,6 +98,14 @@ public class VideoActivity extends YouTubeBaseActivity implements SongWikiConsta
                 if(! wasRestored) {
                     youTubePlayer.loadVideo(videoId);
                 }
+
+                youTubePlayer.setOnFullscreenListener(new YouTubePlayer.OnFullscreenListener() {
+                    @Override
+                    public void onFullscreen(boolean b) {
+                        fullScreen = b;
+                    }
+                });
+                mYouTubePlayer = youTubePlayer;
             }
 
             @Override
@@ -127,6 +135,17 @@ public class VideoActivity extends YouTubeBaseActivity implements SongWikiConsta
             ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(this, pairs);
             trackIntent.putExtra("track", clickedTrack);
             startActivity(trackIntent, options.toBundle());
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if(fullScreen){
+            mYouTubePlayer.setFullscreen(false);
+        }else if(null!=mYouTubePlayer && mYouTubePlayer.isPlaying()){
+            mYouTubePlayer.pause();
+        }else{
+            super.onBackPressed();
         }
     }
 }
