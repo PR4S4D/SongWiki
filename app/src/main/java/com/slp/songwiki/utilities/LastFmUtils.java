@@ -74,8 +74,9 @@ public class LastFmUtils implements SongWikiConstants {
         return null;
     }
 
-    public static URL getArtistInfoUrl(String artist) throws MalformedURLException, UnsupportedEncodingException {
+    public static URL getArtistInfoUrl(String artist, Context context) throws MalformedURLException, UnsupportedEncodingException {
         Uri.Builder builder = Uri.parse(ARTIST_INFO_BASE_URL).buildUpon().appendQueryParameter(ARTIST, artist);
+        builder.appendQueryParameter(LANGUAGE, PreferenceUtils.getLanguage(context));
         appendAPIKey(builder);
         return new URL(builder.build().toString());
     }

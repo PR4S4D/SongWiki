@@ -295,7 +295,7 @@ public class ArtistActivity extends AppCompatActivity implements LoaderManager.L
             @Override
             public String loadInBackground() {
                 try {
-                    ArtistUtils.setArtistDetails(artist);
+                    ArtistUtils.setArtistDetails(artist, getApplicationContext());
                     topTracks = TrackUtils.getTopTracks(artist.getName());
 
                 } catch (IOException | JSONException e) {

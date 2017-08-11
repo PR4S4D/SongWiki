@@ -132,11 +132,11 @@ public class ArtistUtils implements SongWikiConstants {
         return null != artist.getImageLink();
     }
 
-    public static void setArtistDetails(Artist artist) throws IOException, JSONException {
+    public static void setArtistDetails(Artist artist, Context context) throws IOException, JSONException {
         if (null != artist) {
 
             //String name = getEncodedString(artist.getName());
-            String artistDetails = NetworkUtils.getResponseFromHttpUrl(LastFmUtils.getArtistInfoUrl(artist.getName()));
+            String artistDetails = NetworkUtils.getResponseFromHttpUrl(LastFmUtils.getArtistInfoUrl(artist.getName(),context));
 
             if (null != artistDetails) {
                 JSONObject jsonObject = new JSONObject(artistDetails);

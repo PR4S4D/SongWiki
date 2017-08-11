@@ -200,5 +200,20 @@
         <item>Zambia</item>
         <item>Zimbabwe</item>
     </string-array>
+
+    <string-array name="languages">
+        <item>English</item>
+        <item>Spanish</item>
+        <item>Chinese</item>
+        <item>Japanese</item>
+    </string-array>
+    <string-array name="langCodes">
+        <item>en</item>
+        <item>es</item>
+        <item>zh</item>
+        <item>ja</item>
+    </string-array>
     <string name="global">Global</string>
+
+
 </resources>

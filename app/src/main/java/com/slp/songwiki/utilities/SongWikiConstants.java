@@ -68,4 +68,5 @@ public interface SongWikiConstants {
     int NUMBER_OF_VIDEOS = 1;
     String YOUTUBE_SERACH = "q";
     String TRACK_VIDEO_ID = "trackVideoId";
+    String LANGUAGE = "lang";
 }

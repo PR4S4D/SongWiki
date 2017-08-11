@@ -26,4 +26,8 @@ public class PreferenceUtils {
     public static String getCountry(Context context){
         return getPreferences(context).getString("country",context.getString(R.string.default_country));
     }
+
+    public static String getLanguage(Context context){
+        return getPreferences(context).getString("language",context.getString(R.string.default_language));
+    }
 }

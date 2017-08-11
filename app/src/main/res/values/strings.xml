@@ -35,7 +35,7 @@
     <string name="top_tracks">Top Tracks</string>
     <string name="top_tracks_limit_title">Number of Top Tracks</string>
     <string name="top_artists_limit_title">Number of Top Artists</string>
-    <string name="default_limit">20</string>
+    <string name="default_limit">30</string>
     <string name="default_country">United States</string>
     <string name="country">Country</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -56,4 +56,5 @@
     <string name="linkedIn">LinkedIn</string>
     <string name="github">Github</string>
     <string name="give_feedback">Give feedback</string>
+    <string name="default_language">en</string>
 </resources>

@@ -24,4 +24,12 @@
         android:summary="%s"
         android:title="@string/country" />
 
+    <ListPreference
+        android:defaultValue="en"
+        android:entries="@array/languages"
+        android:entryValues="@array/langCodes"
+        android:key="language"
+        android:summary="%s"
+        android:title="Description Language" />
+
 </PreferenceScreen>
