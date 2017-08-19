@@ -15,7 +15,6 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.app.ShareCompat;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
-import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.CardView;
@@ -54,7 +53,6 @@ import org.json.JSONException;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
@@ -228,7 +226,8 @@ public class TrackActivity extends AppCompatActivity implements LoaderManager.Lo
             public Void loadInBackground() {
                 try {
                     TrackUtils.addTrackInfo(track);
-                    trackVideoId = YoutubeUtils.getVideoId(track);
+                 //   trackVideoId = YoutubeUtils.getVideoId(track);
+                    track.setVideoId(YoutubeUtils.getVideoId(track));
 
                 } catch (IOException | JSONException e) {
                     e.printStackTrace();
@@ -243,7 +242,7 @@ public class TrackActivity extends AppCompatActivity implements LoaderManager.Lo
         @Override
         protected Object doInBackground(Object[] params) {
             try {
-                similarTracks = TrackUtils.getSimilarTracks(track);
+                track.setSimilarTracks(TrackUtils.getSimilarTracks(track));
             } catch (IOException | JSONException e) {
                 e.printStackTrace();
             }
@@ -258,6 +257,7 @@ public class TrackActivity extends AppCompatActivity implements LoaderManager.Lo
     }
 
     private void initializeRecyclerView() {
+        similarTracks = track.getSimilarTracks();
         if (null != similarTracks && similarTracks.size() > 0) {
             similarTracksLabel.setVisibility(View.VISIBLE);
             rvTracks.setAdapter(new TrackAdapter(similarTracks, this));
@@ -277,6 +277,7 @@ public class TrackActivity extends AppCompatActivity implements LoaderManager.Lo
             content.setText(getTextFromHtml(track.getContent()));
             makeLinkClickable(content);
         }
+        trackVideoId = track.getVideoId();
         if(!TextUtils.isEmpty(trackVideoId)){
             playTrackVideo.setVisibility(View.VISIBLE);
         }
@@ -344,12 +345,9 @@ public class TrackActivity extends AppCompatActivity implements LoaderManager.Lo
 
     public void playTrackVideo(View view) {
          Intent videoIntent = new Intent(this,VideoActivity.class);
-         videoIntent.putParcelableArrayListExtra(SIMILAR_TRACKS, (ArrayList<Track>)similarTracks);
-         videoIntent.putExtra(TRACK_VIDEO_ID,trackVideoId);
-         videoIntent.putExtra(ARTIST,track.getArtist());
-         videoIntent.putExtra(TRACK,track.getTitle());
          videoIntent.putExtra(BACKGROUND_COLOR,backgroundColor);
          videoIntent.putExtra(TEXT_COLOR,textColor);
+         videoIntent.putExtra(TRACK,track);
 
          startActivity(videoIntent);
     }

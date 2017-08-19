@@ -2,18 +2,15 @@ package com.slp.songwiki.ui.activity;
 
 import android.app.ActivityOptions;
 import android.content.Intent;
-import android.graphics.Color;
-import android.support.annotation.NonNull;
-import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.v7.app.AppCompatActivity;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.util.Pair;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.google.android.youtube.player.YouTubeBaseActivity;
@@ -25,8 +22,11 @@ import com.slp.songwiki.adapter.TrackAdapter;
 import com.slp.songwiki.model.Artist;
 import com.slp.songwiki.model.Track;
 import com.slp.songwiki.utilities.SongWikiConstants;
+import com.slp.songwiki.utilities.TrackUtils;
 
-import java.util.Arrays;
+import org.json.JSONException;
+
+import java.io.IOException;
 import java.util.List;
 
 import butterknife.Bind;
@@ -37,9 +37,9 @@ public class VideoActivity extends YouTubeBaseActivity implements SongWikiConsta
     private List<Track> similarTracks;
     private String videoId;
     private int backgroundColor;
-    private  int textColor;
+    private int textColor;
     private String artistName;
-    private String track;
+    private Track track;
     private boolean fullScreen;
     private YouTubePlayer mYouTubePlayer;
     @Bind(R.id.track_video)
@@ -52,34 +52,37 @@ public class VideoActivity extends YouTubeBaseActivity implements SongWikiConsta
     TextView artist;
     @Bind(R.id.track_title)
     TextView trackTitle;
-
-
-
+    @Bind(R.id.similar_tracks_loader)
+    ProgressBar similarTracksLoader;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video);
         ButterKnife.bind(this);
-        similarTracks =  getIntent().getParcelableArrayListExtra(SIMILAR_TRACKS);
-        videoId = getIntent().getStringExtra(TRACK_VIDEO_ID);
-        textColor = getIntent().getIntExtra(TEXT_COLOR,0);
-        backgroundColor = getIntent().getIntExtra(BACKGROUND_COLOR,0);
-        artistName = getIntent().getStringExtra(ARTIST);
+        track = getIntent().getParcelableExtra(TRACK);
+
+        videoId = track.getVideoId();
+        textColor = getIntent().getIntExtra(TEXT_COLOR, 0);
+        backgroundColor = getIntent().getIntExtra(BACKGROUND_COLOR, 0);
+        artistName = track.getArtist();
         artistCard.setBackgroundColor(backgroundColor);
         artist.setText(artistName);
         artist.setTextColor(textColor);
-        track = getIntent().getStringExtra(TRACK);
-        trackTitle.setText(track);
+        trackTitle.setText(track.getTitle());
         trackTitle.setTextColor(textColor);
-
-        Log.i(TAG, "onCreate: "+similarTracks);
-        Log.i(TAG, "onCreate: videoId" + videoId);
-        initializeRecyclerView();
-        videoPlayer.initialize(YOUTUBE_PLAYER_API_KEY,getOnInitializedListener());
+        videoPlayer.initialize(YOUTUBE_PLAYER_API_KEY, getOnInitializedListener());
+        showSimilarTracks();
     }
 
-
+    private void showSimilarTracks() {
+        similarTracks = track.getSimilarTracks();
+        if (null == similarTracks) {
+            new GetSimilarTracks().execute();
+        } else {
+            initializeRecyclerView();
+        }
+    }
 
 
     private void initializeRecyclerView() {
@@ -88,14 +91,15 @@ public class VideoActivity extends YouTubeBaseActivity implements SongWikiConsta
             rvSimilarTracks.setLayoutManager(new GridLayoutManager(this, 1));
             rvSimilarTracks.setHasFixedSize(true);
             rvSimilarTracks.setNestedScrollingEnabled(false);
-        }}
+        }
+    }
 
     @NonNull
     private YouTubePlayer.OnInitializedListener getOnInitializedListener() {
         return new YouTubePlayer.OnInitializedListener() {
             @Override
             public void onInitializationSuccess(YouTubePlayer.Provider provider, final YouTubePlayer youTubePlayer, final boolean wasRestored) {
-                if(! wasRestored) {
+                if (!wasRestored) {
                     youTubePlayer.loadVideo(videoId);
                 }
 
@@ -140,12 +144,43 @@ public class VideoActivity extends YouTubeBaseActivity implements SongWikiConsta
 
     @Override
     public void onBackPressed() {
-        if(fullScreen){
+        if (fullScreen) {
             mYouTubePlayer.setFullscreen(false);
-        }else if(null!=mYouTubePlayer && mYouTubePlayer.isPlaying()){
+        } else if (null != mYouTubePlayer && mYouTubePlayer.isPlaying()) {
             mYouTubePlayer.pause();
-        }else{
+        } else {
             super.onBackPressed();
+        }
+    }
+
+    public void addToPlaylist(View view) {
+        //TODO add track to playlist
+    }
+
+    private class GetSimilarTracks extends AsyncTask {
+
+        @Override
+        protected void onPreExecute() {
+            similarTracksLoader.getIndeterminateDrawable().setTint(textColor);
+            similarTracksLoader.setVisibility(View.VISIBLE);
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Object doInBackground(Object[] objects) {
+            try {
+                similarTracks = TrackUtils.getSimilarTracks(track);
+            } catch (IOException | JSONException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Object o) {
+            similarTracksLoader.setVisibility(View.GONE);
+            initializeRecyclerView();
+            super.onPostExecute(o);
         }
     }
 }

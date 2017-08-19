@@ -1,61 +1,88 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:fitsSystemWindows="false"
-    android:orientation="vertical">
-
-    <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-
-        xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:fitsSystemWindows="true">
-
-        <android.support.design.widget.AppBarLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@android:color/white"
-            android:fitsSystemWindows="true">
-
-
-            <com.google.android.youtube.player.YouTubePlayerView
-                android:id="@+id/track_video"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fitsSystemWindows="false">
-
-            </com.google.android.youtube.player.YouTubePlayerView>
-
-            <include layout="@layout/track_info_card" />
-
-
-        </android.support.design.widget.AppBarLayout>
-    </android.support.design.widget.CoordinatorLayout>
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:fitsSystemWindows="false"
-        android:transitionGroup="true"
-        android:orientation="vertical"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-         >
+        android:orientation="vertical">
 
-        <android.support.v4.widget.NestedScrollView
+        <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fitsSystemWindows="true">
+
+            <android.support.design.widget.AppBarLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@android:color/white"
+                android:fitsSystemWindows="true">
+
+
+                <com.google.android.youtube.player.YouTubePlayerView
+                    android:id="@+id/track_video"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fitsSystemWindows="false">
+
+                </com.google.android.youtube.player.YouTubePlayerView>
+
+                <include layout="@layout/track_info_card" />
+
+
+            </android.support.design.widget.AppBarLayout>
+        </android.support.design.widget.CoordinatorLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:fitsSystemWindows="false"
+            android:orientation="vertical"
+            android:transitionGroup="true"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/rv_similar_tracks"
+            <ProgressBar
+                android:visibility="gone"
+                android:id="@+id/similar_tracks_loader"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:layout_gravity="center|center_vertical"
+                android:layout_marginTop="20dp"/>
 
 
-        </android.support.v4.widget.NestedScrollView>
+            <android.support.v4.widget.NestedScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rv_similar_tracks"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+
+            </android.support.v4.widget.NestedScrollView>
+
+
+        </LinearLayout>
+
 
     </LinearLayout>
 
-</LinearLayout>
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/make_favourite"
+            app:fabSize="normal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:onClick="addToPlaylist"
+            android:layout_margin="16dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/make_favourite" />
+
+</android.support.design.widget.CoordinatorLayout>

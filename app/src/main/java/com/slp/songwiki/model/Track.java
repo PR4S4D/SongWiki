@@ -21,6 +21,8 @@ public class Track implements Parcelable {
     private String summary;
     private List<String> tags;
     private String trackLink;
+    private List<Track> similarTracks;
+    private String videoId;
 
     public Track(String title, String artist, long listeners, String imageLink) {
         this.title = title;
@@ -40,7 +42,6 @@ public class Track implements Parcelable {
     public Track() {
 
     }
-
 
     public String getTrackLink() {
         return trackLink;
@@ -131,6 +132,22 @@ public class Track implements Parcelable {
         this.summary = summary;
     }
 
+    public List<Track> getSimilarTracks() {
+        return similarTracks;
+    }
+
+    public void setSimilarTracks(List<Track> similarTracks) {
+        this.similarTracks = similarTracks;
+    }
+
+    public String getVideoId() {
+        return videoId;
+    }
+
+    public void setVideoId(String videoId) {
+        this.videoId = videoId;
+    }
+
     protected Track(Parcel in) {
         title = in.readString();
         artist = in.readString();
@@ -148,6 +165,13 @@ public class Track implements Parcelable {
             tags = null;
         }
         trackLink = in.readString();
+        if (in.readByte() == 0x01) {
+            similarTracks = new ArrayList<Track>();
+            in.readList(similarTracks, Track.class.getClassLoader());
+        } else {
+            similarTracks = null;
+        }
+        videoId = in.readString();
     }
 
     @Override
@@ -173,6 +197,13 @@ public class Track implements Parcelable {
             dest.writeList(tags);
         }
         dest.writeString(trackLink);
+        if (similarTracks == null) {
+            dest.writeByte((byte) (0x00));
+        } else {
+            dest.writeByte((byte) (0x01));
+            dest.writeList(similarTracks);
+        }
+        dest.writeString(videoId);
     }
 
     @SuppressWarnings("unused")
@@ -187,20 +218,4 @@ public class Track implements Parcelable {
             return new Track[size];
         }
     };
-
-
-    @Override
-    public String toString() {
-        return "Track{" +
-                "title='" + title + '\'' +
-                ", artist='" + artist + '\'' +
-                ", album='" + album + '\'' +
-                ", duration=" + duration +
-                ", listeners=" + listeners +
-                ", content='" + content + '\'' +
-                ", imageLink='" + imageLink + '\'' +
-                ", summary='" + summary + '\'' +
-                '}';
-    }
-
 }
