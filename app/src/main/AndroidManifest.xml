@@ -43,7 +43,7 @@
         </activity>
 
         <provider
-            android:name=".data.FavouriteArtistProvider"
+            android:name=".data.artist.FavouriteArtistProvider"
             android:authorities="com.slp.songwiki" />
 
         <activity android:name=".ui.activity.FavouriteArtistActivity">

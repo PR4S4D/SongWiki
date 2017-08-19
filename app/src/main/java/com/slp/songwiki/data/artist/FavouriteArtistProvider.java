@@ -1,4 +1,4 @@
-package com.slp.songwiki.data;
+package com.slp.songwiki.data.artist;
 
 import android.content.ContentProvider;
 import android.content.ContentUris;

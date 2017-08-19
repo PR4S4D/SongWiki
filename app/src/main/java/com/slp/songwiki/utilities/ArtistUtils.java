@@ -10,7 +10,7 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.slp.songwiki.R;
-import com.slp.songwiki.data.FavouriteArtistContract;
+import com.slp.songwiki.data.artist.FavouriteArtistContract;
 import com.slp.songwiki.model.Artist;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;

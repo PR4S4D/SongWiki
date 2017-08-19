@@ -51,7 +51,7 @@ import com.slp.songwiki.R;
 import com.slp.songwiki.adapter.ArtistAdapter;
 import com.slp.songwiki.adapter.TagAdapter;
 import com.slp.songwiki.adapter.TrackAdapter;
-import com.slp.songwiki.data.FavouriteArtistContract;
+import com.slp.songwiki.data.artist.FavouriteArtistContract;
 import com.slp.songwiki.model.Artist;
 import com.slp.songwiki.model.Track;
 import com.slp.songwiki.utilities.ArtistUtils;
@@ -65,8 +65,6 @@ import org.json.JSONException;
 
 import java.io.IOException;
 import java.util.List;
-
-import javax.net.ssl.SNIHostName;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;

@@ -18,8 +18,8 @@ public interface SongWikiConstants {
     String SEARCH_ARTIST_END_POINT = "http://ws.audioscrobbler.com/2.0/?method=artist.search&api_key=" + LAST_FM_API_KEY + "&limit=6&format=json&artist=";
     String SEARCH_ARTIST_BASE_URL = "http://ws.audioscrobbler.com/2.0/?method=artist.search&limit=12&format=json";
     String SEARCH_TRACK_BASE_URL = "http://ws.audioscrobbler.com/2.0/?method=track.search&limit=12&format=json";
-    String SIMILAR_TRACKS_BASE_URL = "http://ws.audioscrobbler.com/2.0/?method=track.getsimilar&limit=7&format=json";
-    String ARTIST_TOP_TRACKS_BASE_URL = "http://ws.audioscrobbler.com/2.0/?method=artist.gettoptracks&format=json&limit=10";
+    String SIMILAR_TRACKS_BASE_URL = "http://ws.audioscrobbler.com/2.0/?method=track.getsimilar&format=json";
+    String ARTIST_TOP_TRACKS_BASE_URL = "http://ws.audioscrobbler.com/2.0/?method=artist.gettoptracks&format=json&limit=15";
     String ARTISTS = "artists";
     int IMAGE_SIZE = 3;
     String JPG_EXTENSION = ".jpg";
