@@ -26,7 +26,7 @@
                 <com.google.android.youtube.player.YouTubePlayerView
                     android:id="@+id/track_video"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:fitsSystemWindows="false">
 
                 </com.google.android.youtube.player.YouTubePlayerView>
@@ -67,15 +67,14 @@
 
             </android.support.v4.widget.NestedScrollView>
 
-
         </LinearLayout>
-
 
     </LinearLayout>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/playlist_button"
         android:layout_width="wrap_content"
+        android:visibility="gone"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="16dp"

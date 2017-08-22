@@ -2,14 +2,17 @@ package com.slp.songwiki.ui.activity;
 
 import android.app.ActivityOptions;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Pair;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -54,6 +57,8 @@ public class VideoActivity extends YouTubeBaseActivity implements SongWikiConsta
     TextView trackTitle;
     @Bind(R.id.similar_tracks_loader)
     ProgressBar similarTracksLoader;
+    @Bind(R.id.playlist_button)
+    FloatingActionButton playlistButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,6 +97,19 @@ public class VideoActivity extends YouTubeBaseActivity implements SongWikiConsta
             rvSimilarTracks.setHasFixedSize(true);
             rvSimilarTracks.setNestedScrollingEnabled(false);
         }
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            playlistButton.setVisibility(View.GONE);
+            videoPlayer.getLayoutParams().height = ViewGroup.LayoutParams.MATCH_PARENT;
+
+        } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
+            playlistButton.setVisibility(View.VISIBLE);
+            videoPlayer.getLayoutParams().height = ViewGroup.LayoutParams.WRAP_CONTENT;
+        }
+        super.onConfigurationChanged(newConfig);
     }
 
     @NonNull
