@@ -238,8 +238,8 @@ public class ArtistActivity extends AppCompatActivity implements LoaderManager.L
                 collapsingToolbarLayout.setBackgroundColor(backgroundColor);
                 collapsingToolbarLayout.setStatusBarScrimColor(backgroundColor);
                 collapsingToolbarLayout.setContentScrimColor(backgroundColor);
-                favFab.setBackgroundTintList(ColorStateList.valueOf(palette.getDarkMutedColor(textColor)));
-                favFab.setImageTintList(ColorStateList.valueOf(palette.getLightMutedColor(backgroundColor)));
+                favFab.setBackgroundTintList(ColorStateList.valueOf(palette.getDarkVibrantColor(textColor)));
+                favFab.setImageTintList(ColorStateList.valueOf(palette.getLightVibrantColor(backgroundColor)));
                 progressBar.getIndeterminateDrawable().setColorFilter(textColor, PorterDuff.Mode.MULTIPLY);
                 if (null != artist.getTags())
                     showTags();

@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.content.res.Configuration;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -207,14 +208,15 @@ public class VideoActivity extends YouTubeBaseActivity implements SongWikiConsta
         String[] selectionArgs = new String[]{track.getArtist(), track.getTitle()};
         long id = getContentResolver().delete(PlaylistContract.PlaylistEntry.CONTENT_URI, PlaylistContract.PlaylistEntry.ARTIST + "=? AND " + PlaylistContract.PlaylistEntry.TRACK + "=?", selectionArgs);
         if (id > 0) {
-            Snackbar snackBar = Snackbar.make(view, getString(R.string.removed), Snackbar.LENGTH_SHORT);
-            snackBar.setAction(getString(R.string.my_playlist), new View.OnClickListener() {
+            Snackbar snackbar = Snackbar.make(view, getString(R.string.removed), Snackbar.LENGTH_SHORT);
+            snackbar.setAction(getString(R.string.my_playlist), new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     startActivity(new Intent(getApplicationContext(),PlaylistActivity.class));
                 }
             });
-            snackBar.show();
+            setupSnackbar(snackbar);
+            snackbar.show();
             setPlaylistButton();
         }
     }
@@ -232,8 +234,17 @@ public class VideoActivity extends YouTubeBaseActivity implements SongWikiConsta
                     startActivity(new Intent(getApplicationContext(), PlaylistActivity.class));
                 }
             });
+            setupSnackbar(snackbar);
+            
             snackbar.show();
         }
+    }
+
+    private void setupSnackbar(Snackbar snackbar) {
+        snackbar.setActionTextColor(textColor);
+        snackbar.getView().setBackgroundColor(backgroundColor);
+        TextView tv = (TextView)snackbar.getView().findViewById(android.support.design.R.id.snackbar_text);
+        tv.setTextColor(textColor);
     }
 
     private boolean isTrackAlreadyInPlalyist(Track track) {

@@ -173,8 +173,8 @@ public class TrackActivity extends AppCompatActivity implements LoaderManager.Lo
                 collapsingToolbarLayout.setBackgroundColor(backgroundColor);
                 collapsingToolbarLayout.setStatusBarScrimColor(backgroundColor);
                 collapsingToolbarLayout.setContentScrimColor(backgroundColor);
-                darkTint = ColorStateList.valueOf(palette.getDarkMutedColor(textColor));
-                lightTint = ColorStateList.valueOf(palette.getLightMutedColor(backgroundColor));
+                darkTint = ColorStateList.valueOf(palette.getDarkVibrantColor(textColor));
+                lightTint = ColorStateList.valueOf(palette.getLightVibrantColor(backgroundColor));
                 playTrackVideo.setBackgroundTintList(darkTint);
                 playTrackVideo.setImageTintList(lightTint);
                 progressBar.getIndeterminateDrawable().setTint(textColor);
