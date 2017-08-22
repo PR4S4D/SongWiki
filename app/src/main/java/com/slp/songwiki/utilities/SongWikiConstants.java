@@ -61,8 +61,8 @@ public interface SongWikiConstants {
     String LIGHT_TINT = "lightTint";
 
     //youtube API
-    String YOUTUBE_SEARCH_API_KEY = "YOUR YOUTUBE API KEY";
-    String YOUTUBE_PLAYER_API_KEY = "YOUR YOUTUBE API KEY";
+    String YOUTUBE_SEARCH_API_KEY = "AIzaSyAf4IEgy469xdmJu7VmYT3wOwpfvZrtwd4";
+    String YOUTUBE_PLAYER_API_KEY = "AIzaSyAjBHq9SQVN8HnN5s-5A5DErCXp6LkIq5Y";
     String YOUTUBE_SEARCH_BASE_URL = "https://www.googleapis.com/youtube/v3/search?part=snippet";
     String KEY = "key";
     String MAX_RESULTS = "maxResults";

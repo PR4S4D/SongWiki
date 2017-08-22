@@ -2,6 +2,7 @@ package com.slp.songwiki.utilities;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
@@ -17,8 +18,11 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 
 /**
  * Created by Lakshmiprasad on 4/30/2017.
@@ -143,5 +147,20 @@ public class TrackUtils implements SongWikiConstants {
         values.put(PlaylistContract.PlaylistEntry.VIDEO_ID,track.getVideoId());
         return values;
 
+    }
+
+    public static List<Track> getTracksFromPlaylist(Context context) {
+        List<Track> tracks = new ArrayList<>() ;
+        Cursor cursor = context.getContentResolver().query(PlaylistContract.PlaylistEntry.CONTENT_URI,null,null,null, PlaylistContract.PlaylistEntry.DATE);
+        int title = cursor.getColumnIndex(PlaylistContract.PlaylistEntry.TRACK);
+        int artist = cursor.getColumnIndex(PlaylistContract.PlaylistEntry.ARTIST);
+        int imageLink = cursor.getColumnIndex(PlaylistContract.PlaylistEntry.IMAGE_LINK);
+        int videoId = cursor.getColumnIndex(PlaylistContract.PlaylistEntry.VIDEO_ID);
+        if( cursor.moveToFirst()){
+           do{
+               tracks.add(new Track(cursor.getString(title),cursor.getString(artist),cursor.getString(imageLink),cursor.getString(videoId)));
+           }while(cursor.moveToNext());
+        }
+        return tracks;
     }
 }

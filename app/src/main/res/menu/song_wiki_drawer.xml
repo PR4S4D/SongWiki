@@ -11,6 +11,10 @@
         android:id="@+id/song_wiki_settings"
         android:icon="@drawable/ic_menu_pref"
         android:title="@string/action_settings" />
+        <item
+            android:id="@+id/my_playlist"
+            android:icon="@drawable/ic_playlist"
+            android:title="@string/my_playlist"/>
     </group>
     <group
         android:id="@+id/extras"

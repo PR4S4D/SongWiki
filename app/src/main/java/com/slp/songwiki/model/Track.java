@@ -39,6 +39,13 @@ public class Track implements Parcelable {
         this.trackLink = trackLink;
     }
 
+    public Track(String title, String artist, String imageLink, String videoId) {
+        this.title = title;
+        this.artist = artist;
+        this.imageLink = imageLink;
+        this.videoId = videoId;
+    }
+
     public Track() {
 
     }

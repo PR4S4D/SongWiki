@@ -45,10 +45,9 @@
         <provider
             android:name=".data.artist.FavouriteArtistProvider"
             android:authorities="com.slp.songwiki" />
-
         <provider
-            android:authorities="com.slp.songwiki.playlist"
-            android:name=".data.playlist.PlaylistProvider"/>
+            android:name=".data.playlist.PlaylistProvider"
+            android:authorities="com.slp.songwiki.playlist" />
 
         <activity android:name=".ui.activity.FavouriteArtistActivity">
             <meta-data
@@ -102,6 +101,9 @@
             android:name=".ui.activity.VideoActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:theme="@style/AppTheme.NoActionBar.TransparentStatusBar" />
+        <activity
+            android:name=".ui.activity.PlaylistActivity"
+            android:label="@string/my_playlist"/>
     </application>
 
 </manifest>

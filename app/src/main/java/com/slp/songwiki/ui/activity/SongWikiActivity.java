@@ -91,6 +91,9 @@ public class SongWikiActivity extends AppCompatActivity implements NavigationVie
             case R.id.song_wiki_settings:
                 startActivity(new Intent(this, SettingsActivity.class));
                 break;
+            case R.id.my_playlist:
+                startActivity(new Intent(this,PlaylistActivity.class));
+                break;
             case R.id.share:
                 Intent i = new Intent(Intent.ACTION_SEND);
                 i.setType("text/plain");

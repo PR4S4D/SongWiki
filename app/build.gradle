@@ -27,7 +27,7 @@ android {
         }
     }
     buildTypes.each {
-        it.buildConfigField 'String', 'MY_API_KEY', '"YOUR API KEY"'
+        it.buildConfigField 'String', 'MY_API_KEY', '"590c44628f39b7cb72d850d9d03709a8"'
     }
     productFlavors {
     }
@@ -38,6 +38,7 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
+    compile files('libs/YouTubeAndroidPlayerApi.jar')
     compile 'com.android.support:appcompat-v7:25.3.1'
     compile 'com.android.support:design:25.3.1'
     compile 'com.android.support:support-v4:25.3.1'
@@ -55,7 +56,6 @@ dependencies {
     compile 'com.android.support:preference-v14:25.3.1'
     compile 'com.github.daniel-stoneuk:material-about-library:1.9.0'
     testCompile 'junit:junit:4.12'
-    compile files('libs/YouTubeAndroidPlayerApi.jar')
 }
 
 apply plugin: 'com.google.gms.google-services'
