@@ -58,6 +58,6 @@
     <string name="give_feedback">Give feedback</string>
     <string name="default_language">en</string>
     <string name="my_playlist">My Playlist</string>
-    <string name="added_to">Added to</string>
-    <string name="removed_from">Removed from </string>
+    <string name="added">Successfully added! </string>
+    <string name="removed">Successfully Removed! </string>
 </resources>

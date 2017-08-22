@@ -92,9 +92,9 @@ public class VideoActivity extends YouTubeBaseActivity implements SongWikiConsta
     }
 
     private void setPlaylistButton() {
-        if(isTrackAlreadyInPlalyist(track)){
+        if (isTrackAlreadyInPlalyist(track)) {
             playlistButton.setImageResource(R.drawable.ic_playlist_add_check);
-        }else{
+        } else {
             playlistButton.setImageResource(R.drawable.ic_playlist_add);
         }
     }
@@ -192,10 +192,10 @@ public class VideoActivity extends YouTubeBaseActivity implements SongWikiConsta
 
     public void addToPlaylist(View view) {
         StorageUtils.checkPermissions(this);
-        if(StorageUtils.isWritePermissionGranted(this)){
-            if(isTrackAlreadyInPlalyist(track)){
+        if (StorageUtils.isWritePermissionGranted(this)) {
+            if (isTrackAlreadyInPlalyist(track)) {
                 removeTrackFromPlaylist(view);
-            }else{
+            } else {
                 addTrackToPlaylist(view);
             }
             setPlaylistButton();
@@ -204,27 +204,41 @@ public class VideoActivity extends YouTubeBaseActivity implements SongWikiConsta
     }
 
     private void removeTrackFromPlaylist(View view) {
-        String[] selectionArgs = new String[]{track.getArtist(),track.getTitle()};
-        long id = getContentResolver().delete(PlaylistContract.PlaylistEntry.CONTENT_URI,PlaylistContract.PlaylistEntry.ARTIST+ "=? AND "+ PlaylistContract.PlaylistEntry.TRACK+"=?",selectionArgs);
-        if(id > 0){
-            Snackbar.make(view,getString(R.string.removed_from) + " " + getString(R.string.my_playlist) +"!",Snackbar.LENGTH_SHORT).show();
+        String[] selectionArgs = new String[]{track.getArtist(), track.getTitle()};
+        long id = getContentResolver().delete(PlaylistContract.PlaylistEntry.CONTENT_URI, PlaylistContract.PlaylistEntry.ARTIST + "=? AND " + PlaylistContract.PlaylistEntry.TRACK + "=?", selectionArgs);
+        if (id > 0) {
+            Snackbar snackBar = Snackbar.make(view, getString(R.string.removed), Snackbar.LENGTH_SHORT);
+            snackBar.setAction(getString(R.string.my_playlist), new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    startActivity(new Intent(getApplicationContext(),PlaylistActivity.class));
+                }
+            });
+            snackBar.show();
             setPlaylistButton();
         }
     }
 
     private void addTrackToPlaylist(View view) {
         ContentValues contentValues = TrackUtils.getTrackContent(track);
-        Uri uri = getContentResolver().insert(PlaylistContract.PlaylistEntry.CONTENT_URI,contentValues);
-        if(null == uri){
+        Uri uri = getContentResolver().insert(PlaylistContract.PlaylistEntry.CONTENT_URI, contentValues);
+        if (null == uri) {
             Log.w(TAG, "addToPlaylist: ", new Throwable("Error in adding track to playlist"));
-        }else{
-            Snackbar.make(view,getString(R.string.added_to)+ " " +getString(R.string.my_playlist) +"!" ,Snackbar.LENGTH_SHORT).show();
+        } else {
+            Snackbar snackbar = Snackbar.make(view, getString(R.string.added), Snackbar.LENGTH_LONG);
+            snackbar.setAction(getString(R.string.my_playlist), new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    startActivity(new Intent(getApplicationContext(), PlaylistActivity.class));
+                }
+            });
+            snackbar.show();
         }
     }
 
     private boolean isTrackAlreadyInPlalyist(Track track) {
-        String[] selectionArgs = new String[]{track.getArtist(),track.getTitle()};
-        Cursor cursor = getContentResolver().query(PlaylistContract.PlaylistEntry.CONTENT_URI, null,PlaylistContract.PlaylistEntry.ARTIST+ "=? AND "+ PlaylistContract.PlaylistEntry.TRACK+"=?",selectionArgs,null);
+        String[] selectionArgs = new String[]{track.getArtist(), track.getTitle()};
+        Cursor cursor = getContentResolver().query(PlaylistContract.PlaylistEntry.CONTENT_URI, null, PlaylistContract.PlaylistEntry.ARTIST + "=? AND " + PlaylistContract.PlaylistEntry.TRACK + "=?", selectionArgs, null);
         return cursor.getCount() >= 1;
     }
 
