@@ -91,7 +91,8 @@ public class TrackActivity extends AppCompatActivity implements LoaderManager.Lo
     private int textColor = Color.BLACK;
     private Palette.PaletteAsyncListener paletteListener;
     private String trackVideoId;
-
+    private ColorStateList  darkTint;
+    private ColorStateList lightTint;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -165,8 +166,6 @@ public class TrackActivity extends AppCompatActivity implements LoaderManager.Lo
                 if (vibrant != null) {
                     backgroundColor = vibrant.getRgb();
                     textColor = vibrant.getTitleTextColor();
-
-
                 }
                 artistCard.setBackgroundColor(backgroundColor);
                 artist.setTextColor(textColor);
@@ -174,12 +173,16 @@ public class TrackActivity extends AppCompatActivity implements LoaderManager.Lo
                 collapsingToolbarLayout.setBackgroundColor(backgroundColor);
                 collapsingToolbarLayout.setStatusBarScrimColor(backgroundColor);
                 collapsingToolbarLayout.setContentScrimColor(backgroundColor);
-                playTrackVideo.setBackgroundTintList(ColorStateList.valueOf(palette.getDarkMutedColor(textColor)));
+                darkTint = ColorStateList.valueOf(palette.getDarkMutedColor(textColor));
+                lightTint = ColorStateList.valueOf(palette.getLightMutedColor(backgroundColor));
+                playTrackVideo.setBackgroundTintList(darkTint);
+                playTrackVideo.setImageTintList(lightTint);
                 progressBar.getIndeterminateDrawable().setTint(textColor);
                 if (null != track.getTags())
                     showTags();
 
             }
+
         };
     }
 
@@ -347,6 +350,8 @@ public class TrackActivity extends AppCompatActivity implements LoaderManager.Lo
          Intent videoIntent = new Intent(this,VideoActivity.class);
          videoIntent.putExtra(BACKGROUND_COLOR,backgroundColor);
          videoIntent.putExtra(TEXT_COLOR,textColor);
+         videoIntent.putExtra(DARK_TINT,darkTint);
+         videoIntent.putExtra(LIGHT_TINT, lightTint);
          videoIntent.putExtra(TRACK,track);
 
          startActivity(videoIntent);

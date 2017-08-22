@@ -1,15 +1,21 @@
 package com.slp.songwiki.ui.activity;
 
 import android.app.ActivityOptions;
+import android.content.ContentValues;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.content.res.Configuration;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.util.Pair;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,9 +28,11 @@ import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerView;
 import com.slp.songwiki.R;
 import com.slp.songwiki.adapter.TrackAdapter;
+import com.slp.songwiki.data.playlist.PlaylistContract;
 import com.slp.songwiki.model.Artist;
 import com.slp.songwiki.model.Track;
 import com.slp.songwiki.utilities.SongWikiConstants;
+import com.slp.songwiki.utilities.StorageUtils;
 import com.slp.songwiki.utilities.TrackUtils;
 
 import org.json.JSONException;
@@ -77,7 +85,18 @@ public class VideoActivity extends YouTubeBaseActivity implements SongWikiConsta
         trackTitle.setText(track.getTitle());
         trackTitle.setTextColor(textColor);
         videoPlayer.initialize(YOUTUBE_PLAYER_API_KEY, getOnInitializedListener());
+        playlistButton.setBackgroundTintList((ColorStateList) getIntent().getParcelableExtra(DARK_TINT));
+        playlistButton.setImageTintList((ColorStateList) getIntent().getParcelableExtra(LIGHT_TINT));
+        setPlaylistButton();
         showSimilarTracks();
+    }
+
+    private void setPlaylistButton() {
+        if(isTrackAlreadyInPlalyist(track)){
+            playlistButton.setImageResource(R.drawable.ic_playlist_add_check);
+        }else{
+            playlistButton.setImageResource(R.drawable.ic_playlist_add);
+        }
     }
 
     private void showSimilarTracks() {
@@ -172,7 +191,41 @@ public class VideoActivity extends YouTubeBaseActivity implements SongWikiConsta
     }
 
     public void addToPlaylist(View view) {
-        //TODO add track to playlist
+        StorageUtils.checkPermissions(this);
+        if(StorageUtils.isWritePermissionGranted(this)){
+            if(isTrackAlreadyInPlalyist(track)){
+                removeTrackFromPlaylist(view);
+            }else{
+                addTrackToPlaylist(view);
+            }
+            setPlaylistButton();
+        }
+
+    }
+
+    private void removeTrackFromPlaylist(View view) {
+        String[] selectionArgs = new String[]{track.getArtist(),track.getTitle()};
+        long id = getContentResolver().delete(PlaylistContract.PlaylistEntry.CONTENT_URI,PlaylistContract.PlaylistEntry.ARTIST+ "=? AND "+ PlaylistContract.PlaylistEntry.TRACK+"=?",selectionArgs);
+        if(id > 0){
+            Snackbar.make(view,getString(R.string.removed_from) + " " + getString(R.string.my_playlist) +"!",Snackbar.LENGTH_SHORT).show();
+            setPlaylistButton();
+        }
+    }
+
+    private void addTrackToPlaylist(View view) {
+        ContentValues contentValues = TrackUtils.getTrackContent(track);
+        Uri uri = getContentResolver().insert(PlaylistContract.PlaylistEntry.CONTENT_URI,contentValues);
+        if(null == uri){
+            Log.w(TAG, "addToPlaylist: ", new Throwable("Error in adding track to playlist"));
+        }else{
+            Snackbar.make(view,getString(R.string.added_to)+ " " +getString(R.string.my_playlist) +"!" ,Snackbar.LENGTH_SHORT).show();
+        }
+    }
+
+    private boolean isTrackAlreadyInPlalyist(Track track) {
+        String[] selectionArgs = new String[]{track.getArtist(),track.getTitle()};
+        Cursor cursor = getContentResolver().query(PlaylistContract.PlaylistEntry.CONTENT_URI, null,PlaylistContract.PlaylistEntry.ARTIST+ "=? AND "+ PlaylistContract.PlaylistEntry.TRACK+"=?",selectionArgs,null);
+        return cursor.getCount() >= 1;
     }
 
     private class GetSimilarTracks extends AsyncTask {

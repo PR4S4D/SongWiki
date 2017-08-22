@@ -23,8 +23,8 @@ public class PlaylistDbHelper extends SQLiteOpenHelper{
                 PlaylistContract.PlaylistEntry.ARTIST + " TEXT NOT NULL, "+
                 PlaylistContract.PlaylistEntry.VIDEO_ID + " TEXT NOT NULL, "+
                 PlaylistContract.PlaylistEntry.IMAGE_LINK + " TEXT NOT NULL, "+
-                PlaylistContract.PlaylistEntry.DATE + " TEXT NOT NULL, "+
-                "PRIMARY KEY (" + PlaylistContract.PlaylistEntry.ARTIST + PlaylistContract.PlaylistEntry.TRACK + "));";
+                PlaylistContract.PlaylistEntry.DATE + " DATETIME DEFAULT CURRENT_TIMESTAMP, "+
+                "PRIMARY KEY (" + PlaylistContract.PlaylistEntry.ARTIST+"," + PlaylistContract.PlaylistEntry.TRACK + "));";
         sqLiteDatabase.execSQL(SQL_CREATE_PLAYLIST_TABLE);
     }
 

@@ -47,7 +47,7 @@
             android:authorities="com.slp.songwiki" />
 
         <provider
-            android:authorities="com.slp.songwiki"
+            android:authorities="com.slp.songwiki.playlist"
             android:name=".data.playlist.PlaylistProvider"/>
 
         <activity android:name=".ui.activity.FavouriteArtistActivity">

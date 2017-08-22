@@ -8,7 +8,7 @@ import android.provider.BaseColumns;
  */
 
 public class PlaylistContract {
-    public static final String CONTENT_AUTHORITY = "com.slp.songwiki";
+    public static final String CONTENT_AUTHORITY = "com.slp.songwiki.playlist";
     public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
     public static final String PATH_PLAYLIST = "playlist";
 

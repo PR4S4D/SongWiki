@@ -1,10 +1,12 @@
 package com.slp.songwiki.utilities;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.slp.songwiki.R;
+import com.slp.songwiki.data.playlist.PlaylistContract;
 import com.slp.songwiki.model.Track;
 
 import org.json.JSONArray;
@@ -14,6 +16,8 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -131,4 +135,13 @@ public class TrackUtils implements SongWikiConstants {
         return getTracks(topTracks);
     }
 
+    public static ContentValues getTrackContent(Track track) {
+        ContentValues values = new ContentValues();
+        values.put(PlaylistContract.PlaylistEntry.TRACK,track.getTitle());
+        values.put(PlaylistContract.PlaylistEntry.ARTIST,track.getArtist());
+        values.put(PlaylistContract.PlaylistEntry.IMAGE_LINK,track.getImageLink());
+        values.put(PlaylistContract.PlaylistEntry.VIDEO_ID,track.getVideoId());
+        return values;
+
+    }
 }

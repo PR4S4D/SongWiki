@@ -81,7 +81,7 @@
         android:layout_margin="16dp"
         android:onClick="addToPlaylist"
         android:scaleType="centerCrop"
-        android:src="@drawable/make_favourite"
+        android:src="@drawable/ic_playlist_add"
         app:fabSize="normal" />
 
 </android.support.design.widget.CoordinatorLayout>

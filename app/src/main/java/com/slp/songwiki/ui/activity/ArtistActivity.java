@@ -56,6 +56,7 @@ import com.slp.songwiki.model.Artist;
 import com.slp.songwiki.model.Track;
 import com.slp.songwiki.utilities.ArtistUtils;
 import com.slp.songwiki.utilities.NetworkUtils;
+import com.slp.songwiki.utilities.StorageUtils;
 import com.slp.songwiki.utilities.TrackUtils;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
@@ -238,6 +239,7 @@ public class ArtistActivity extends AppCompatActivity implements LoaderManager.L
                 collapsingToolbarLayout.setStatusBarScrimColor(backgroundColor);
                 collapsingToolbarLayout.setContentScrimColor(backgroundColor);
                 favFab.setBackgroundTintList(ColorStateList.valueOf(palette.getDarkMutedColor(textColor)));
+                favFab.setImageTintList(ColorStateList.valueOf(palette.getLightMutedColor(backgroundColor)));
                 progressBar.getIndeterminateDrawable().setColorFilter(textColor, PorterDuff.Mode.MULTIPLY);
                 if (null != artist.getTags())
                     showTags();
@@ -358,8 +360,8 @@ public class ArtistActivity extends AppCompatActivity implements LoaderManager.L
     }
 
     public void addToFavourites(View view) {
-        checkPermissions();
-        if (isWritePermissionGranted()) {
+        StorageUtils.checkPermissions(this);
+        if (StorageUtils.isWritePermissionGranted(this)) {
             if (ArtistUtils.isFavourite(getApplicationContext(), artist.getName())) {
                 Uri uri = FavouriteArtistContract.ArtistEntry.CONTENT_URI;
                 String[] args = new String[]{String.valueOf(artist.getName())};
@@ -384,17 +386,6 @@ public class ArtistActivity extends AppCompatActivity implements LoaderManager.L
         setFavouriteIcon();
     }
 
-    private void checkPermissions() {
-        if (!isWritePermissionGranted())
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                    3);
-    }
-
-    private boolean isWritePermissionGranted() {
-        int permissionCheck = ContextCompat.checkSelfPermission(this,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        return permissionCheck == PackageManager.PERMISSION_GRANTED;
-    }
 
     @Override
     public void onListItemClick(int clickedItemIndex) {

@@ -57,6 +57,8 @@ public interface SongWikiConstants {
     String COUNTRY = "country";
     String BACKGROUND_COLOR = "backgroundColor";
     String TEXT_COLOR = "textColor";
+    String DARK_TINT = "darkTint";
+    String LIGHT_TINT = "lightTint";
 
     //youtube API
     String YOUTUBE_SEARCH_API_KEY = "YOUR YOUTUBE API KEY";
