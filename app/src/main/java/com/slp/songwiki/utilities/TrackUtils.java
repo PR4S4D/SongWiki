@@ -72,7 +72,7 @@ public class TrackUtils implements SongWikiConstants {
         String response = NetworkUtils.getResponseFromHttpUrl(LastFmUtils.getTrackInfoUrl(track.getArtist(), track.getTitle()));
         JSONObject jsonObject = new JSONObject(response);
         JSONObject trackInfo = jsonObject.getJSONObject(TRACK);
-        track.setTrackLink( trackInfo.getString(URL));
+        track.setTrackLink(trackInfo.getString(URL));
         if (trackInfo.has(ALBUM)) {
 
             JSONObject albumJson = trackInfo.getJSONObject(ALBUM);
@@ -93,14 +93,14 @@ public class TrackUtils implements SongWikiConstants {
 
     private static List<String> getTopTags(JSONArray tagArray) throws JSONException {
         List<String> tags = new ArrayList<>();
-            for (int i = 0; i < tagArray.length(); i++) {
-                tags.add(tagArray.getJSONObject(i).getString(NAME));
-            }
+        for (int i = 0; i < tagArray.length(); i++) {
+            tags.add(tagArray.getJSONObject(i).getString(NAME));
+        }
         return tags;
     }
 
     public static List<Track> getTrackResult(String track) throws IOException, JSONException {
-        Log.i( "getTrackResult: ",LastFmUtils.getSearchTrackUrl(track).toString());
+        Log.i("getTrackResult: ", LastFmUtils.getSearchTrackUrl(track).toString());
         String resultsJson = NetworkUtils.getResponseFromHttpUrl(LastFmUtils.getSearchTrackUrl(track));
         JSONObject json = new JSONObject(resultsJson);
         JSONObject resultJson = json.getJSONObject(RESULTS);
@@ -141,26 +141,38 @@ public class TrackUtils implements SongWikiConstants {
 
     public static ContentValues getTrackContent(Track track) {
         ContentValues values = new ContentValues();
-        values.put(PlaylistContract.PlaylistEntry.TRACK,track.getTitle());
-        values.put(PlaylistContract.PlaylistEntry.ARTIST,track.getArtist());
-        values.put(PlaylistContract.PlaylistEntry.IMAGE_LINK,track.getImageLink());
-        values.put(PlaylistContract.PlaylistEntry.VIDEO_ID,track.getVideoId());
+        values.put(PlaylistContract.PlaylistEntry.TRACK, track.getTitle());
+        values.put(PlaylistContract.PlaylistEntry.ARTIST, track.getArtist());
+        values.put(PlaylistContract.PlaylistEntry.IMAGE_LINK, track.getImageLink());
+        values.put(PlaylistContract.PlaylistEntry.VIDEO_ID, track.getVideoId());
         return values;
 
     }
 
     public static List<Track> getTracksFromPlaylist(Context context) {
-        List<Track> tracks = new ArrayList<>() ;
-        Cursor cursor = context.getContentResolver().query(PlaylistContract.PlaylistEntry.CONTENT_URI,null,null,null, PlaylistContract.PlaylistEntry.DATE);
+        List<Track> tracks = new ArrayList<>();
+        Cursor cursor = context.getContentResolver().query(PlaylistContract.PlaylistEntry.CONTENT_URI, null, null, null, PlaylistContract.PlaylistEntry.DATE);
         int title = cursor.getColumnIndex(PlaylistContract.PlaylistEntry.TRACK);
         int artist = cursor.getColumnIndex(PlaylistContract.PlaylistEntry.ARTIST);
         int imageLink = cursor.getColumnIndex(PlaylistContract.PlaylistEntry.IMAGE_LINK);
         int videoId = cursor.getColumnIndex(PlaylistContract.PlaylistEntry.VIDEO_ID);
-        if( cursor.moveToFirst()){
-           do{
-               tracks.add(new Track(cursor.getString(title),cursor.getString(artist),cursor.getString(imageLink),cursor.getString(videoId)));
-           }while(cursor.moveToNext());
+        if (cursor.moveToFirst()) {
+            do {
+                tracks.add(new Track(cursor.getString(title), cursor.getString(artist), cursor.getString(imageLink), cursor.getString(videoId)));
+            } while (cursor.moveToNext());
         }
         return tracks;
+    }
+
+    public static List<String> getVideoIdsFromPlaylist(Context context) {
+        List<String> videoIds = new ArrayList<>();
+        Cursor cursor = context.getContentResolver().query(PlaylistContract.PlaylistEntry.CONTENT_URI, new String[]{PlaylistContract.PlaylistEntry.VIDEO_ID}, null, null, PlaylistContract.PlaylistEntry.DATE);
+        int videoIdIndex = cursor.getColumnIndex(PlaylistContract.PlaylistEntry.VIDEO_ID);
+        if (cursor.moveToFirst()) {
+            do {
+                videoIds.add(cursor.getString(videoIdIndex));
+            } while (cursor.moveToNext());
+        }
+        return videoIds;
     }
 }

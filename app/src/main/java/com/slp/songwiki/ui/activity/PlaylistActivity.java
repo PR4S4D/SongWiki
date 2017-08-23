@@ -6,22 +6,28 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
 
+import com.google.android.youtube.player.YouTubeStandalonePlayer;
 import com.slp.songwiki.R;
 import com.slp.songwiki.adapter.TrackAdapter;
 import com.slp.songwiki.model.Track;
+import com.slp.songwiki.utilities.SongWikiConstants;
 import com.slp.songwiki.utilities.TrackUtils;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class PlaylistActivity extends AppCompatActivity implements TrackAdapter.TrackItemClickListener {
+public class PlaylistActivity extends AppCompatActivity implements TrackAdapter.TrackItemClickListener, SongWikiConstants {
 
     @Bind(R.id.rv_tracks)
     RecyclerView rvTracks;
     private List<Track> tracks;
+    private List<String> videoIds;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +39,14 @@ public class PlaylistActivity extends AppCompatActivity implements TrackAdapter.
 
     @Override
     public void onTrackItemClick(int position) {
+        startActivity(YouTubeStandalonePlayer.createVideosIntent(this, YOUTUBE_PLAYER_API_KEY, videoIds, position, 0, true, false));
+    }
 
+    public void shuffle(View view) {
+        List<String> shuffledVideoIds = new ArrayList<>(videoIds);
+
+        Collections.shuffle(shuffledVideoIds);
+        startActivity(YouTubeStandalonePlayer.createVideosIntent(this, YOUTUBE_PLAYER_API_KEY, shuffledVideoIds, 0, 0, true, false));
     }
 
     private class GetPlaylist extends AsyncTask {
@@ -46,6 +59,8 @@ public class PlaylistActivity extends AppCompatActivity implements TrackAdapter.
         @Override
         protected Object doInBackground(Object[] params) {
             tracks = TrackUtils.getTracksFromPlaylist(getApplicationContext());
+            videoIds = TrackUtils.getVideoIdsFromPlaylist(getApplicationContext());
+            Log.i(TAG, "doInBackground: " + videoIds);
             return null;
         }
 
@@ -54,7 +69,7 @@ public class PlaylistActivity extends AppCompatActivity implements TrackAdapter.
             Log.i("onPostExecute: "
                     + tracks, "");
             rvTracks.setAdapter(new TrackAdapter(tracks, PlaylistActivity.this));
-            LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext(),LinearLayoutManager.VERTICAL,false);
+            LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
             rvTracks.setLayoutManager(layoutManager);
             rvTracks.setHasFixedSize(true);
             super.onPostExecute(o);
