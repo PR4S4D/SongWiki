@@ -3,18 +3,19 @@
     <group
         android:id="@+id/main"
         android:checkableBehavior="none">
-    <item
-        android:id="@+id/favourite_artists"
-        android:icon="@drawable/ic_favorite"
-        android:title="@string/favourite_artists" />
-    <item
-        android:id="@+id/song_wiki_settings"
-        android:icon="@drawable/ic_menu_pref"
-        android:title="@string/action_settings" />
+        <item
+            android:id="@+id/favourite_artists"
+            android:icon="@drawable/ic_favorite"
+            android:title="@string/favourite_artists" />
         <item
             android:id="@+id/my_playlist"
             android:icon="@drawable/ic_playlist"
-            android:title="@string/my_playlist"/>
+            android:title="@string/my_playlist" />
+        <item
+            android:id="@+id/song_wiki_settings"
+            android:icon="@drawable/ic_menu_pref"
+            android:title="@string/action_settings" />
+
     </group>
     <group
         android:id="@+id/extras"
