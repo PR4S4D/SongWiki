@@ -8,6 +8,7 @@ SongWiki lets you discover new music and find out more about your favorite songs
 3. Search for artist and tracks
 4. Save artist info for offline viewing
 5. Attractive material design
+6. Play youtube video for the tracks
 ```
 
 ## Getting Started
