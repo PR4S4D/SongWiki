@@ -94,7 +94,7 @@ public class TopTracksFragment extends Fragment implements SongWikiFragmentable,
         MenuItem menuItem = menu.findItem(R.id.search_track);
         searchView = (SearchView) menuItem.getActionView();
         searchView.setMaxWidth(Integer.MAX_VALUE);
-        searchView.setQueryHint(getString(R.string.track_title));
+       // searchView.setQueryHint(getString(R.string.track_title));
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 
             @Override

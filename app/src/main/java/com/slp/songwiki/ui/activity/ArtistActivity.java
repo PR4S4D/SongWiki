@@ -388,7 +388,7 @@ public class ArtistActivity extends AppCompatActivity implements LoaderManager.L
 
 
     @Override
-    public void onListItemClick(int clickedItemIndex) {
+    public void onArtistItemClick(int clickedItemIndex) {
         if (null != similarArtists) {
             Intent artistIntent = new Intent(this, ArtistActivity.class);
             Artist clickedArtist = ((ArtistAdapter) rvSimilarArtists.getAdapter()).getItem(clickedItemIndex);

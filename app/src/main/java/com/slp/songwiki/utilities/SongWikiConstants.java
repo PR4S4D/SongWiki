@@ -59,6 +59,7 @@ public interface SongWikiConstants {
     String TEXT_COLOR = "textColor";
     String DARK_TINT = "darkTint";
     String LIGHT_TINT = "lightTint";
+    String SEARCH_QUERY = "searchQuery";
 
     //youtube API
     String YOUTUBE_SEARCH_API_KEY = "YOUR YOUTUBE API KEY";

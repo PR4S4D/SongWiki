@@ -102,9 +102,11 @@
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:theme="@style/AppTheme.NoActionBar.TransparentStatusBar" />
         <activity
-            android:parentActivityName=".ui.activity.SongWikiActivity"
             android:name=".ui.activity.PlaylistActivity"
-            android:label="@string/my_playlist"/>
+            android:label="@string/my_playlist"
+            android:parentActivityName=".ui.activity.SongWikiActivity" />
+        <activity android:name=".ui.activity.SearchResultsActivity"
+            android:parentActivityName=".ui.activity.SongWikiActivity"></activity>
     </application>
 
 </manifest>

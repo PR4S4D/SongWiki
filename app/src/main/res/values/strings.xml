@@ -60,4 +60,5 @@
     <string name="my_playlist">My Playlist</string>
     <string name="added">Successfully added! </string>
     <string name="removed">Successfully Removed! </string>
+    <string name="search_label">Search SongWiki</string>
 </resources>

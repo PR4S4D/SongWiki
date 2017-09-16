@@ -139,7 +139,7 @@ public class ArtistWidgetFactory implements RemoteViewsService.RemoteViewsFactor
 
     @Override
     public RemoteViews getLoadingView() {
-        return new RemoteViews(context.getPackageName(), R.layout.artist_widget);
+        return new RemoteViews(context.getPackageName(), R.layout.artist_widget_item);
     }
 
     @Override

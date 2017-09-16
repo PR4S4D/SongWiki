@@ -37,9 +37,11 @@ import com.slp.songwiki.adapter.ArtistAdapter;
 import com.slp.songwiki.model.Artist;
 import com.slp.songwiki.ui.activity.ArtistActivity;
 import com.slp.songwiki.ui.activity.ArtistSearchResultsActivity;
+import com.slp.songwiki.ui.activity.SearchResultsActivity;
 import com.slp.songwiki.utilities.ArtistUtils;
 import com.slp.songwiki.utilities.NetworkUtils;
 import com.slp.songwiki.utilities.PreferenceUtils;
+import com.slp.songwiki.utilities.SongWikiConstants;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
@@ -55,7 +57,7 @@ import butterknife.ButterKnife;
  * Created by Lakshmiprasad on 4/30/2017.
  */
 
-public class TopArtistsFragment extends Fragment implements SongWikiFragmentable, LoaderManager.LoaderCallbacks<List<Artist>>, ArtistAdapter.ListItemClickListener, SharedPreferences.OnSharedPreferenceChangeListener {
+public class TopArtistsFragment extends Fragment implements SongWikiFragmentable,SongWikiConstants, LoaderManager.LoaderCallbacks<List<Artist>>, ArtistAdapter.ListItemClickListener, SharedPreferences.OnSharedPreferenceChangeListener {
     private static final int TOP_ARTISTS = 321;
     private View rootView;
     private LoaderManager loaderManager;
@@ -116,14 +118,14 @@ public class TopArtistsFragment extends Fragment implements SongWikiFragmentable
         MenuItem menuItem = menu.findItem(R.id.search_artist);
         searchView = (SearchView) menuItem.getActionView();
         searchView.setMaxWidth(Integer.MAX_VALUE);
-        searchView.setQueryHint(getString(R.string.artist_title));
+        //searchView.setQueryHint(getString(R.string.artist_title));
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 
             @Override
             public boolean onQueryTextSubmit(String query) {
                 ((ArtistAdapter) rvArtists.getAdapter()).getFilter().filter(query);
-                Intent intent = new Intent(getActivity(), ArtistSearchResultsActivity.class);
-                intent.putExtra("artist", query);
+                Intent intent = new Intent(getActivity(), SearchResultsActivity.class);
+                intent.putExtra(SEARCH_QUERY, query);
                 startActivity(intent);
                 return true;
             }
@@ -246,7 +248,7 @@ public class TopArtistsFragment extends Fragment implements SongWikiFragmentable
     }
 
     @Override
-    public void onListItemClick(int clickedItemIndex) {
+    public void onArtistItemClick(int clickedItemIndex) {
         if (null != topArtists) {
             Intent artistIntent = new Intent(getActivity(), ArtistActivity.class);
             Artist clickedArtist = ((ArtistAdapter) rvArtists.getAdapter()).getItem(clickedItemIndex);

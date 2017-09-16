@@ -53,7 +53,7 @@ public class ArtistSearchResultsActivity extends AppCompatActivity implements Ar
     }
 
     @Override
-    public void onListItemClick(int clickedItemIndex) {
+    public void onArtistItemClick(int clickedItemIndex) {
         Artist clickedArtist = ((ArtistAdapter) rvArtists.getAdapter()).getItem(clickedItemIndex);
         Pair[] pairs = new Pair[1];
         ArtistAdapter.ArtistViewHolder viewHolder = (ArtistAdapter.ArtistViewHolder) rvArtists.findViewHolderForAdapterPosition(clickedItemIndex);

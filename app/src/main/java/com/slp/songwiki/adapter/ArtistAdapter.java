@@ -3,12 +3,10 @@ package com.slp.songwiki.adapter;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,12 +19,9 @@ import com.slp.songwiki.R;
 import com.slp.songwiki.model.Artist;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Target;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static android.content.ContentValues.TAG;
 
 /**
  * Created by Lakshmiprasad on 4/30/2017.
@@ -82,7 +77,7 @@ public class ArtistAdapter extends RecyclerView.Adapter<ArtistAdapter.ArtistView
     }
 
     public interface ListItemClickListener {
-        void onListItemClick(int clickedItemIndex);
+        void onArtistItemClick(int clickedItemIndex);
     }
 
     public ArtistAdapter(List<Artist> artists, ListItemClickListener onClickListener) {
@@ -187,7 +182,7 @@ public class ArtistAdapter extends RecyclerView.Adapter<ArtistAdapter.ArtistView
 
         @Override
         public void onClick(View v) {
-            onClickListener.onListItemClick(getAdapterPosition());
+            onClickListener.onArtistItemClick(getAdapterPosition());
         }
     }
 }
