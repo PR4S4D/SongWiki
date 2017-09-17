@@ -42,6 +42,10 @@ public class SearchResultsActivity extends AppCompatActivity implements ArtistAd
     ProgressBar searchLoader;
     @Bind(R.id.error)
     TextView error;
+    @Bind(R.id.tracks_label)
+    TextView tracksLabel;
+    @Bind(R.id.artists_label)
+    TextView artistsLabel;
 
 
     @Override
@@ -95,13 +99,10 @@ public class SearchResultsActivity extends AppCompatActivity implements ArtistAd
             new TrackSearchTask().execute(getIntent().getStringExtra(SEARCH_QUERY));
             if (null != artists && artists.size() > 0) {
                 setTitle(getString(R.string.top_results));
+                artistsLabel.setVisibility(View.VISIBLE);
                 error.setVisibility(View.GONE);
                 ArtistAdapter adapter = new ArtistAdapter(artists, SearchResultsActivity.this);
                 rvArtists.setAdapter(adapter);
-          /*      int gridSize = getResources().getInteger(R.integer.artist_grid);
-                rvArtists.setLayoutManager(new GridLayoutManager(SearchResultsActivity.this, gridSize));
-           */
-
                 LinearLayoutManager layout = new LinearLayoutManager(SearchResultsActivity.this, LinearLayoutManager.HORIZONTAL, false);
                 layout.setInitialPrefetchItemCount(2);
                 rvArtists.setLayoutManager(layout);
@@ -139,8 +140,7 @@ public class SearchResultsActivity extends AppCompatActivity implements ArtistAd
         @Override
         protected void onPostExecute(List<Track> tracks) {
             if (null != tracks && tracks.size() > 0) {
-                setTitle(getString(R.string.top_results));
-
+                tracksLabel.setVisibility(View.VISIBLE);
                 rvTracks.setAdapter(new TrackAdapter(tracks, SearchResultsActivity.this));
                 int gridSize = getResources().getInteger(R.integer.track_grid);
 

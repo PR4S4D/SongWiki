@@ -61,4 +61,6 @@
     <string name="added">Successfully added! </string>
     <string name="removed">Successfully Removed! </string>
     <string name="search_label">Search SongWiki</string>
+    <string name="artists">Artists</string>
+    <string name="tracks">Tracks</string>
 </resources>
