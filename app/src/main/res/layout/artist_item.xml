@@ -24,17 +24,21 @@
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:clickable="true"
                 android:contentDescription="@string/artist_image"
+                android:fitsSystemWindows="true"
                 android:maxWidth="180dp"
                 android:minWidth="160dp"
-                android:scaleType="fitXY" />
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_artist" />
 
             <TextView
                 android:id="@+id/artist_name"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/artist_image"
-                android:maxLines="2"
                 android:ellipsize="end"
+                android:maxLines="1"
+                android:maxWidth="200dp"
+                android:minWidth="160dp"
                 android:paddingEnd="@dimen/artist_name_padding"
                 android:paddingLeft="@dimen/artist_name_padding"
                 android:paddingRight="@dimen/artist_name_padding"

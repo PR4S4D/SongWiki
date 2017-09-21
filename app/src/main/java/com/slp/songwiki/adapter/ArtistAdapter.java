@@ -111,10 +111,10 @@ public class ArtistAdapter extends RecyclerView.Adapter<ArtistAdapter.ArtistView
 
         if (TextUtils.isEmpty(imageLink)) {
 
-            Picasso.with(holder.artistImage.getContext()).load(R.drawable.loading).into(holder.artistImage);
+            Picasso.with(holder.artistImage.getContext()).load(R.drawable.ic_artist).error(R.drawable.ic_artist).into(holder.artistImage);
         } else {
 
-            Picasso.with(holder.artistImage.getContext()).load(imageLink).error(R.drawable.loading).into(holder.artistImage, new Callback() {
+            Picasso.with(holder.artistImage.getContext()).load(imageLink).error(R.drawable.ic_artist).into(holder.artistImage, new Callback() {
                 @Override
                 public void onSuccess() {
                     int backgroundColor = Color.GRAY;
