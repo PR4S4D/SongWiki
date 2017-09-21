@@ -27,10 +27,12 @@ import android.widget.TextView;
 import com.slp.songwiki.R;
 import com.slp.songwiki.adapter.TrackAdapter;
 import com.slp.songwiki.model.Track;
+import com.slp.songwiki.ui.activity.SearchResultsActivity;
 import com.slp.songwiki.ui.activity.TrackActivity;
 import com.slp.songwiki.ui.activity.TrackSearchResultsActivity;
 import com.slp.songwiki.utilities.NetworkUtils;
 import com.slp.songwiki.utilities.PreferenceUtils;
+import com.slp.songwiki.utilities.SongWikiConstants;
 import com.slp.songwiki.utilities.TrackUtils;
 
 import org.json.JSONException;
@@ -47,7 +49,7 @@ import static android.content.ContentValues.TAG;
  * Created by Lakshmiprasad on 4/30/2017.
  */
 
-public class TopTracksFragment extends Fragment implements SongWikiFragmentable, LoaderManager.LoaderCallbacks<List<Track>>, TrackAdapter.TrackItemClickListener, SharedPreferences.OnSharedPreferenceChangeListener {
+public class TopTracksFragment extends Fragment implements SongWikiFragmentable, LoaderManager.LoaderCallbacks<List<Track>>, TrackAdapter.TrackItemClickListener, SharedPreferences.OnSharedPreferenceChangeListener, SongWikiConstants {
     private View rootView;
     private LoaderManager loaderManager;
     private List<Track> topTracks;
@@ -100,8 +102,8 @@ public class TopTracksFragment extends Fragment implements SongWikiFragmentable,
             @Override
             public boolean onQueryTextSubmit(String query) {
                 ((TrackAdapter) rvTracks.getAdapter()).getFilter().filter(query);
-                Intent intent = new Intent(getActivity(), TrackSearchResultsActivity.class);
-                intent.putExtra("track", query);
+                Intent intent = new Intent(getActivity(), SearchResultsActivity.class);
+                intent.putExtra(SEARCH_QUERY, query);
                 startActivity(intent);
                 return true;
             }

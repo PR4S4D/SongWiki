@@ -103,7 +103,8 @@ public class SearchResultsActivity extends AppCompatActivity implements ArtistAd
                 error.setVisibility(View.GONE);
                 ArtistAdapter adapter = new ArtistAdapter(artists, SearchResultsActivity.this);
                 rvArtists.setAdapter(adapter);
-                LinearLayoutManager layout = new LinearLayoutManager(SearchResultsActivity.this, LinearLayoutManager.HORIZONTAL, false);
+                GridLayoutManager layout = new GridLayoutManager(SearchResultsActivity.this,1);
+                        layout.setOrientation(LinearLayoutManager.HORIZONTAL);
                 layout.setInitialPrefetchItemCount(2);
                 rvArtists.setLayoutManager(layout);
                 rvArtists.setHasFixedSize(true);

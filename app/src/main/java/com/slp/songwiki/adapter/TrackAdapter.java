@@ -13,7 +13,6 @@ import android.widget.TextView;
 
 import com.slp.songwiki.R;
 import com.slp.songwiki.model.Track;
-import com.slp.songwiki.utilities.TrackUtils;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;

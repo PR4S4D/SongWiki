@@ -1,10 +1,8 @@
 package com.slp.songwiki.ui.activity;
 
-import android.Manifest;
 import android.app.ActivityOptions;
 import android.content.ContentValues;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -16,11 +14,9 @@ import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.app.ShareCompat;
 import android.support.v4.content.AsyncTaskLoader;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
@@ -333,7 +329,8 @@ public class ArtistActivity extends AppCompatActivity implements LoaderManager.L
             similarArtistsLabel.setVisibility(View.VISIBLE);
             similarArtists = artist.getSimilarArtists();
             rvSimilarArtists.setAdapter(new ArtistAdapter(similarArtists, this));
-            LinearLayoutManager layout = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+            GridLayoutManager layout = new GridLayoutManager(this,1);
+            layout.setOrientation(LinearLayoutManager.HORIZONTAL);
             layout.setInitialPrefetchItemCount(2);
             rvSimilarArtists.setLayoutManager(layout);
             rvSimilarArtists.setHasFixedSize(true);
