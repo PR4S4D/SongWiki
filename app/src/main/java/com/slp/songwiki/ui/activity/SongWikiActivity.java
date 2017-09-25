@@ -1,7 +1,12 @@
 package com.slp.songwiki.ui.activity;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 import android.net.Uri;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -16,11 +21,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.google.android.gms.ads.AdRequest;
 import com.slp.songwiki.R;
 import com.slp.songwiki.adapter.SongWikiPagerAdapter;
 import com.slp.songwiki.ui.fragment.AboutActivity;
+import com.slp.songwiki.utilities.NetworkUtils;
 import com.slp.songwiki.utilities.PreferenceUtils;
 
 import butterknife.Bind;
@@ -41,6 +48,8 @@ public class SongWikiActivity extends AppCompatActivity implements NavigationVie
 
     private static final int PRESS_BACK_INTERVAL = 2000;
     private boolean doubleBackToExitPressedOnce;
+    private NetworkReceiver networkReceiver;
+    private boolean isNetworkReceiverRegistered;
 
 
     @Override
@@ -54,7 +63,6 @@ public class SongWikiActivity extends AppCompatActivity implements NavigationVie
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(pagerAdapter);
         setUpNavigationView();
-
 
         tabLayout.setupWithViewPager(mViewPager);
         Log.i("Top artist limit ", PreferenceUtils.getTopArtistsLimit(this));
@@ -77,11 +85,6 @@ public class SongWikiActivity extends AppCompatActivity implements NavigationVie
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-    }
-
-    @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
         switch (item.getItemId()) {
@@ -92,7 +95,7 @@ public class SongWikiActivity extends AppCompatActivity implements NavigationVie
                 startActivity(new Intent(this, SettingsActivity.class));
                 break;
             case R.id.my_playlist:
-                startActivity(new Intent(this,PlaylistActivity.class));
+                startActivity(new Intent(this, PlaylistActivity.class));
                 break;
             case R.id.share:
                 Intent i = new Intent(Intent.ACTION_SEND);
@@ -143,6 +146,42 @@ public class SongWikiActivity extends AppCompatActivity implements NavigationVie
 
     private Uri getPlayStoreLink() {
         return Uri.parse("market://details?id=" + getPackageName());
+    }
+
+
+    public class NetworkReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (NetworkUtils.isNetworkAvailable(context)) {
+                pagerAdapter.notifyDataSetChanged();
+                mViewPager.setAdapter(pagerAdapter);
+            }
+        }
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (!isNetworkReceiverRegistered) {
+            if (null == networkReceiver) {
+                networkReceiver = new NetworkReceiver();
+                IntentFilter filter = new IntentFilter();
+                filter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
+                filter.addAction(WifiManager.WIFI_STATE_CHANGED_ACTION);
+                registerReceiver(networkReceiver, filter);
+            }
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (isNetworkReceiverRegistered) {
+            unregisterReceiver(networkReceiver);
+            isNetworkReceiverRegistered = false;
+            networkReceiver = null;
+        }
     }
 
 }

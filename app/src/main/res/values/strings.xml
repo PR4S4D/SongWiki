@@ -63,4 +63,5 @@
     <string name="search_label">Search SongWiki</string>
     <string name="artists">Artists</string>
     <string name="tracks">Tracks</string>
+    <string name="network_connected">Connected to network!</string>
 </resources>
