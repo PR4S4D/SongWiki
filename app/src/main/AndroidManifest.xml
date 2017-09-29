@@ -36,11 +36,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.activity.SongWikiActivity" />
         </activity>
-        <activity android:name=".ui.activity.ArtistSearchResultsActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.activity.SongWikiActivity" />
-        </activity>
 
         <provider
             android:name=".data.artist.FavouriteArtistProvider"
@@ -50,11 +45,6 @@
             android:authorities="com.slp.songwiki.playlist" />
 
         <activity android:name=".ui.activity.FavouriteArtistActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.activity.SongWikiActivity" />
-        </activity>
-        <activity android:name=".ui.activity.TrackSearchResultsActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.activity.SongWikiActivity" />
@@ -105,7 +95,8 @@
             android:name=".ui.activity.PlaylistActivity"
             android:label="@string/my_playlist"
             android:parentActivityName=".ui.activity.SongWikiActivity" />
-        <activity android:name=".ui.activity.SearchResultsActivity"
+        <activity
+            android:name=".ui.activity.SearchResultsActivity"
             android:parentActivityName=".ui.activity.SongWikiActivity"></activity>
     </application>
 
