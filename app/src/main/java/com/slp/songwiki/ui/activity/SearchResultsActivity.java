@@ -46,6 +46,8 @@ public class SearchResultsActivity extends AppCompatActivity implements ArtistAd
     TextView tracksLabel;
     @Bind(R.id.artists_label)
     TextView artistsLabel;
+    private boolean noArtists = false;
+    private boolean noTracks = false;
 
 
     @Override
@@ -103,8 +105,8 @@ public class SearchResultsActivity extends AppCompatActivity implements ArtistAd
                 error.setVisibility(View.GONE);
                 ArtistAdapter adapter = new ArtistAdapter(artists, SearchResultsActivity.this);
                 rvArtists.setAdapter(adapter);
-                GridLayoutManager layout = new GridLayoutManager(SearchResultsActivity.this,1);
-                        layout.setOrientation(LinearLayoutManager.HORIZONTAL);
+                GridLayoutManager layout = new GridLayoutManager(SearchResultsActivity.this, 1);
+                layout.setOrientation(LinearLayoutManager.HORIZONTAL);
                 layout.setInitialPrefetchItemCount(2);
                 rvArtists.setLayoutManager(layout);
                 rvArtists.setHasFixedSize(true);
@@ -112,8 +114,8 @@ public class SearchResultsActivity extends AppCompatActivity implements ArtistAd
                 searchLoader.setVisibility(GONE);
                 adapter.notifyDataSetChanged();
             } else {
-                searchLoader.setVisibility(GONE);
-                error.setVisibility(View.VISIBLE);
+                noArtists = true;
+
             }
         }
     }
@@ -148,9 +150,19 @@ public class SearchResultsActivity extends AppCompatActivity implements ArtistAd
                 rvTracks.setLayoutManager(new GridLayoutManager(SearchResultsActivity.this, gridSize));
                 rvTracks.setHasFixedSize(true);
                 rvTracks.setNestedScrollingEnabled(false);
+            } else {
+                noTracks = true;
+                updateErrorView();
             }
 
             super.onPostExecute(tracks);
+        }
+    }
+
+    private void updateErrorView() {
+        if (noTracks && noArtists) {
+            searchLoader.setVisibility(GONE);
+            error.setVisibility(View.VISIBLE);
         }
     }
 
