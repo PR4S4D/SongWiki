@@ -114,8 +114,8 @@ public class TrackActivity extends AppCompatActivity implements LoaderManager.Lo
     private void setToolbar() {
         collapsingToolbarLayout.setTitle(track.getTitle());
         toolbar.setTitle(track.getTitle());
-        toolbar.setNavigationIcon(R.drawable.ic_arrow_back);
         setSupportActionBar(toolbar);
+        toolbar.setNavigationIcon(R.drawable.ic_arrow_back);
         getWindow().setStatusBarColor(Color.TRANSPARENT);
     }
 
@@ -184,6 +184,13 @@ public class TrackActivity extends AppCompatActivity implements LoaderManager.Lo
             }
 
         };
+    }
+
+
+    @Override
+    public boolean onNavigateUp() {
+        getSupportFragmentManager().popBackStack();
+        return true;
     }
 
     @Override
