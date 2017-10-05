@@ -29,7 +29,6 @@ import com.slp.songwiki.adapter.TrackAdapter;
 import com.slp.songwiki.model.Track;
 import com.slp.songwiki.ui.activity.SearchResultsActivity;
 import com.slp.songwiki.ui.activity.TrackActivity;
-import com.slp.songwiki.ui.activity.TrackSearchResultsActivity;
 import com.slp.songwiki.utilities.NetworkUtils;
 import com.slp.songwiki.utilities.PreferenceUtils;
 import com.slp.songwiki.utilities.SongWikiConstants;

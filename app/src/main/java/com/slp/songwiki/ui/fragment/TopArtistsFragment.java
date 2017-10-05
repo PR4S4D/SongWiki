@@ -36,7 +36,6 @@ import com.slp.songwiki.R;
 import com.slp.songwiki.adapter.ArtistAdapter;
 import com.slp.songwiki.model.Artist;
 import com.slp.songwiki.ui.activity.ArtistActivity;
-import com.slp.songwiki.ui.activity.ArtistSearchResultsActivity;
 import com.slp.songwiki.ui.activity.SearchResultsActivity;
 import com.slp.songwiki.utilities.ArtistUtils;
 import com.slp.songwiki.utilities.NetworkUtils;
