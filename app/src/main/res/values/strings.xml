@@ -47,7 +47,7 @@
     <string name="press_back">Press back again!</string>
     <string name="rate_this_app">Rate this app</string>
     <string name="choose_one">Choose one</string>
-    <string name="sharing_description">Check out this cool application</string>
+    <string name="sharing_description">Check out this cool application\t</string>
     <string name="version_1_0">Version : 1.0</string>
     <string name="author">Author</string>
     <string name="lp">Lakshmiprasad</string>
@@ -64,4 +64,5 @@
     <string name="artists">Artists</string>
     <string name="tracks">Tracks</string>
     <string name="network_connected">Connected to network!</string>
+    <string name="description_language">Artist description language</string>
 </resources>
