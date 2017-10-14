@@ -10,7 +10,7 @@ import com.slp.songwiki.R;
 
 public class SplashActivity extends AppCompatActivity {
 
-    private static final int SPASH_TIME_OUT = 1000;
+    private static final int SPASH_TIME_OUT = 000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
