@@ -10,13 +10,13 @@
         android:id="@+id/track_card"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="4dp"
+        android:layout_margin="0dp"
         android:elevation="4dp"
         app:cardCornerRadius="4dp">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="80dp"
+            android:layout_height="64dp"
             android:background="?attr/selectableItemBackground"
             android:orientation="horizontal"
             android:weightSum="12">
@@ -35,30 +35,29 @@
                 android:layout_weight="3"
                 android:orientation="vertical"
                 android:paddingEnd="12dp"
-                android:paddingStart="12dp"
-                android:weightSum="5">
+                android:weightSum="2">
 
                 <TextView
                     android:id="@+id/track_title"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="2"
+                    android:layout_weight="1"
                     android:ellipsize="end"
                     android:gravity="start|center_vertical"
                     android:maxLines="1"
+                    android:layout_marginTop="8dp"
                     android:textColor="@android:color/black"
-                    android:paddingTop="4dp"
-                    android:textSize="24sp"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
                     tools:text="Umbrella" />
 
                 <TextView
                     android:id="@+id/artist"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="3"
+                    android:layout_weight="1"
                     android:ellipsize="end"
                     android:maxLines="1"
-                    android:textSize="16sp"
+                    android:textAppearance="@android:style/TextAppearance.DeviceDefault.Small"
                     tools:text="@string/artist" />
 
             </LinearLayout>
