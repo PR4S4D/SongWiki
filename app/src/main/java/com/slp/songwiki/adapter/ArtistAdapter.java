@@ -104,10 +104,10 @@ public class ArtistAdapter extends RecyclerView.Adapter<ArtistAdapter.ArtistView
 
     @Override
     public void onBindViewHolder(final ArtistAdapter.ArtistViewHolder holder, int position) {
-        holder.artistName.setText(artists.get(position).getName());
-        String imageLink = artists.get(position).getImageLink();
-        holder.artistImage.setTransitionName(artists.get(position).getName());
-        holder.artistImage.setContentDescription(artists.get(position).getName());
+        Artist currentArtist = artists.get(position);
+        holder.artistName.setText(currentArtist.getName());
+        String imageLink = currentArtist.getImageLink();
+        holder.artistImage.setContentDescription(currentArtist.getName());
 
         if (TextUtils.isEmpty(imageLink)) {
 

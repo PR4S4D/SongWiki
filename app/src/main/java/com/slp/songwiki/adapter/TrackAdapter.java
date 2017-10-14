@@ -100,7 +100,7 @@ public class TrackAdapter extends RecyclerView.Adapter<TrackAdapter.TrackViewHol
             Track currentTrack = tracks.get(position);
             holder.trackTitle.setText(currentTrack.getTitle());
             holder.artist.setText(currentTrack.getArtist());
-            holder.getTrackImage().setTransitionName(currentTrack.getArtist());
+
             holder.getTrackImage().setContentDescription(currentTrack.getArtist());
             if (!TextUtils.isEmpty(currentTrack.getImageLink())){
                 Picasso.with(holder.trackImage.getContext()).load(currentTrack.getImageLink()).placeholder(R.drawable.loading).error(R.drawable.loading).into(holder.trackImage);
