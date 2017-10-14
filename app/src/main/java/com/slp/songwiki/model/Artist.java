@@ -20,6 +20,7 @@ public class Artist implements Parcelable {
     private String artistLink;
     private List<Artist> similarArtists;
     private List<String> tags;
+    private List<Track> topTracks;
 
     public String getArtistLink() {
         return artistLink;
@@ -106,6 +107,14 @@ public class Artist implements Parcelable {
         this.similarArtists = similarArtists;
     }
 
+    public List<Track> getTopTracks() {
+        return topTracks;
+    }
+
+    public void setTopTracks(List<Track> topTracks) {
+        this.topTracks = topTracks;
+    }
+
     public Artist(String name, long listeners, String imageLink, String publishedOn, String summary, String content) {
         this.name = name;
         this.listeners = listeners;
@@ -146,6 +155,12 @@ public class Artist implements Parcelable {
         } else {
             tags = null;
         }
+        if (in.readByte() == 0x01) {
+            topTracks = new ArrayList<Track>();
+            in.readList(topTracks, Track.class.getClassLoader());
+        } else {
+            topTracks = null;
+        }
     }
 
     @Override
@@ -173,6 +188,12 @@ public class Artist implements Parcelable {
         } else {
             dest.writeByte((byte) (0x01));
             dest.writeList(tags);
+        }
+        if (topTracks == null) {
+            dest.writeByte((byte) (0x00));
+        } else {
+            dest.writeByte((byte) (0x01));
+            dest.writeList(topTracks);
         }
     }
 

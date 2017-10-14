@@ -8,6 +8,7 @@ import android.util.Log;
 
 import com.slp.songwiki.R;
 import com.slp.songwiki.data.playlist.PlaylistContract;
+import com.slp.songwiki.model.Artist;
 import com.slp.songwiki.model.Track;
 
 import org.json.JSONArray;
@@ -174,5 +175,11 @@ public class TrackUtils implements SongWikiConstants {
             } while (cursor.moveToNext());
         }
         return videoIds;
+    }
+
+    public static void setTopTracks(Artist artist) throws IOException, JSONException {
+        if(null != artist){
+            artist.setTopTracks(getTopTracks(artist.getName()));
+        }
     }
 }

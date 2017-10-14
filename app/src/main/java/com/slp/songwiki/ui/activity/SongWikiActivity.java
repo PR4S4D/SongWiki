@@ -46,6 +46,7 @@ public class SongWikiActivity extends AppCompatActivity implements NavigationVie
     @Bind(R.id.drawer_layout)
     DrawerLayout drawer;
 
+    private static boolean songWikiItemsLoaded = false;
     private static final int PRESS_BACK_INTERVAL = 2000;
     private boolean doubleBackToExitPressedOnce;
     private NetworkReceiver networkReceiver;
@@ -101,8 +102,7 @@ public class SongWikiActivity extends AppCompatActivity implements NavigationVie
                 Intent i = new Intent(Intent.ACTION_SEND);
                 i.setType("text/plain");
                 i.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.song_wiki));
-                String appLink = getString(R.string.sharing_description);
-                appLink = appLink + "https://play.google.com/store/apps/details?id=" + getPackageName();
+                String appLink = "https://play.google.com/store/apps/details?id=" + getPackageName();
                 i.putExtra(Intent.EXTRA_TEXT, appLink);
                 startActivity(Intent.createChooser(i, getString(R.string.choose_one)));
                 break;
@@ -152,9 +152,10 @@ public class SongWikiActivity extends AppCompatActivity implements NavigationVie
     public class NetworkReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (NetworkUtils.isNetworkAvailable(context)) {
+            if (NetworkUtils.isNetworkAvailable(context) && !songWikiItemsLoaded) {
                 pagerAdapter.notifyDataSetChanged();
                 mViewPager.setAdapter(pagerAdapter);
+                songWikiItemsLoaded = true;
             }
         }
 
@@ -183,5 +184,6 @@ public class SongWikiActivity extends AppCompatActivity implements NavigationVie
             networkReceiver = null;
         }
     }
+
 
 }

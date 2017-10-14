@@ -70,7 +70,7 @@ public class ArtistActivity extends AppCompatActivity implements LoaderManager.L
 
     private Artist artist;
     private List<Artist> similarArtists;
-    private List<Track> topTracks;
+    private static List<Track> topTracks;
     @Bind(R.id.artist_image)
     ImageView artistImage;
     @Bind(R.id.artist_name)
@@ -292,7 +292,7 @@ public class ArtistActivity extends AppCompatActivity implements LoaderManager.L
             public String loadInBackground() {
                 try {
                     ArtistUtils.setArtistDetails(artist, getApplicationContext());
-                    topTracks = TrackUtils.getTopTracks(artist.getName());
+                    TrackUtils.setTopTracks(artist);
 
                 } catch (IOException | JSONException e) {
                     e.printStackTrace();
@@ -314,6 +314,7 @@ public class ArtistActivity extends AppCompatActivity implements LoaderManager.L
     }
 
     private void showTopTracks() {
+        topTracks = artist !=null ? artist.getTopTracks() : null;
         if (topTracks != null && topTracks.size() > 0) {
             topTracksLabel.setVisibility(View.VISIBLE);
             rvTopTracks.setAdapter(new TrackAdapter(topTracks, this));
@@ -351,7 +352,6 @@ public class ArtistActivity extends AppCompatActivity implements LoaderManager.L
 
     @Override
     public boolean onQueryTextChange(String newText) {
-        //friendListAdapter.getFilter().filter(newText);
 
         return true;
     }
